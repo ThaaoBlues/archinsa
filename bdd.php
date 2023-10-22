@@ -10,6 +10,7 @@ function ajouter_doc($request){
 
     $conn = new mysqli($GLOBALS["servername"], $GLOBALS["username"], $GLOBALS["password"], $GLOBALS["dbname"]);
 
+    
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -19,7 +20,7 @@ function ajouter_doc($request){
 
     
     try{
-        $conn->execute_query($sql,array("",));
+        $conn->execute_query($sql);
         saveFilesFromPost($request,mysqli_insert_id($conn),$conn);
     }catch(Exception $e){
         echo(json_encode(["status"=>"0","msg"=>$e]));

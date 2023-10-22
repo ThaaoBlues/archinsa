@@ -14,6 +14,14 @@
 <!-- Button to open the camera -->
 <button onclick="openCamera()">Open Camera</button>
 
+<input type="text" placeholder="titre" id="titre"></input>
+
+<select id="select_type">
+    <option value="annale">annale</option>
+    <option value="fiche_revision">fiche_revision</option>
+
+</select>
+
 <script>
 function uploadFiles() {
     const fileInput = document.getElementById('fileInput');
@@ -21,13 +29,16 @@ function uploadFiles() {
     // Create FormData object to append files
     const formData = new FormData();
 
+    formData.append("type",document.getElementById("select_type").getAttribute("value"));
+    formData.append("titre",document.getElementById("titre").getAttribute("value"));
+
     // Append each selected file to the FormData
     for (const file of fileInput.files) {
         formData.append('files[]', file);
     }
 
     // Make a POST request using Fetch API
-    fetch('annales/api.php/aj_doc.php', {
+    fetch('api.php/aj_doc', {
         method: 'POST',
         body: formData
     })
@@ -68,7 +79,7 @@ function openCamera() {
                 mediaStream.getTracks().forEach(track => track.stop());
 
                 // Make a POST request to upload the image
-                fetch('annales/api.php/aj_doc', {
+                fetch('api.php/aj_doc', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

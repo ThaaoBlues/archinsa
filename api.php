@@ -12,7 +12,6 @@
     */
 
     include("session_verif.php");
-    include("test_creds.php");
     include("bdd.php");
 
 
@@ -62,9 +61,15 @@
 
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        switch(array_shift($url_parts)){
+        
+        switch(array_pop($url_parts)){
             case "aj_doc":
-                ajouter_doc($_POST);
+                try{
+                    ajouter_doc($_POST);
+
+                }catch(Exception $e){
+                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                }
                 break;
             default:
                 echo(json_encode(["status"=> "2","msg"=> "Opération inconnue."]));

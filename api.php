@@ -55,6 +55,25 @@
                 echo(json_encode(["status"=> "4","msg"=> "Utilisateur non authentifié."]));
             }
         }
+
+
+
+        if (isset($_GET["chercher"])) {
+        // Example URL: /api/chercher?rech=math&duree=30&tags=algebre,geometrie
+
+        $query = isset($_GET["req"]) ? $_GET["req"] : "";
+        $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
+        $tags = isset($_GET["duree"]) ? explode(",", $_GET["tags"]) : [];
+
+        try {
+            $results = searchExercises($query, $length, $tags);
+            echo json_encode(["status" => "1", "results" => $results]);
+        } catch (Exception $e) {
+            echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
+        }
+        }
+
+        exit;
     
     }
 
@@ -74,6 +93,8 @@
             default:
                 echo(json_encode(["status"=> "2","msg"=> "Opération inconnue."]));
         }
+
+        exit;
         
     }
 ?>

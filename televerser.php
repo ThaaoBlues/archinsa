@@ -8,12 +8,9 @@
 <body>
 
 <!-- Input to choose files -->
+
+<form id="uploadForm">
 <input type="file" id="fileInput" multiple>
-<button onclick="uploadFiles()">Upload Files</button>
-
-<!-- Button to open the camera -->
-<button onclick="openCamera()">Open Camera</button>
-
 <input type="text" placeholder="titre" id="titre"></input>
 
 <select id="select_type">
@@ -22,6 +19,14 @@
 
 </select>
 
+<button type="button" onclick="uploadFiles()">Upload File</button>
+</form>
+
+<!-- Button to open the camera -->
+<button onclick="openCamera()">Open Camera</button>
+
+
+
 <script>
 function uploadFiles() {
     const fileInput = document.getElementById('fileInput');
@@ -29,12 +34,12 @@ function uploadFiles() {
     // Create FormData object to append files
     const formData = new FormData();
 
-    formData.append("type",document.getElementById("select_type").getAttribute("value"));
-    formData.append("titre",document.getElementById("titre").getAttribute("value"));
+    formData.append("type",document.getElementById("select_type").value);
+    formData.append("titre",document.getElementById("titre").value);
 
     // Append each selected file to the FormData
     for (const file of fileInput.files) {
-        formData.append('files[]', file);
+        formData.append('fichiers', file);
     }
 
     // Make a POST request using Fetch API
@@ -42,7 +47,7 @@ function uploadFiles() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
         console.log(data);
         // Handle the response from the server
@@ -85,12 +90,13 @@ function openCamera() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        files: [{ name: 'camera_image.jpg', data: imageDataUrl.split(',')[1] }]
+                        fichiers: [{ name: 'camera_image.jpg', data: imageDataUrl.split(',')[1] }]
                     })
                 })
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(data => {
                     console.log(data);
+
                     // Handle the response from the server
                 })
                 .catch(error => {

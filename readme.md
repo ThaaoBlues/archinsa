@@ -27,6 +27,8 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | titre              | VARCHAR(255)  | NOT NULL                                 |
 | commentaire_auteur | TEXT          |                                          |
 | document_id        | INT           | FOREIGN KEY (document_id) REFERENCES documents(id) |
+| duree              | INT           |                                          |
+(la durée est en secondes)
 
 ### Table: ensemble
 

@@ -1,12 +1,16 @@
 <?php
 
 
-include("annales/test_creds.php");
-$servername = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "archivinsa";
+include("test_creds.php");
 
+$conn = new mysqli($servername, $username, $password,$dbname);
+
+
+// /!\ A CHANGER EN PROD /!\
+$uploadDir = '/opt/lampp/htdocs/annales/archives/';
+
+// le type de document est classifié entre 0 et n dans l'ensemble des entiers naturels
+$max_val_type = 2;
 
 // Liste des extensions autorisées pour les images
 $image_extensions = [
@@ -29,7 +33,7 @@ $pdf_extensions = ['pdf'];
 $presentation_extensions = ['ppt', 'pptx','odp','pptm','ppsx'];
 
 // Fusionner les listes en une seule liste
-$ext_autorisees = array_merge($imageExtensions, $pdfExtensions, $presentationExtensions);
+$ext_autorisees = array_merge($image_extensions, $pdf_extensions, $presentation_extensions);
 
 function check_ext($filename) {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -39,33 +43,36 @@ function check_ext($filename) {
 
 function ajouter_doc($request){
 
-    $conn = new mysqli($GLOBALS["servername"], $GLOBALS["username"], $GLOBALS["password"], $GLOBALS["dbname"]);
+    global $conn;
 
+    print_r($request);
     
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO ensemble (commentaire_auteur) VALUES(\"\")";
+    $sql = "INSERT INTO ensemble (commentaire_auteur) VALUES(\"".htmlspecialchars($request['commentaire_auteur'])."\")";
 
     
     try{
         $conn->execute_query($sql);
-        saveFilesFromPost($request,mysqli_insert_id($conn),$conn);
+        saveFilesFromPost($request,mysqli_insert_id($conn));
     }catch(Exception $e){
-        echo(json_encode(["status"=>"0","msg"=>$e]));
+        echo(json_encode(["status"=>"0","msg"=>$e->getMessage()]));
     }
 
 }
 
-function saveFilesFromPost($postData,$id_ensemble,$conn) {
+function saveFilesFromPost($postData,$id_ensemble) {
+
+    global $conn;
+
+
     // Check if the $_POST variable is set and contains files
     echo(print_r($_FILES,true));
-    if (isset($_FILES['fichiers']) && is_array($_FILES['fichiers'])) {
-        // Directory to save the files
-        // /!\ A CHANGER EN PROD /!\
-        $uploadDir = '/opt/lampp/htdocs/annales/archives/';
+    if (isset($_FILES) && is_array($_FILES)) {
+
         
         
         // Iterate through each file in the $_FILES array
@@ -87,7 +94,7 @@ function saveFilesFromPost($postData,$id_ensemble,$conn) {
             $uniqueFileName = uniqid() . '_' . htmlspecialchars($fileName);
 
             // Define the path to save the file
-            $filePath = $uploadDir . $uniqueFileName;
+            $filePath = $GLOBALS['uploadDir'] . $uniqueFileName;
 
             //echo($filePath."\n");
 
@@ -106,15 +113,22 @@ function saveFilesFromPost($postData,$id_ensemble,$conn) {
             try{
             //update the database
             $safe_titre = htmlspecialchars($postData['titre']);
-            $safe_type = htmlspecialchars($postData['type']);
+            $safe_type = intval($postData['type']);
+
+            global $max_val_type;
+
+            if ($safe_type < 1|| $safe_type > $max_val_type) {
+                echo(json_encode(['status'=> '2','msg'=>"Le type de document spécifié n'existe pas."]));
+                exit;
+            }
 
             // pour tester, pas implémenté les commentaires globaux ni les themes
             $sql="INSERT INTO documents (titre,type,upload_path,commentaire_auteur,ensemble_id) VALUES(?,?,?,?,?)";
-            $conn->execute_query($sql, array("titre"=> $safe_titre,"type"=>$safe_type,"upload_path"=> $uploadDir,"commentaire_auteur"=>"","ensemble_id"=>$id_ensemble));
+            $conn->execute_query($sql,array($safe_titre,$safe_type,$filePath,"",$id_ensemble));
 
             }catch(Exception $e){
-                echo(json_encode(['status'=> '0','msg'=>$e]));
-                exit;
+                echo(json_encode(['status'=> '0','msg'=>$e->getMessage()]));
+                //exit;
             }
 
         }

@@ -63,10 +63,10 @@
 
         $query = isset($_GET["req"]) ? $_GET["req"] : "";
         $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
-        $tags = isset($_GET["duree"]) ? explode(",", $_GET["tags"]) : [];
+        $themes = isset($_GET["duree"]) ? explode(",", $_GET["themes"]) : [];
 
         try {
-            $results = searchExercises($query, $length, $tags);
+            $results = searchExercises($query, $length, $themes);
             echo json_encode(["status" => "1", "results" => $results]);
         } catch (Exception $e) {
             echo json_encode(["status" => "0", "msg" => $e->getMessage()]);

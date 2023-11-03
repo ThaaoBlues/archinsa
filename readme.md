@@ -36,7 +36,7 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 |--------------------|---------------|------------------------------------------|
 | id                 | INT           | AUTO_INCREMENT                           |
 | commentaire_auteur | TEXT          |                                          |
-
+| valide             | BOOLEAN       | NOT NULL                                 |
 ### Table: documents
 
 | Column             | Type          | Constraints                              |

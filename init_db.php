@@ -1,9 +1,6 @@
 <?php
 // Database connection parameters
-$servername = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "archivinsa";
+include("test_creds.php");
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -22,7 +19,8 @@ $sql = "
 
     CREATE TABLE IF NOT EXISTS ensemble (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        commentaire_auteur TEXT
+        commentaire_auteur TEXT,
+        valide BOOLEAN NOT NULL DEFAULT FALSE
     );
 
     CREATE TABLE IF NOT EXISTS documents (

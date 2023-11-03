@@ -14,12 +14,15 @@
 <input type="text" placeholder="titre" id="titre"></input>
 
 <select id="select_type">
-    <option value="annale">annale</option>
-    <option value="fiche_revision">fiche_revision</option>
+    <option value="1">annale</option>
+    <option value="2">fiche_revision</option>
 
 </select>
 
-<button type="button" onclick="uploadFiles()">Upload File</button>
+<input type="text" placeholder="commentaires généraux sur l'ensemble des documents" id="commentaire_auteur"></input>
+<div id="selectedImages"></div>
+
+<button type="button" onclick="uploadFiles()">Téléverser les fichiers</button>
 </form>
 
 <!-- Button to open the camera -->
@@ -36,11 +39,26 @@ function uploadFiles() {
 
     formData.append("type",document.getElementById("select_type").value);
     formData.append("titre",document.getElementById("titre").value);
+    formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
 
     // Append each selected file to the FormData
+    let i = 0;
     for (const file of fileInput.files) {
-        formData.append('fichiers', file);
+        formData.append('fichier' + i, file);
+        i ++;
     }
+
+        // Append captured images as files to the FormData
+    const capturedImages = document.querySelectorAll('#selectedImages img');
+
+    i = 0;
+    capturedImages.forEach((img, index) => {
+        const imageDataUrl = img.src;
+        const blob = dataURLtoBlob(imageDataUrl);
+        const file = new File([blob], `camera_image_${index}.jpg`);
+        formData.append('fichier'+i, file);
+        i ++;
+    });
 
     // Make a POST request using Fetch API
     fetch('api.php/aj_doc', {
@@ -80,33 +98,35 @@ function openCamera() {
                 // Convert the canvas content to a data URL
                 const imageDataUrl = canvas.toDataURL('image/jpeg');
 
-                // Close the camera stream
-                mediaStream.getTracks().forEach(track => track.stop());
-
-                // Make a POST request to upload the image
-                fetch('api.php/aj_doc', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        fichiers: [{ name: 'camera_image.jpg', data: imageDataUrl.split(',')[1] }]
-                    })
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data);
-
-                    // Handle the response from the server
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                // Display the captured image
+                const img = document.createElement('img');
+                img.src = imageDataUrl;
+                img.style.maxWidth = '100px';
+                document.getElementById('selectedImages').appendChild(img);
+                
             });
+
+            // POUR FERMER LA CAMERA :
+            // mediaStream.getTracks().forEach(track => track.stop());
+
+
         })
         .catch(error => {
             console.error('Error accessing camera:', error);
         });
+}
+
+
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
 }
 </script>
 

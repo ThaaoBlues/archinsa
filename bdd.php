@@ -150,7 +150,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
             foreach ($exercices as $key => $ex) {
                 // premièrement, on enregistre l'exercice
                 $sql= 'INSERT INTO exercices (commentaire_auteur,ensemble_id,duree) VALUES(?,?,?)';
-                $conn->execute_query($sql,array($ex["commentaire_exo"],$id_ensemble,$ex["duree"]));
+                $conn->execute_query($sql,array($ex["commentaire_exo"],$id_ensemble,intval($ex["duree"])));
 
                 $id_exo = mysqli_insert_id($conn);
 

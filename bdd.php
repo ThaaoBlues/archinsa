@@ -54,7 +54,6 @@ function ajouter_doc($request){
 
     $sql = "INSERT INTO ensemble (commentaire_auteur) VALUES(\"".htmlspecialchars($request['commentaire_auteur'])."\")";
 
-    
     try{
         $conn->execute_query($sql);
         saveFilesFromPost($request,mysqli_insert_id($conn));
@@ -71,15 +70,21 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
     // Check if the $_POST variable is set and contains files
     echo(print_r($_FILES,true));
+
     if (isset($_FILES) && is_array($_FILES)) {
 
         
         
         // Iterate through each file in the $_FILES array
+
+        $safe_type = intval($postData['type']);
+
+
+        $i = 0;
         foreach ($_FILES as $file) {
             // Extract file information
             if (isset($file['name'])){
-                $fileName = $file['name'];
+                $fileName = htmlspecialchars($file['name']);
                 if(!check_ext($fileName)){
                     echo(json_encode(["status"=>"0","msg"=>"Error saving file '$uniqueFileName'"]));
                     exit;
@@ -91,7 +96,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
             }
 
             // Create a unique filename to avoid overwriting existing files
-            $uniqueFileName = uniqid() . '_' . htmlspecialchars($fileName);
+            $uniqueFileName = uniqid() . '_' . $fileName;
 
             // Define the path to save the file
             $filePath = $GLOBALS['uploadDir'] . $uniqueFileName;
@@ -113,7 +118,6 @@ function saveFilesFromPost($postData,$id_ensemble) {
             try{
             //update the database
             $safe_titre = htmlspecialchars($postData['titre']);
-            $safe_type = intval($postData['type']);
 
             global $max_val_type;
 
@@ -124,14 +128,71 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
             // pour tester, pas implémenté les commentaires globaux ni les themes
             $sql="INSERT INTO documents (titre,type,upload_path,commentaire_auteur,ensemble_id) VALUES(?,?,?,?,?)";
-            $conn->execute_query($sql,array($safe_titre,$safe_type,$filePath,"",$id_ensemble));
-
+            $conn->execute_query($sql,array($safe_titre,$safe_type,$filePath,$postData['commentaire_doc_'.$i],$id_ensemble));
             }catch(Exception $e){
                 echo(json_encode(['status'=> '0','msg'=>$e->getMessage()]));
                 //exit;
             }
 
+
+
+            $i ++;
+
         }
+
+
+
+        // enregistrement des exercices dans le cas d'une annale
+        if($safe_type == 1){
+    
+            $exercices = $postData['exercices'];
+
+            foreach ($exercices as $key => $ex) {
+
+                // premièrement, on enregistre l'exercice
+                $sql= 'INSERT INTO exercices (commentaire_auteur,ensemble_id,duree) VALUES(?,?,?)';
+                $conn->execute_query($sql,array($ex["commentaire_exo"],$id_ensemble,$ex["duree"]));
+
+                $id_exo = mysqli_insert_id($conn);
+
+                // on recherche pour chaque thème s'il n'existe pas déjà,
+                // si non, on en créer un nouveau
+
+                foreach($ex["themes"] as $theme){
+
+                    // pour l'instant un match complet mais on va essayer d'ameliorer ça avec
+                    // des regex
+                    $sql= "SELECT id FROM themes WHERE name=\"".htmlspecialchars($theme)."\"";
+                    $result = $conn->execute_query($sql);
+                    if ($result){
+                        if (mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+                            $id_theme = $row["id"];
+                        }else{
+
+                            $sql = "INSERT INTO themes (name) VALUES(?)";
+                            $conn->execute_query($sql,array($theme));
+
+                            $id_theme = mysqli_insert_id($conn);
+                            
+                        }
+
+                        // ensuite, on enregistre les qui lui sont associés
+                        $sql= 'INSERT INTO exercices_themes (exercice_id,theme_id) VALUES(?,?)';
+                        $result = $conn->execute_query($sql,array($id_exo,$id_theme));
+
+                    }
+                }
+
+
+
+
+
+            }
+
+        }
+
+
 
 
     } else {

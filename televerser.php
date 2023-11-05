@@ -41,6 +41,10 @@ function uploadFiles() {
     formData.append("titre",document.getElementById("titre").value);
     formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
 
+    let ex = {ex1:{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},ex2:{duree:"15",themes:["elec analogique"],commentaire_exo:""}}; 
+    formData.append("exercices",JSON.stringify(ex))
+
+
     // Append each selected file to the FormData
     let i = 0;
     for (const file of fileInput.files) {

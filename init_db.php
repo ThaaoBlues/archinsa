@@ -17,7 +17,7 @@ $sql = "
         name VARCHAR(255) NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS ensemble (
+    CREATE TABLE IF NOT EXISTS ensembles (
         id INT AUTO_INCREMENT PRIMARY KEY,
         commentaire_auteur TEXT,
         valide BOOLEAN NOT NULL DEFAULT FALSE
@@ -37,10 +37,9 @@ $sql = "
 
     CREATE TABLE IF NOT EXISTS exercices (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        titre VARCHAR(255) NOT NULL,
         commentaire_auteur TEXT,
-        document_id INT,
-        FOREIGN KEY (document_id) REFERENCES documents(id)
+        ensemble_id INT,
+        FOREIGN KEY (ensemble_id) REFERENCES ensembles(id)
     );
 
 

@@ -17,26 +17,29 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 |--------------|--------|-------------------------------------------|
 | exercice_id  | INT    | FOREIGN KEY (exercice_id) REFERENCES exercises(id) |
 | theme_id     | INT    | FOREIGN KEY (theme_id) REFERENCES themes(id) |
-| PRIMARY KEY  |        | (exercice_id, theme_id)                   |
+| id           | INT    | AUTO_INCREMENT, PRIMARY KEY                |
 
 ### Table: exercices
 
 | Column             | Type          | Constraints                              |
 |--------------------|---------------|------------------------------------------|
 | id                 | INT           | AUTO_INCREMENT, PRIMARY KEY              |
-| titre              | VARCHAR(255)  | NOT NULL                                 |
 | commentaire_auteur | TEXT          |                                          |
-| document_id        | INT           | FOREIGN KEY (document_id) REFERENCES documents(id) |
+| ensemble_id        | INT           | FOREIGN KEY (ensemble_id) REFERENCES ensembles(id) |
 | duree              | INT           |                                          |
 (la durée est en secondes)
 
-### Table: ensemble
+### Table: ensembles
 
 | Column             | Type          | Constraints                              |
 |--------------------|---------------|------------------------------------------|
 | id                 | INT           | AUTO_INCREMENT                           |
 | commentaire_auteur | TEXT          |                                          |
 | valide             | BOOLEAN       | NOT NULL                                 |
+| corrige_inclu      | BOOLEAN       |                                          |
+
+> le champ "corrige_inclu" ne sera utilisé que pour des annales
+
 ### Table: documents
 
 | Column             | Type          | Constraints                              |
@@ -48,3 +51,26 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | commentaire_auteur | TEXT          |                                          |
 | ensemble_id        | INT           | FOREIGN KEY (ensemble_id) REFERENCES ensemble(id) |
 | theme_id           | INT           | FOREIGN KEY (theme_id) REFERENCES themes(id) |
+
+
+## TOUDOU : 
+
+### téléverser.php :
+- ajouter un element "commentaire_doc_< i >" pour chaque document
+
+- ssi le type est "annale" ajouter un element "commentaire_exo_< i >" pour chaque exercice déclaré dans chaque document
+- Ajouter de même un champ "themes" qui porterons sur les thèmes abordés par l'exercice, possibilité d'en inscrire autant que l'on veut
+- ajouter un champ "duree" pour chaque exercice
+- tout pack dans un json à l'envoi : 
+``    
+let ex = {ex1:{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},ex2:{duree:"15",themes:["elec analogique"],commentaire_exo:""}}; 
+``
+ 
+
+- ssi le type est "annale" Ajouter une checkbox pour spécifier si l'ensemble de documents comprend un corrigé ou non identifiant : "corrige_inclu"
+
+- dans le cas d'une fiche de révisions, on ajouter seulement un champ "themes"
+
+
+
+

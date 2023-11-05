@@ -52,7 +52,7 @@ function ajouter_doc($request){
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO ensemble (commentaire_auteur) VALUES(\"".htmlspecialchars($request['commentaire_auteur'])."\")";
+    $sql = "INSERT INTO ensembles (commentaire_auteur) VALUES(\"".htmlspecialchars($request['commentaire_auteur'])."\")";
 
     try{
         $conn->execute_query($sql);
@@ -145,10 +145,9 @@ function saveFilesFromPost($postData,$id_ensemble) {
         // enregistrement des exercices dans le cas d'une annale
         if($safe_type == 1){
     
-            $exercices = $postData['exercices'];
+            $exercices = json_decode($postData['exercices'],true);
 
             foreach ($exercices as $key => $ex) {
-
                 // premièrement, on enregistre l'exercice
                 $sql= 'INSERT INTO exercices (commentaire_auteur,ensemble_id,duree) VALUES(?,?,?)';
                 $conn->execute_query($sql,array($ex["commentaire_exo"],$id_ensemble,$ex["duree"]));
@@ -169,7 +168,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
                             $row = mysqli_fetch_assoc($result);
                             $id_theme = $row["id"];
                         }else{
-
+                            echo("creation d'un theme");
                             $sql = "INSERT INTO themes (name) VALUES(?)";
                             $conn->execute_query($sql,array($theme));
 
@@ -180,7 +179,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
                         // ensuite, on enregistre les qui lui sont associés
                         $sql= 'INSERT INTO exercices_themes (exercice_id,theme_id) VALUES(?,?)';
                         $result = $conn->execute_query($sql,array($id_exo,$id_theme));
-
+                        echo("enregistrement d'un exercice");
                     }
                 }
 

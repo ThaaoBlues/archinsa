@@ -32,13 +32,14 @@ $sql = "
         ensemble_id INT,
         theme_id INT,
         FOREIGN KEY (theme_id) REFERENCES themes(id),
-        FOREIGN KEY (ensemble_id) REFERENCES ensemble(id)
+        FOREIGN KEY (ensemble_id) REFERENCES ensembles(id)
     );
 
     CREATE TABLE IF NOT EXISTS exercices (
         id INT AUTO_INCREMENT PRIMARY KEY,
         commentaire_auteur TEXT,
         ensemble_id INT,
+        duree INT,
         FOREIGN KEY (ensemble_id) REFERENCES ensembles(id)
     );
 

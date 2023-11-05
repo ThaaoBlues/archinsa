@@ -63,7 +63,8 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 - ajouter un champ "duree" pour chaque exercice
 - tout pack dans un json à l'envoi : 
 ``    
-let ex = {ex1:{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},ex2:{duree:"15",themes:["elec analogique"],commentaire_exo:""}}; 
+let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
+; 
 ``
  
 

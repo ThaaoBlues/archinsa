@@ -29,51 +29,59 @@
     
 
     if($_SERVER['REQUEST_METHOD'] === 'GET'){
-        if(isset($_GET["auth"])){
-            try{
-                $_SESSION["utilisateur_authentifie"] = true;
-                session_regenerate_id(true);
-                $_SESSION["heure_debut"] = time();
-                echo json_encode(["status"=>"1","msg"=>"Authentification réussie."]);
-            }catch(Exception $e){
-                echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
-            }
+        // enlève les variables de requète
+        $endpoint = explode("?",array_pop($url_parts))[0];
+        
+        switch($endpoint){
+            case 'auth':
+                try{
+                    $_SESSION["utilisateur_authentifie"] = true;
+                    session_regenerate_id(true);
+                    $_SESSION["heure_debut"] = time();
+                    echo(json_encode(["status"=>"1","msg"=>"Authentification réussie."]));
+                }catch(Exception $e){
+                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                }
+                break;
+
+            case 'unauth':
+                $_SESSION["utilisateur_authentifie"] = false;
+                echo json_encode(["status"=>"1","msg"=>"Déconnection réussie."]);
+                session_destroy();
+                session_abort();
+                break;
+
+            case 'test_auth':
+                if($_SESSION["utilisateur_authentifie"] == true){
+                    echo(json_encode(["status"=> "1","msg"=> "Utilisateur bien authentifié."]));
+                }else{
+                    echo(json_encode(["status"=> "4","msg"=> "Utilisateur non authentifié."]));
+                }
+                break;
+
+
+            case 'rechercher':
+                // Exemple URL: /api.php/chercher?req=math&duree=30&themes=algebre,geometrie
+                $query = isset($_GET["req"]) ? $_GET["req"] : "";
+                $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
+                $themes = isset($_GET["themes"]) ? explode(",", $_GET["themes"]) : [];
+                //print_r($_GET);
+                try {
+                    $results = RechercheExercices($query, $length, $themes);
+                    echo json_encode(["status" => "1", "resultats" => $results]);
+                } catch (Exception $e) {
+                    echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
+                }
+                
+        
+                break;
     
-        }
-    
-        if(isset($_GET["unauth"])){
-            $_SESSION["utilisateur_authentifie"] = false;
-            echo json_encode(["status"=>"1","msg"=>"Déconnection réussie."]);
-            session_destroy();
-            session_abort();
-        }
-    
-        if(isset($_GET["test_auth"])){
-            if($_SESSION["utilisateur_authentifie"] == true){
-                echo(json_encode(["status"=> "1","msg"=> "Utilisateur bien authentifié."]));
-            }else{
-                echo(json_encode(["status"=> "4","msg"=> "Utilisateur non authentifié."]));
-            }
+            default:
+                echo(json_encode(['status'=> '2','msg'=> "Ce point d'arrivée n'existe pas dans l'api."]));
+                break;
+
         }
 
-
-
-        if (isset($_GET["chercher"])) {
-        // Example URL: /api/chercher?rech=math&duree=30&tags=algebre,geometrie
-
-        $query = isset($_GET["req"]) ? $_GET["req"] : "";
-        $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
-        $themes = isset($_GET["duree"]) ? explode(",", $_GET["themes"]) : [];
-
-        try {
-            $results = searchExercises($query, $length, $themes);
-            echo json_encode(["status" => "1", "results" => $results]);
-        } catch (Exception $e) {
-            echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
-        }
-        }
-
-        exit;
     
     }
 

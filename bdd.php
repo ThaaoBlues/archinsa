@@ -69,7 +69,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
     // Check if the $_POST variable is set and contains files
-    echo(print_r($_FILES,true));
+    //echo(print_r($_FILES,true));
 
     if (isset($_FILES) && is_array($_FILES)) {
 
@@ -128,7 +128,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
             // pour tester, pas implémenté les commentaires globaux ni les themes
             $sql="INSERT INTO documents (titre,type,upload_path,commentaire_auteur,ensemble_id) VALUES(?,?,?,?,?)";
-            $conn->execute_query($sql,array($safe_titre,$safe_type,$filePath,$postData['commentaire_doc_'.$i],$id_ensemble));
+            $conn->execute_query($sql,array($safe_titre,$safe_type,"archives/"+$uniqueFileName,$postData['commentaire_doc_'.$i],$id_ensemble));
             }catch(Exception $e){
                 echo(json_encode(['status'=> '0','msg'=>$e->getMessage()]));
                 //exit;
@@ -200,24 +200,21 @@ function saveFilesFromPost($postData,$id_ensemble) {
     }
 }
 
-function searchExercises($query, $length, $tags)
+function RechercheExercices($query, $length, $tags)
 {
-    $conn = new mysqli($GLOBALS["servername"], $GLOBALS["username"], $GLOBALS["password"], $GLOBALS["dbname"]);
-
-    if ($conn->connect_error) {
-        throw new Exception("Connection failed: " . $conn->connect_error);
-    }
+    global $conn;
 
     // Build the SQL query based on the search parameters
-    $sql = "SELECT * FROM exercices";
+    $sql = "SELECT * FROM documents";
 
     if (!empty($query) || !empty($length) || !empty($tags)) {
-        $sql .= " WHERE";
+        $sql .= " WHERE ";
     }
 
     $conditions = [];
 
     if (!empty($query)) {
+        $query = htmlspecialchars($query);
         $conditions[] = "titre LIKE '%$query%'";
     }
 
@@ -227,14 +224,15 @@ function searchExercises($query, $length, $tags)
 
     if (!empty($tags)) {
         $tagConditions = array_map(function ($tag) {
-            return "EXISTS (SELECT 1 FROM exercices_themes et, themes t WHERE et.exercice_id = e.id AND et.theme_id = t.id AND t.name = '$tag')";
+            $tag = htmlspecialchars($tag);
+            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag')";
         }, $tags);
 
         $conditions[] = implode(" AND ", $tagConditions);
     }
 
     $sql .= implode(" AND ", $conditions);
-
+    //echo $sql;
     // Execute the query
     $result = $conn->query($sql);
 

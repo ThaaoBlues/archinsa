@@ -121,14 +121,14 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
             global $max_val_type;
 
-            if ($safe_type < 1|| $safe_type > $max_val_type) {
+            if ($safe_type < 1 || $safe_type > $max_val_type) {
                 echo(json_encode(['status'=> '2','msg'=>"Le type de document spécifié n'existe pas."]));
                 exit;
             }
 
             // pour tester, pas implémenté les commentaires globaux ni les themes
             $sql="INSERT INTO documents (titre,type,upload_path,commentaire_auteur,ensemble_id) VALUES(?,?,?,?,?)";
-            $conn->execute_query($sql,array($safe_titre,$safe_type,"archives/"+$uniqueFileName,$postData['commentaire_doc_'.$i],$id_ensemble));
+            $conn->execute_query($sql,array($safe_titre,$safe_type,"archives/".$uniqueFileName,$postData['commentaire_doc_'.$i],$id_ensemble));
             }catch(Exception $e){
                 echo(json_encode(['status'=> '0','msg'=>$e->getMessage()]));
                 //exit;
@@ -144,9 +144,8 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
         // enregistrement des exercices dans le cas d'une annale
         if($safe_type == 1){
-    
+            
             $exercices = json_decode($postData['exercices'],true);
-
             foreach ($exercices as $key => $ex) {
                 // premièrement, on enregistre l'exercice
                 $sql= 'INSERT INTO exercices (commentaire_auteur,ensemble_id,duree) VALUES(?,?,?)';
@@ -156,7 +155,6 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
                 // on recherche pour chaque thème s'il n'existe pas déjà,
                 // si non, on en créer un nouveau
-
                 foreach($ex["themes"] as $theme){
 
                     // pour l'instant un match complet mais on va essayer d'ameliorer ça avec
@@ -205,11 +203,7 @@ function RechercheExercices($query, $length, $tags)
     global $conn;
 
     // Build the SQL query based on the search parameters
-    $sql = "SELECT * FROM documents";
-
-    if (!empty($query) || !empty($length) || !empty($tags)) {
-        $sql .= " WHERE ";
-    }
+    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE";
 
     $conditions = [];
 
@@ -225,7 +219,7 @@ function RechercheExercices($query, $length, $tags)
     if (!empty($tags)) {
         $tagConditions = array_map(function ($tag) {
             $tag = htmlspecialchars($tag);
-            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag')";
+            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag' AND)";
         }, $tags);
 
         $conditions[] = implode(" AND ", $tagConditions);

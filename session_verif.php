@@ -8,6 +8,9 @@ if(isset($_SESSION["utilisateur_authentifie"])){
         session_abort();
         echo(json_encode(array("status"=> "3","msg"=>"Session expirée, veuillez vous reconnecter.")));
     }
+}else{
+    echo(json_encode(array("status"=> "0","msg"=> "Utilisateur non connecté.")));
+    exit;
 }
 
 ?>

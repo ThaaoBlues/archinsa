@@ -1,4 +1,11 @@
 <?php
+
+
+session_start();
+
+include("session_verif.php");
+
+
 // Include your database connection code here
 include("test_creds.php");
 

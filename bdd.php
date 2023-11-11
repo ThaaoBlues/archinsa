@@ -52,10 +52,10 @@ function ajouter_doc($request){
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO ensembles (commentaire_auteur) VALUES(\"".htmlspecialchars($request['commentaire_auteur'])."\")";
+    $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu) VALUES(?,?)";
 
     try{
-        $conn->execute_query($sql);
+        $conn->execute_query($sql,array(htmlspecialchars($request['commentaire_auteur']),boolval($request["corrige_inclu"])));
         saveFilesFromPost($request,mysqli_insert_id($conn));
     }catch(Exception $e){
         echo(json_encode(["status"=>"0","msg"=>$e->getMessage()]));

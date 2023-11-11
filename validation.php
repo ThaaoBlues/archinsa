@@ -41,8 +41,18 @@ function displayDocuments() {
         echo "<p>Type: {$row['type']}</p>";
         echo "<p>Upload Path: {$row['upload_path']}</p>";
         echo "<p>Ensemble ID: {$row['ensemble_id']}</p>";
+
+        $extension = pathinfo($row['upload_path'], PATHINFO_EXTENSION);
+
+        if (strtolower($extension) === 'pdf'):
+            echo "<embed src=\"{$row['upload_path']}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
+        elseif (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif'])):
+            echo "<img src=\"{$row['upload_path']}\">";
+        else:
+            echo "<p>Unsupported file type</p>".$row['upload_path'];
+        endif;
+
         echo "<p>Theme ID: {$row['theme_id']}</p>";
-        echo "<img src=\"{$row['upload_path']}\">";
 
     }
 

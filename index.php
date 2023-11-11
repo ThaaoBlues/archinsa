@@ -23,6 +23,8 @@
         <input type="text" id="themes_input" placeholder="themes séparés par une virgule">
         <input type="number" id="duree_input" placeholder="durée en minutes">
     </form>
+
+    <a href="televerser.php">Téléverser des documents</a>
 </body>
 <script>
     async function test_auth(){

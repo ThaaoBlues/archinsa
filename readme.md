@@ -36,7 +36,7 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | id                 | INT           | AUTO_INCREMENT                           |
 | commentaire_auteur | TEXT          |                                          |
 | valide             | BOOLEAN       | NOT NULL                                 |
-| corrige_inclu      | BOOLEAN       |                                          |
+| corrige_inclu      | BOOLEAN       | DEFAULT NULL                             |
 
 > le champ "corrige_inclu" ne sera utilisé que pour des annales
 

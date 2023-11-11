@@ -22,6 +22,9 @@
 <input type="text" placeholder="commentaires généraux sur l'ensemble des documents" id="commentaire_auteur"></input>
 <div id="selectedImages"></div>
 
+<input type="checkbox" id="corrige_checkbox">
+<label for="corrige_checkbox">Corrigé inclu</label>
+
 <button type="button" onclick="uploadFiles()">Téléverser les fichiers</button>
 </form>
 
@@ -40,6 +43,8 @@ function uploadFiles() {
     formData.append("type",document.getElementById("select_type").value);
     formData.append("titre",document.getElementById("titre").value);
     formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
+
+    formData.append("corrige_inclu",document.getElementById("corrige_checkbox").value);
 
     let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
     formData.append("exercices",JSON.stringify(ex))

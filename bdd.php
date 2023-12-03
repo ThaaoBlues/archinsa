@@ -203,7 +203,7 @@ function RechercheExercices($query, $length, $tags)
     global $conn;
 
     // Build the SQL query based on the search parameters
-    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE";
+    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE AND ";
 
     $conditions = [];
 
@@ -225,6 +225,8 @@ function RechercheExercices($query, $length, $tags)
         $conditions[] = implode(" AND ", $tagConditions);
     }
 
+
+
     $sql .= implode(" AND ", $conditions);
     //echo $sql;
     // Execute the query
@@ -243,6 +245,19 @@ function RechercheExercices($query, $length, $tags)
     $conn->close();
 
     return $exercises;
+
+
+
+
+}
+
+
+
+function valider_ensemble($ensembleId) {
+
+    $updateQuery = "UPDATE ensembles SET valide = 1 WHERE id = $ensembleId";
+    global $conn;
+    $conn->execute_query($updateQuery);
 }
 
 ?>

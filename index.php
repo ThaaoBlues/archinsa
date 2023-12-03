@@ -37,7 +37,9 @@
     async function authenticate_user(){
         resp = await fetch("/annales/api.php/auth");
         data = await resp.json();
+        console.log("test");
         if(data.status == 1){
+            alert(1);
             document.getElementById("user_status").innerText = data["msg"];
         }
     }
@@ -58,6 +60,7 @@
   
 
         resp = await fetch("/annales/api.php/rechercher?req="+req);
+        
         data = await resp.json();
         if(data.status == 1){
             data.resultats.forEach(doc => {

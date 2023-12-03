@@ -6,6 +6,10 @@
     <title>File Upload</title>
 </head>
 <body>
+<?php
+include("session_verif.php");
+verifier_session();
+?>
 
 <!-- Input to choose files -->
 

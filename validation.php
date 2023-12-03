@@ -33,7 +33,7 @@ function displayDocuments() {
 
 
         if (($row["ensemble_id"] != $ens_id) && ($ens_id != -1) ) {
-            echo "<p><a href='#' onclick='validateDocument({$ens_id})'>Valider l'ensembre</a></p>";
+            echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensembre</a></p>";
             echo "</div>";
             $ens_id = $row["ensemble_id"];
         }
@@ -65,28 +65,12 @@ function displayDocuments() {
 
 
     // complète le formulaire du dernier ensemble itéré
-    echo "<p><a href='#' onclick='validateDocument({$ens_id})'>Valider l'ensembre</a></p>";
+    echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensemble</a></p>";
     echo "</div>";
 
 }
 
-// Function to validate documents in an ensemble
-function valider_ensemble($ensembleId) {
-    // Update the "valide" status in the "ensembles" table
-    // You need to customize the SQL query based on your actual database structure
-    $updateQuery = "UPDATE ensembles SET valide = 1 WHERE id = $ensembleId";
-    // Execute the update query
-    global $conn;
-    $conn->execute_query($updateQuery);
-}
 
-// Check if the form is submitted for ensemble validation
-if (isset($_POST['ensemble_id'])) {
-    $ensembleId = $_POST['ensemble_id'];
-    valider_ensemble($ensembleId);
-}
-
-// Include your HTML, CSS, and JavaScript for the frontend
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,13 +87,10 @@ if (isset($_POST['ensemble_id'])) {
 <!-- Display documents -->
 <?php displayDocuments(); ?>
 
-<!-- Include your JavaScript for document validation here -->
 <script>
-    function validateDocument(ensembleId) {
-        // Send an AJAX request to validate the ensemble
-        // You can use fetch or jQuery.ajax
-        // Example using fetch:
-        fetch('validate_ensemble.php', {
+    function valider_ensemble(ensembleId) {
+
+        fetch('api.php/valider_ensemble', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -119,7 +100,9 @@ if (isset($_POST['ensemble_id'])) {
         .then(response => response.json())
         .then(data => {
             if (data.status == 1) {
-                // oui
+                alert(data.msg)
+            }else{
+                alert(data.msg)
             }
         })
         .catch(error => {
@@ -128,7 +111,6 @@ if (isset($_POST['ensemble_id'])) {
     }
 </script>
 
-<!-- Include your HTML and CSS styles for the form to add documents here -->
 
 </body>
 </html>

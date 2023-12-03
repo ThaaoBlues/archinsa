@@ -61,7 +61,9 @@
 
 
             case 'rechercher':
+
                 // Exemple URL: /api.php/chercher?req=math&duree=30&themes=algebre,geometrie
+                
                 $query = isset($_GET["req"]) ? $_GET["req"] : "";
                 $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
                 $themes = isset($_GET["themes"]) ? explode(",", $_GET["themes"]) : [];
@@ -88,12 +90,21 @@
 
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        
+        verifier_session();
         switch(array_pop($url_parts)){
             case "aj_doc":
                 try{
                     ajouter_doc($_POST);
 
+                }catch(Exception $e){
+                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                }
+                break;
+
+            case "valider_ensemble":
+                try{
+                    valider_ensemble($_POST["ensemble_id"]);
+                    echo(json_encode(["status"=>"1","msg"=>"Ensemble validé."]));
                 }catch(Exception $e){
                     echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
                 }

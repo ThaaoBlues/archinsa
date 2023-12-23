@@ -26,8 +26,9 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | id                 | INT           | AUTO_INCREMENT, PRIMARY KEY              |
 | commentaire_auteur | TEXT          |                                          |
 | ensemble_id        | INT           | FOREIGN KEY (ensemble_id) REFERENCES ensembles(id) |
+| document_id        | INT           | FOREIGN KEY (document_id) REFERENCES documents(id)
 | duree              | INT           |                                          |
-(la durée est en secondes)
+(la durée est en minutes)
 
 ### Table: ensembles
 

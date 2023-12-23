@@ -77,10 +77,82 @@
                 
         
                 break;
-    
+
+            case 'decomposer_ensemble':
+
+                // Récupération de l'ID de l'ensemble et du thème depuis l'URL ou autrement
+                $ensembleId = isset($_GET['ensemble_id']) ? intval($_GET['ensemble_id']) : '';
+
+                // Vérification de la validité de l'ID de l'ensemble
+                if (!empty($ensembleId)) {
+                    // Préparation de la requête SQL pour obtenir les informations sur l'ensemble
+                    $sqlEnsemble = 'SELECT * FROM ensembles WHERE id = ?';
+                    $stmtEnsemble = $conn->prepare($sqlEnsemble);
+                    $stmtEnsemble->bind_param('i', $ensembleId);
+                    $stmtEnsemble->execute();
+                    $resultEnsemble = $stmtEnsemble->get_result();
+                    $ensemble = $resultEnsemble->fetch_assoc();
+
+                    if ($ensemble && $ensemble['valide'] == true) {
+                    
+                        // Préparation de la requête SQL pour obtenir les informations sur les exercices sélectionnés
+                        $sqlDocu = "SELECT * FROM documents WHERE ensemble_id=?";
+                        $stmtDocu = $conn->prepare($sqlDocu);
+                        $stmtDocu->bind_param('i', $ensembleId);
+                        $stmtDocu->execute();
+                        $resultDocu = $stmtDocu->get_result();
+
+                        $ensemble["documents"] = array();
+
+                        while ($doc = $resultDocu->fetch_assoc()) {
+
+                            switch ($doc['type']) {
+                                case 1:
+
+                                    // on va maintenant prendre chaque exercice un par un
+                                    // et afficher les bonnes infos :
+
+                                    $sqlExos = "SELECT * FROM exercices WHERE document_id=?";
+                                    $stmtExos = $conn->prepare($sqlExos);
+
+                                    $stmtExos->bind_param('i', $doc["id"]);
+                                    $stmtExos->execute();
+                                    $resultExos = $stmtExos->get_result();
+                                    $doc["exercices"] = array();
+
+                                    while ($exo = $resultExos->fetch_assoc()) {
+                                        array_push($doc["exercices"],$exo);
+                                    }
+
+                                    array_push($ensemble["documents"],$doc);
+
+                                    
+
+                                break;
+                            }
+
+                        }
+
+                        echo(json_encode(["status"=>"1","msg"=>$ensemble]));
+
+
+                    }else{
+                        echo(json_encode(['status'=> '2','msg'=> "Vous devez spécifier un indetifiant d'ensemble valide dans votre requête."]));
+
+                    }
+
+                }else{
+                    echo(json_encode(['status'=> '2','msg'=> "Vous devez spécifier un indetifiant d'ensemble dans votre requête."]));
+                }
+
+                break;
+
             default:
                 echo(json_encode(['status'=> '2','msg'=> "Ce point d'arrivée n'existe pas dans l'api."]));
                 break;
+
+
+
 
         }
 

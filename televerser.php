@@ -50,7 +50,7 @@ function uploadFiles() {
 
     formData.append("corrige_inclu",document.getElementById("corrige_checkbox").value);
 
-    let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
+    let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"ceci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
     formData.append("exercices",JSON.stringify(ex))
 
 

@@ -20,7 +20,8 @@ $sql = "
     CREATE TABLE IF NOT EXISTS ensembles (
         id INT AUTO_INCREMENT PRIMARY KEY,
         commentaire_auteur TEXT,
-        valide BOOLEAN NOT NULL DEFAULT FALSE
+        valide BOOLEAN NOT NULL DEFAULT FALSE,
+        corrige_inclu BOOLEAN NOT NULL DEFAULT FALSE
     );
 
     CREATE TABLE IF NOT EXISTS documents (
@@ -39,8 +40,11 @@ $sql = "
         id INT AUTO_INCREMENT PRIMARY KEY,
         commentaire_auteur TEXT,
         ensemble_id INT,
+        document_id INT,
         duree INT,
-        FOREIGN KEY (ensemble_id) REFERENCES ensembles(id)
+        FOREIGN KEY (ensemble_id) REFERENCES ensembles(id),
+        FOREIGN KEY (document_id) REFERENCES documents(id)
+
     );
 
 

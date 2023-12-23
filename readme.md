@@ -16,6 +16,7 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | Column       | Type   | Constraints                               |
 |--------------|--------|-------------------------------------------|
 | exercice_id  | INT    | FOREIGN KEY (exercice_id) REFERENCES exercises(id) |
+| ensemble_id  | INT    | FOREIGN KEY (ensemble_id) REFERENCES ensembles(id) |
 | theme_id     | INT    | FOREIGN KEY (theme_id) REFERENCES themes(id) |
 | id           | INT    | AUTO_INCREMENT, PRIMARY KEY                |
 

@@ -66,6 +66,8 @@ function displayDocuments() {
 
     // complète le formulaire du dernier ensemble itéré
     echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensemble</a></p>";
+    echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})'>Supprimer l'ensemble</a></p>";
+
     echo "</div>";
 
 }
@@ -77,12 +79,12 @@ function displayDocuments() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Validation Dashboard</title>
+    <title>Validation des documents</title>
     <!-- Include your CSS styles here -->
 </head>
 <body>
 
-<h2>Document Validation Dashboard</h2>
+<h2>Validation des documents</h2>
 
 <!-- Display documents -->
 <?php displayDocuments(); ?>
@@ -91,6 +93,29 @@ function displayDocuments() {
     function valider_ensemble(ensembleId) {
 
         fetch('api.php/valider_ensemble', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'ensemble_id=' + ensembleId,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status == 1) {
+                alert(data.msg)
+            }else{
+                alert(data.msg)
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+
+    function supprimer_ensemble(ensembleId) {
+
+        fetch('api.php/supprimer_ensemble', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

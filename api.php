@@ -181,6 +181,15 @@
                     echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
                 }
                 break;
+
+            case "supprimer_ensemble":
+                try{
+                    supprimer_ensemble($_POST["ensemble_id"]);
+                    echo(json_encode(["status"=>"1","msg"=>"Ensemble supprimé."]));
+                }catch(Exception $e){
+                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                }
+                break;
             default:
                 echo(json_encode(["status"=> "2","msg"=> "Opération inconnue."]));
         }

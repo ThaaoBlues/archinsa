@@ -51,8 +51,10 @@ $sql = "
     CREATE TABLE IF NOT EXISTS exercices_themes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         exercice_id INT,
+        ensemble_id INT,
         theme_id INT,
         FOREIGN KEY (exercice_id) REFERENCES exercices(id),
+        FOREIGN KEY (ensemble_id) REFERENCES ensembles(id),
         FOREIGN KEY (theme_id) REFERENCES themes(id)
     );
 

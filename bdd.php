@@ -176,8 +176,8 @@ function saveFilesFromPost($postData,$id_ensemble) {
                         }
 
                         // ensuite, on enregistre les qui lui sont associés
-                        $sql= 'INSERT INTO exercices_themes (exercice_id,theme_id) VALUES(?,?)';
-                        $result = $conn->execute_query($sql,array($id_exo,$id_theme));
+                        $sql= 'INSERT INTO exercices_themes (exercice_id,ensemble_id,theme_id) VALUES(?,?,?)';
+                        $result = $conn->execute_query($sql,array($id_exo,$id_ensemble,$id_theme));
                         echo("enregistrement d'un exercice");
                     }
                 }
@@ -256,9 +256,16 @@ function RechercheExercices($query, $length, $tags)
 
 function valider_ensemble($ensembleId) {
 
-    $updateQuery = "UPDATE ensembles SET valide = 1 WHERE id = $ensembleId";
+    $sql = "UPDATE ensembles SET valide = 1 WHERE id = $ensembleId";
     global $conn;
-    $conn->execute_query($updateQuery);
+    $conn->execute_query($sql);
+}
+
+function supprimer_ensemble($ensembleId){
+    $sql = "DELETE FROM exercices WHERE ensemble_id=$ensembleId";
+    $sql = "DELETE FROM documents WHERE ensemble_id=$ensembleId";
+    $sql = "DELETE FROM exercices_themes WHERE ensemble_id=$ensembleId";
+    $sql = "DELETE FROM ensembles WHERE id=$ensembleId";
 }
 
 ?>

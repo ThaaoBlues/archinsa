@@ -18,9 +18,9 @@
 
     </div>
 
-    <form>
+    <form id="recherche_form">
         <input type="text" id="recherche_input" placeholder="Rechercher une fiche, annale ...">
-        <input type="text" id="themes_input" placeholder="themes séparés par une virgule">
+        <input type="text" id="themes_input" placeholder="themes (appuyez sur la touche entrée entre chaque thèmes)">
         <input type="number" id="duree_input" placeholder="durée en minutes">
     </form>
 
@@ -39,7 +39,6 @@
         data = await resp.json();
         console.log("test");
         if(data.status == 1){
-            alert(1);
             document.getElementById("user_status").innerText = data["msg"];
         }
     }
@@ -57,15 +56,33 @@
 
     async function rechercher(){
         var req = document.getElementById("recherche_input").value;
-  
+        var themes = [];
+        Array.from(document.getElementsByClassName("theme")).forEach(function (el) {
+            // on encode en  url pour pouvoir le passer dans la requete GET
+            themes.push(encodeURIComponent(el.innerText));
+        });
+        var duree =document.getElementById("duree_input").value
 
-        resp = await fetch("/annales/api.php/rechercher?req="+req);
+
+        var url = "/annales/api.php/rechercher?req="+req;
+        if(themes.toString() != ""){
+            url = url +"&themes="+themes.toString();
+        } 
+
+        if(duree != ""){
+            url = url +"duree="+duree;
+
+        }
+        console.log(url);
+
+        resp = await fetch(url);
         
         data = await resp.json();
         if(data.status == 1){
             data.resultats.forEach(doc => {
                 const img = document.createElement("img");
                 img.src = doc.upload_path;
+                img.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
                 document.body.appendChild(img);
             });
         }
@@ -78,7 +95,16 @@
             rechercher();
         }
     }
+    document.getElementById("themes_input").onkeydown =function(event) {
+        if (event.key === "Enter"){
+            var theme = document.createElement("div");
+            theme.setAttribute("class","theme");
+            theme.innerText = document.getElementById("themes_input").value;
 
+            document.getElementById("recherche_form").appendChild(theme);
+            document.getElementById("themes_input").value = "";
+        }
+    }
 
     
 

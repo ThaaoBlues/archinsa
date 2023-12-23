@@ -66,7 +66,7 @@ function ajouter_doc($request){
 function saveFilesFromPost($postData,$id_ensemble) {
 
     global $conn;
-
+    
 
     // Check if the $_POST variable is set and contains files
     //echo(print_r($_FILES,true));
@@ -219,7 +219,7 @@ function RechercheExercices($query, $length, $tags)
     if (!empty($tags)) {
         $tagConditions = array_map(function ($tag) {
             $tag = htmlspecialchars($tag);
-            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag' AND)";
+            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag')";
         }, $tags);
 
         $conditions[] = implode(" AND ", $tagConditions);

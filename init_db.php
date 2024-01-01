@@ -21,7 +21,8 @@ $sql = "
         id INT AUTO_INCREMENT PRIMARY KEY,
         commentaire_auteur TEXT,
         valide BOOLEAN NOT NULL DEFAULT FALSE,
-        corrige_inclu BOOLEAN NOT NULL DEFAULT FALSE
+        corrige_inclu BOOLEAN NOT NULL DEFAULT FALSE,
+        date_televersement DATE NOT NULL DEFAULT CURRENT_DATE()
     );
 
     CREATE TABLE IF NOT EXISTS documents (

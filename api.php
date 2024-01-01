@@ -147,6 +147,20 @@
 
                 break;
 
+            case "generer_chronologie":
+
+                try{
+
+                    $res = generer_chronologie();
+    
+                    echo(json_encode(["status"=>"1","resultats"=>$res]));
+                    
+                }catch(Exception $e){
+                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                }
+               
+                break;
+
             default:
                 echo(json_encode(['status'=> '2','msg'=> "Ce point d'arrivée n'existe pas dans l'api."]));
                 break;

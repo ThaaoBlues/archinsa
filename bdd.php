@@ -268,4 +268,40 @@ function supprimer_ensemble($ensembleId){
     $sql = "DELETE FROM ensembles WHERE id=$ensembleId";
 }
 
+
+function generer_chronologie(){
+
+    global $conn;
+
+    // on va choper les 10 derniers trucs televerses par les gens
+    $sql = "SELECT * FROM ensembles ORDER BY date_televersement DESC";
+
+    $res = $conn->execute_query($sql);
+    $i = 0;
+    $ensembles = array();
+    while (($ens = $res->fetch_assoc()) && $i < 10){
+
+        array_push($ensembles,$ens);
+
+        $i++;
+    }
+
+    // on rajoute le chemin vers chaque document présent dans l'ensemble
+    $resultat_complet = array();
+    foreach($ensembles as $ens){
+        $sql = "SELECT titre,upload_path,ensemble_id FROM documents WHERE ensemble_id=?";
+        $res = $conn->execute_query($sql,array($ens["id"]));
+        $ens["documents"] = array();
+        while($doc = $res->fetch_assoc()){
+            array_push($ens["documents"],$doc);
+        }
+
+        array_push($resultat_complet,$ens);
+
+    }
+
+
+    return $resultat_complet;
+}
+
 ?>

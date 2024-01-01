@@ -25,6 +25,11 @@
     </form>
 
     <a href="televerser.php">Téléverser des documents</a>
+
+
+    <div id="liste_resultats">
+    </div>
+
 </body>
 <script>
     async function test_auth(){
@@ -78,16 +83,94 @@
         resp = await fetch(url);
         
         data = await resp.json();
+
+        // vide d'abord les éléments présents dans la liste sur la page
+        document.getElementById("liste_resultats").innerHTML = "";
+        
         if(data.status == 1){
             data.resultats.forEach(doc => {
-                const img = document.createElement("img");
-                img.src = doc.upload_path;
-                img.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-                document.body.appendChild(img);
+
+
+
+                // on affiche le titre du résultat parce qu'on est pas des sauvages
+                let titre_ensemble;
+                titre_ensemble = document.createElement("h2");
+                titre_ensemble.innerText = doc.titre;
+                document.getElementById("liste_resultats").appendChild(titre_ensemble);
+                
+                // images ou pdf ?
+                let ele;
+                if(doc.upload_path.toString().split(".").pop() == "pdf"){
+                    ele = document.createElement("embed");
+
+
+                }else{
+                    ele = document.createElement("img");
+                }
+
+                ele.src = doc.upload_path;
+                ele.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
+                document.getElementById("liste_resultats").appendChild(ele);
+
+
+
             });
         }
     }
 
+
+
+    async function gen_chronologie(){
+        var url = "/annales/api.php/generer_chronologie";
+
+        console.log(url);
+
+        resp = await fetch(url);
+
+        data = await resp.json();
+        console.log(data);
+        // vide d'abord les éléments présents dans la liste sur la page
+        document.getElementById("liste_resultats").innerHTML = "";
+
+        // ensuite on ajoute un petit titre à la chronologie
+        let titre = document.createElement("h1");
+        titre.innerText = "Documents récemment publiés";
+        document.getElementById("liste_resultats").appendChild(titre);
+        
+        // et on remplis avec ce que l'api a généré
+        if(data.status == 1){
+            data.resultats.forEach(ens => {
+
+                ens.documents.forEach(doc=>{
+                    // on affiche le titre du résultat parce qu'on est pas des sauvages
+                    let titre_ensemble;
+                    titre_ensemble = document.createElement("h2");
+                    titre_ensemble.innerText = doc.titre;
+                    document.getElementById("liste_resultats").appendChild(titre_ensemble);
+                    
+                    // images ou pdf ?
+                    let apercu;
+                    if(doc.upload_path.toString().split(".").pop() == "pdf"){
+                        ele = document.createElement("embed");
+
+                    }else{
+                        ele = document.createElement("img");
+                    }
+
+                    ele.src = doc.upload_path;
+                    ele.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
+                    document.getElementById("liste_resultats").appendChild(ele);
+
+                });
+
+                
+
+            });
+        }
+    }
+
+
+    gen_chronologie();
 
     test_auth();
     document.getElementById("recherche_input").onkeydown =function(event) {
@@ -105,6 +188,8 @@
             document.getElementById("themes_input").value = "";
         }
     }
+
+
 
     
 

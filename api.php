@@ -14,6 +14,9 @@
     include("session_verif.php");
     include("bdd.php");
 
+    include('php-csrf.php');
+    $csrf = new CSRF();
+
 
     // Get the requested URL
     $request_uri = $_SERVER['REQUEST_URI'];
@@ -177,8 +180,16 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         verifier_session();
+
         switch(array_pop($url_parts)){
             case "aj_doc":
+
+
+                if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
+                    break;
+                }
+
                 try{
                     ajouter_doc($_POST);
 
@@ -188,6 +199,11 @@
                 break;
 
             case "valider_ensemble":
+
+                if(!$csrf->validate($context='valider_ensemble',$_POST["jeton-csrf"])){
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
+                    break;
+                }
                 try{
                     valider_ensemble($_POST["ensemble_id"]);
                     echo(json_encode(["status"=>"1","msg"=>"Ensemble validé."]));
@@ -197,6 +213,12 @@
                 break;
 
             case "supprimer_ensemble":
+
+                if(!$csrf->validate($context='supprimer_ensemble',$_POST["jeton-csrf"])){
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
+                    break;
+                }
+
                 try{
                     supprimer_ensemble($_POST["ensemble_id"]);
                     echo(json_encode(["status"=>"1","msg"=>"Ensemble supprimé."]));

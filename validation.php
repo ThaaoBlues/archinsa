@@ -1,7 +1,11 @@
 <?php
 
+include('php-csrf.php');
 
 session_start();
+
+$csrf = new CSRF();
+
 
 include("session_verif.php");
 
@@ -90,14 +94,15 @@ function displayDocuments() {
 <?php displayDocuments(); ?>
 
 <script>
+
     function valider_ensemble(ensembleId) {
 
+        const formData = new FormData();
+        formData.append("jeton-csrf","<?=$csrf->string($context="valider_ensemble")?>");
+        formData.append("ensemble_id",ensembleId);
         fetch('api.php/valider_ensemble', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'ensemble_id=' + ensembleId,
+            body: formData,
         })
         .then(response => response.json())
         .then(data => {
@@ -114,13 +119,13 @@ function displayDocuments() {
 
 
     function supprimer_ensemble(ensembleId) {
-
+        const formData = new FormData();
+        formData.append("jeton-csrf","<?=$csrf->string($context="supprimer_ensemble")?>");
+        formData.append("ensemble_id",ensembleId);
+        
         fetch('api.php/supprimer_ensemble', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'ensemble_id=' + ensembleId,
+            body: formData,
         })
         .then(response => response.json())
         .then(data => {

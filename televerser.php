@@ -8,7 +8,11 @@
 <body>
 <?php
 include("session_verif.php");
+// Include the PHP-CSRF library
+include('php-csrf.php');
 verifier_session();
+
+$csrf = new CSRF();
 ?>
 
 <!-- Input to choose files -->
@@ -61,7 +65,10 @@ function uploadFiles() {
         i ++;
     }
 
-        // Append captured images as files to the FormData
+    //csrf token
+    formData.append("jeton-csrf","<?=$csrf->string($context="televersement")?>");
+
+    // Append captured images as files to the FormData
     const capturedImages = document.querySelectorAll('#selectedImages img');
 
     i = 0;

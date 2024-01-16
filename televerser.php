@@ -179,7 +179,7 @@ function dataURLtoBlob(dataURL) {
 function ajouter_details_exo(){
     duree = document.createElement("input");
     duree.setAttribute("type","number");
-    duree.setAttribute("hint","Entrez la durée de l'exercice en minutes.")
+    duree.setAttribute("placeholder","Entrez la durée de l'exercice en minutes.")
 
     // classe imortante pour itérer sur toutes les input
     // dans le bon ordre et les associer aux exos dans la requête post
@@ -190,7 +190,7 @@ function ajouter_details_exo(){
 
     themes = document.createElement("input");
     themes.setAttribute("type","text");
-    themes.setAttribute("hint","Entrez les themes abordés par l'exercice séparés par une virgule.");
+    themes.setAttribute("placeholder","Entrez les themes abordés par l'exercice séparés par une virgule.");
     themes.setAttribute("class","input-details-exo");
 
     document.getElementById("exercices_details_wrapper").appendChild(themes);
@@ -198,7 +198,7 @@ function ajouter_details_exo(){
 
     comm = document.createElement("input");
     comm.setAttribute("type","text");
-    comm.setAttribute("hint","Un ptit commentaire sur l'exo ?");
+    comm.setAttribute("placeholder","Un ptit commentaire sur l'exo ?");
     comm.setAttribute("class","input-details-exo");
 
     document.getElementById("exercices_details_wrapper").appendChild(comm);

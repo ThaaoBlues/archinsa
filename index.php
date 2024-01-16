@@ -97,8 +97,11 @@
                 let titre_ensemble;
                 titre_ensemble = document.createElement("h2");
                 titre_ensemble.innerText = doc.titre;
+                titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
+
                 document.getElementById("liste_resultats").appendChild(titre_ensemble);
                 
+
                 // images ou pdf ?
                 let ele;
                 if(doc.upload_path.toString().split(".").pop() == "pdf"){
@@ -112,6 +115,7 @@
                 ele.src = doc.upload_path;
                 ele.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
                 document.getElementById("liste_resultats").appendChild(ele);
+                
 
 
 
@@ -147,6 +151,7 @@
                     let titre_ensemble;
                     titre_ensemble = document.createElement("h2");
                     titre_ensemble.innerText = doc.titre;
+                    titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
                     document.getElementById("liste_resultats").appendChild(titre_ensemble);
                     
                     // fichiers spéciaux ?

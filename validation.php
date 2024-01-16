@@ -37,7 +37,8 @@ function displayDocuments() {
 
 
         if (($row["ensemble_id"] != $ens_id) && ($ens_id != -1) ) {
-            echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensembre</a></p>";
+            echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensemble</a></p>";
+            echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})'>Supprimer l'ensemble</a></p>";
             echo "</div>";
             $ens_id = $row["ensemble_id"];
         }
@@ -131,6 +132,7 @@ function displayDocuments() {
         .then(data => {
             if (data.status == 1) {
                 alert(data.msg)
+                document.location.reload();
             }else{
                 alert(data.msg)
             }

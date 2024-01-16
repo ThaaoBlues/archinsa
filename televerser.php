@@ -19,8 +19,10 @@ $csrf = new CSRF();
 
 <form id="uploadForm">
 <input type="file" id="fileInput" multiple>
+<br>
 <input type="text" placeholder="titre" id="titre"></input>
-
+<label for="titre">N'hésitez pas à bien mettre 1A, 2A, ... et la maitère concernée dans le titre.</label>
+<br>
 <select id="select_type" onchange="changer_mode()">
     <option value="1" >annale</option>
     <option value="2" >fiche_revision</option>
@@ -28,6 +30,7 @@ $csrf = new CSRF();
 </select>
 
 <input type="text" placeholder="commentaires généraux sur l'ensemble des documents" id="commentaire_auteur"></input>
+<br>
 <div id="selectedImages"></div>
 
 <div id="corrige_checkbox_wrapper">
@@ -43,8 +46,7 @@ $csrf = new CSRF();
     <button onclick="ajouter_details_exo()">Ajouter les détails d'un exercice</button>
 
 </div>
-<!-- Button to open the camera -->
-<button onclick="openCamera()">Open Camera</button>
+<button onclick="openCamera()">Prendre des photos</button>
 
 
 

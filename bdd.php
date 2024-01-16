@@ -217,13 +217,19 @@ function RechercheExercices($query, $length, $tags)
     global $conn;
 
     // Build the SQL query based on the search parameters
-    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE AND ";
+    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE ";
 
     $conditions = [];
 
     if (!empty($query)) {
+
+        // va essayer de retrouver tout les mots de la requête dans le titre
         $query = htmlspecialchars($query);
-        $conditions[] = "titre LIKE '%$query%'";
+        $query_words = preg_split("[ ]",$query);
+
+        foreach ($query_words as $word) {
+            $conditions[] = "AND titre LIKE '%$word%'";
+        }
     }
 
     if (!empty($length)) {
@@ -274,11 +280,28 @@ function valider_ensemble($ensembleId) {
     $conn->execute_query($sql);
 }
 
-function supprimer_ensemble($ensembleId){
-    $sql = "DELETE FROM exercices WHERE ensemble_id=$ensembleId";
-    $sql = "DELETE FROM documents WHERE ensemble_id=$ensembleId";
-    $sql = "DELETE FROM exercices_themes WHERE ensemble_id=$ensembleId";
-    $sql = "DELETE FROM ensembles WHERE id=$ensembleId";
+function supprimer_ensemble($ensemble_id){
+
+    
+    global $conn;
+
+    // premièrement, enlever tout les documents téléversés appartenant à l'ensemble
+    $sql = "SELECT upload_path FROM documents WHERE ensemble_id=?";
+    $res = $conn->execute_query($sql,array($ensemble_id));
+
+    while($tmp=$res->fetch_assoc()){
+        unlink($tmp["upload_path"]);
+    }
+
+    // deuxièmement, supprimer toutes les traces de l'ensemble dans la bdd
+    $sql = "DELETE FROM exercices_themes WHERE ensemble_id=$ensemble_id";
+    $conn->execute_query($sql);
+    $sql = "DELETE FROM exercices WHERE ensemble_id=$ensemble_id";
+    $conn->execute_query($sql);
+    $sql = "DELETE FROM documents WHERE ensemble_id=$ensemble_id";
+    $conn->execute_query($sql);
+    $sql = "DELETE FROM ensembles WHERE id=$ensemble_id";
+    $conn->execute_query($sql);
 }
 
 
@@ -287,7 +310,7 @@ function generer_chronologie(){
     global $conn;
 
     // on va choper les 10 derniers trucs televerses par les gens
-    $sql = "SELECT * FROM ensembles ORDER BY date_televersement DESC";
+    $sql = "SELECT * FROM ensembles WHERE valide=1 ORDER BY date_televersement DESC ";
 
     $res = $conn->execute_query($sql);
     $i = 0;

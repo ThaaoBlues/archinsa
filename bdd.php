@@ -48,7 +48,6 @@ function ajouter_doc($request){
 
     global $conn;
 
-    print_r($request);
     
     // Check connection
     if ($conn->connect_error) {

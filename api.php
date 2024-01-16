@@ -185,10 +185,10 @@
             case "aj_doc":
 
 
-                /*if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
+                if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
                     echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
                     break;
-                }*/
+                }
 
                 try{
                     ajouter_doc($_POST);

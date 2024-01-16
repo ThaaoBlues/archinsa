@@ -63,18 +63,16 @@ function uploadFiles() {
 
     //let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"ceci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
     
-    let ex = [];
-
+    var ex = [];
     // details des exos pour les annales
-    if(formData["type"] == "1"){
-        let details = document.getElementsByClassName("input-details-exo");
+    if(formData.get("type") == "1"){
+        var details = document.getElementsByClassName("input-details-exo");
 
-        for(let i=0;i<=details.length;i = i + 3){
+        for(let i=0;i<details.length;i = i + 3){
             ex.push({
-                // duree
-                duree:details[i].getAttribute.value,
-                themes:details[i+1].getAttribute.value.split(","),
-                commentaire_exo:details[i+2].getAttribute.value
+                duree:details[i].value,
+                themes:details[i+1].value.split(","),
+                commentaire_exo:details[i+2].value
             })
         }
     }
@@ -89,6 +87,8 @@ function uploadFiles() {
         formData.append('fichier' + i, file);
         i ++;
     }
+
+    console.log(ex);
 
     //csrf token
     formData.append("jeton-csrf","<?=$csrf->string($context="televersement")?>");

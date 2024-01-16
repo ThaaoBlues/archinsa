@@ -7,7 +7,7 @@ $conn = new mysqli($servername, $username, $password,$dbname);
 
 
 // /!\ A CHANGER EN PROD /!\
-$uploadDir = '/opt/lampp/htdocs/annales/archives/';
+$uploadDir = 'archives/';
 
 // le type de document est classifié entre 0 et n dans l'ensemble des entiers naturels
 $max_val_type = 3;

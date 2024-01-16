@@ -56,7 +56,16 @@ function ajouter_doc($request){
     $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu) VALUES(?,?)";
 
     try{
-        $conn->execute_query($sql,array(htmlspecialchars($request['commentaire_auteur']),boolval($request["corrige_inclu"])));
+        $stm = $conn->prepare($sql);
+        echo "test1";
+        $request['commentaire_auteur'] = htmlspecialchars($request['commentaire_auteur']);
+        $request["corrige_inclu"] = boolval($request["corrige_inclu"]);
+        $stm->bind_param("si",$request['commentaire_auteur'],$request["corrige_inclu"]);
+        echo "test2";
+        $stm->execute();
+        echo "test3";
+        //$conn->execute_query($sql,array(htmlspecialchars($request['commentaire_auteur']),boolval($request["corrige_inclu"])));
+        
         saveFilesFromPost($request,mysqli_insert_id($conn));
     }catch(Exception $e){
         echo(json_encode(["status"=>"0","msg"=>$e->getMessage()]));

@@ -6,7 +6,6 @@ include("test_creds.php");
 $conn = new mysqli($servername, $username, $password,$dbname);
 
 
-// /!\ A CHANGER EN PROD /!\
 $uploadDir = 'archives/';
 
 // le type de document est classifié entre 0 et n dans l'ensemble des entiers naturels

@@ -22,7 +22,7 @@ $sql = "
         commentaire_auteur TEXT,
         valide BOOLEAN NOT NULL DEFAULT FALSE,
         corrige_inclu BOOLEAN NOT NULL DEFAULT FALSE,
-        date_televersement DATE NOT NULL DEFAULT CURRENT_DATE()
+        date_televersement DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS documents (

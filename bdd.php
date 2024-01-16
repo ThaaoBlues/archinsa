@@ -10,7 +10,7 @@ $conn = new mysqli($servername, $username, $password,$dbname);
 $uploadDir = '/opt/lampp/htdocs/annales/archives/';
 
 // le type de document est classifié entre 0 et n dans l'ensemble des entiers naturels
-$max_val_type = 2;
+$max_val_type = 3;
 
 // Liste des extensions autorisées pour les images
 $image_extensions = [
@@ -32,8 +32,11 @@ $pdf_extensions = ['pdf'];
 // Liste des extensions autorisées pour les fichiers de présentation (par exemple, PowerPoint)
 $presentation_extensions = ['ppt', 'pptx','odp','pptm','ppsx'];
 
+// pour les fonctions speciales comme les quiz html...
+$ext_speciales = ["html"];
+
 // Fusionner les listes en une seule liste
-$ext_autorisees = array_merge($image_extensions, $pdf_extensions, $presentation_extensions);
+$ext_autorisees = array_merge($image_extensions, $pdf_extensions, $presentation_extensions,$ext_speciales);
 
 function check_ext($filename) {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -123,6 +126,9 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
             if ($safe_type < 1 || $safe_type > $max_val_type) {
                 echo(json_encode(['status'=> '2','msg'=>"Le type de document spécifié n'existe pas."]));
+                // supprime donc le fichier
+                unlink($filePath);
+
                 exit;
             }
 

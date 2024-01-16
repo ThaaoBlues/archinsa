@@ -149,13 +149,22 @@
                     titre_ensemble.innerText = doc.titre;
                     document.getElementById("liste_resultats").appendChild(titre_ensemble);
                     
-                    // images ou pdf ?
+                    // fichiers spéciaux ?
                     let apercu;
-                    if(doc.upload_path.toString().split(".").pop() == "pdf"){
-                        ele = document.createElement("embed");
+                    let ext = doc.upload_path.toString().split(".").pop();
+                    switch(ext){
+                        case "pdf":
+                            ele = document.createElement("embed");
+                            break;
+                        case "html":
+                            ele = document.createElement("iframe");
+                            ele.setAttribute("sandbox","allow-forms allow-modals allow-scripts")
+                            break;
+                        default:
+                            ele = document.createElement("img");
+                            break;
 
-                    }else{
-                        ele = document.createElement("img");
+
                     }
 
                     ele.src = doc.upload_path;

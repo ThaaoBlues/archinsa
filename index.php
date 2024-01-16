@@ -34,14 +34,14 @@
 </body>
 <script>
     async function test_auth(){
-        resp = await fetch("/annales/api.php/test_auth");
+        resp = await fetch("api.php/test_auth");
         data = await resp.json();
         document.getElementById("user_status").innerText = data["msg"];
     }
 
     // fonction de test, innutile en prod
     async function authenticate_user(){
-        resp = await fetch("/annales/api.php/auth");
+        resp = await fetch("api.php/auth");
         data = await resp.json();
         console.log("test");
         if(data.status == 1){
@@ -51,7 +51,7 @@
 
     
     async function unauthenticate_user(){
-        resp = await fetch("/annales/api.php/unauth");
+        resp = await fetch("api.php/unauth");
         data = await resp.json();
         if(data.status == 1){
             document.getElementById("user_status").innerText = data["msg"];
@@ -70,7 +70,7 @@
         var duree =document.getElementById("duree_input").value
 
 
-        var url = "/annales/api.php/rechercher?req="+req;
+        var url = "api.php/rechercher?req="+req;
         if(themes.toString() != ""){
             url = url +"&themes="+themes.toString();
         } 
@@ -122,7 +122,7 @@
 
 
     async function gen_chronologie(){
-        var url = "/annales/api.php/generer_chronologie";
+        var url = "api.php/generer_chronologie";
 
         console.log(url);
 

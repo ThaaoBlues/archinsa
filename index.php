@@ -163,7 +163,7 @@
                             break;
                         case "html":
                             ele = document.createElement("iframe");
-                            ele.setAttribute("sandbox","allow-forms allow-modals allow-scripts")
+                            ele.setAttribute("sandbox","allow-forms allow-modals allow-scripts");
                             break;
                         default:
                             ele = document.createElement("img");

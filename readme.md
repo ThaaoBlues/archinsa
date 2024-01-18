@@ -56,6 +56,8 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 
 ## TOUDOU : 
+- dates de conception de l'annale pour chaque ensemble dans la bdd
+- support html dans la page de verif mais sans le js dans les iframes
 
 
 
@@ -75,7 +77,6 @@ let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un 
 - ssi le type est "annale" Ajouter une checkbox pour spécifier si l'ensemble de documents comprend un corrigé ou non identifiant : "corrige_inclu"
 
 - dans le cas d'une fiche de révisions, on ajouter seulement un champ "themes"
-
 
 
 

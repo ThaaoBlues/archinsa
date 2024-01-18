@@ -53,13 +53,14 @@ function ajouter_doc($request){
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu) VALUES(?,?)";
+    $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu,date_conception) VALUES(?,?,?)";
 
     try{
         $stm = $conn->prepare($sql);
         echo "test1";
-        $request['commentaire_auteur'] = htmlspecialchars($request['commentaire_auteur']);
+        $request['commentaire_auteur'] = htmlspecialchars($request["commentaire_auteur"]);
         $request["corrige_inclu"] = boolval($request["corrige_inclu"]);
+        $request["date_conception"] = htmlspecialchars($request["date_conception"]);
         $stm->bind_param("si",$request['commentaire_auteur'],$request["corrige_inclu"]);
         echo "test2";
         $stm->execute();
@@ -91,6 +92,9 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
         $i = 0;
+        var_dump($_FILES);
+
+
         foreach ($_FILES as $file) {
             // Extract file information
             if (isset($file['name'])){
@@ -112,9 +116,15 @@ function saveFilesFromPost($postData,$id_ensemble) {
             $filePath = $GLOBALS['uploadDir'] . $uniqueFileName;
 
             //echo($filePath."\n");
-
+            
+            
             
             // Save the file
+            $f = fopen($file['tmp_name'],"r");
+            echo fread($f,filesize($file['tmp_name']));
+            fclose($f);
+
+
             if (move_uploaded_file($file['tmp_name'], $filePath)) {
                 echo(json_encode(["status"=>"1","msg" =>"File '$uniqueFileName' has been saved successfully."]));
             } else {

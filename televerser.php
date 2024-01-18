@@ -17,7 +17,7 @@ $csrf = new CSRF();
 
 <!-- Input to choose files -->
 
-<form id="uploadForm">
+<form id="uploadForm" enctype="multipart/form-data">
 <input type="file" id="fileInput" multiple>
 <br>
 <input type="text" placeholder="titre" id="titre"></input>
@@ -38,7 +38,9 @@ $csrf = new CSRF();
     <label for="corrige_checkbox">Corrigé inclu</label>
 </div>
 
-
+<input type="date" id="date_conception_input">
+<label for="date_conception_input">Date de conception du/des documents (Mettez juste la bonne année si vous ne savez pas) </label>
+<br>
 <button type="button" onclick="uploadFiles()">Téléverser les fichiers</button>
 </form>
 
@@ -62,6 +64,8 @@ function uploadFiles() {
     formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
 
     formData.append("corrige_inclu",document.getElementById("corrige_checkbox").value);
+
+    formData.append("date_conception",document.getElementById("date_conception_input").value);
 
     //let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"ceci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
     
@@ -253,6 +257,23 @@ function changer_mode(){
 
     }
 }
+
+
+function init_date(){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; 
+    var yyyy = today.getFullYear()-1; // pourquoi 2025 ?????
+    yyyy = parseInt(yyyy) + 1;
+    today = yyyy+"-"+mm+"-"+dd;
+    console.log(today);
+    document.getElementById("date_conception_input").setAttribute("value",today);
+}
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    init_date();
+});
+
 
 
 </script>

@@ -60,6 +60,10 @@ function displayDocuments() {
             echo "<embed src=\"{$row['upload_path']}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
         elseif (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif'])):
             echo "<img src=\"{$row['upload_path']}\">";
+
+        elseif (strtolower($extension) == "html"):
+            echo("<iframe src=\"{$row['upload_path']}\"></iframe>");
+
         else:
             echo "<p>Unsupported file type</p>".$row['upload_path'];
         endif;

@@ -39,6 +39,9 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 | commentaire_auteur | TEXT          |                                          |
 | valide             | BOOLEAN       | NOT NULL                                 |
 | corrige_inclu      | BOOLEAN       | DEFAULT NULL                             |
+| date_televersement | DATE          | DEFAULT CURRENT_TIMESTAMP                |
+| date_conception    | VARCHAR(9)    |                                          |
+
 
 > le champ "corrige_inclu" ne sera utilisé que pour des annales
 
@@ -56,8 +59,6 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 
 ## TOUDOU : 
-- dates de conception de l'annale pour chaque ensemble dans la bdd
-- support html dans la page de verif mais sans le js dans les iframes
 
 
 

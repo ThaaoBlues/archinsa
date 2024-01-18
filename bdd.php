@@ -57,11 +57,11 @@ function ajouter_doc($request){
 
     try{
         $stm = $conn->prepare($sql);
-        echo "test1";
+        print_r($request);
         $request['commentaire_auteur'] = htmlspecialchars($request["commentaire_auteur"]);
         $request["corrige_inclu"] = boolval($request["corrige_inclu"]);
         $request["date_conception"] = htmlspecialchars($request["date_conception"]);
-        $stm->bind_param("si",$request['commentaire_auteur'],$request["corrige_inclu"]);
+        $stm->bind_param("sis",$request['commentaire_auteur'],$request["corrige_inclu"],$request["date_conception"]);
         echo "test2";
         $stm->execute();
         echo "test3";

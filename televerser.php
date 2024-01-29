@@ -10,7 +10,6 @@
 include("session_verif.php");
 // Include the PHP-CSRF library
 include('php-csrf.php');
-verifier_session();
 
 $csrf = new CSRF();
 ?>
@@ -21,7 +20,7 @@ $csrf = new CSRF();
 <input type="file" id="fileInput" multiple>
 <br>
 <input type="text" placeholder="titre" id="titre"></input>
-<label for="titre">N'hésitez pas à bien mettre 1A, 2A, ... et la maitère concernée dans le titre.</label>
+<label for="titre">N'hésitez pas à bien mettre 1A, 2A, ... et la matière concernée dans le titre.</label>
 <br>
 <select id="select_type" onchange="changer_mode()">
     <option value="1" >annale</option>

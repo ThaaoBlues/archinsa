@@ -10,7 +10,6 @@ $csrf = new CSRF();
 include("session_verif.php");
 
 
-// Include your database connection code here
 include("test_creds.php");
 
 $conn = new mysqli($servername, $username, $password,$dbname);

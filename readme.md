@@ -63,21 +63,13 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 
 ### téléverser.php :
-- ajouter un element "commentaire_doc_< i >" pour chaque document
 
-- ssi le type est "annale" ajouter un element "commentaire_exo_< i >" pour chaque exercice déclaré dans chaque document
-- Ajouter de même un champ "themes" qui porterons sur les thèmes abordés par l'exercice, possibilité d'en inscrire autant que l'on veut
-- ajouter un champ "duree" pour chaque exercice
 - tout pack dans un json à l'envoi : 
 ``    
 let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 
 ; 
 ``
  
-
-- ssi le type est "annale" Ajouter une checkbox pour spécifier si l'ensemble de documents comprend un corrigé ou non identifiant : "corrige_inclu"
-
-- dans le cas d'une fiche de révisions, on ajouter seulement un champ "themes"
 
 
 

@@ -6,14 +6,12 @@
 ?>
 <body>
 <?php
-include("session_verif.php");
-// Include the PHP-CSRF library
+//include("session_verif.php");
 include('php-csrf.php');
 
 $csrf = new CSRF();
 ?>
 
-<!-- Input to choose files -->
 
 <form id="uploadForm" enctype="multipart/form-data">
 <input type="file" id="fileInput" multiple>

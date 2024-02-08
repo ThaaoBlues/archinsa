@@ -10,7 +10,7 @@ phpCAS::setLogger();
 phpCAS::setVerbose(true);
 
 // Initialize phpCAS
-phpCAS::client(CAS_VERSION_2_0, "cas.insa-toulouse.fr", 443, 'cas',"https://cas.insa-toulouse.fr");
+phpCAS::client(CAS_VERSION_2_0, "cas.insa-toulouse.fr", 443, 'cas',"https://arch.etud.insa-toulouse.fr");
 
 // For production use set the CA certificate that is the issuer of the cert
 // on the CAS server and uncomment the line below

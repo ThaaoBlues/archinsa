@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    $tire_page = "Ach'INSA";
-    include "_patials/head.php"
+    $titre_page = "Arch'INSA";
+    include "_partials/_head.php";
 ?>
 <body>
 <?php
@@ -11,8 +11,8 @@
     session_start();
 
 ?>
-    <a href="javascript:authenticate_user();">connection</a>
-    <a href="javascript:unauthenticate_user();">déconnection</a>
+    <button id="btn-connection">connection</button>
+    <button id="lien-deconnection">déconnection</button>
 
     <div id="user_status">
 
@@ -32,6 +32,6 @@
 
 </body>
 <?php
-    include "_partials/footer.php";
+    include "_partials/_footer.php";
 ?>
 </html>

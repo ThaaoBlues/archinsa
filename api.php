@@ -11,7 +11,7 @@
 
     */
 
-    include("session_verif.php");
+    //include("session_verif.php");
     include("bdd.php");
 
     include('php-csrf.php');

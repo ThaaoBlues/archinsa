@@ -150,21 +150,33 @@ async function gen_chronologie(){
 }
 
 
-gen_chronologie();
+document.addEventListener("DOMContentLoaded", (event)=>{
+    gen_chronologie();
 
-test_auth();
-document.getElementById("recherche_input").onkeydown =function(event) {
-    if (event.key === "Enter"){
-        rechercher();
+    test_auth();
+    document.getElementById("recherche_input").onkeydown =function(event) {
+        if (event.key === "Enter"){
+            rechercher();
+        }
     }
-}
-document.getElementById("themes_input").onkeydown =function(event) {
-    if (event.key === "Enter"){
-        var theme = document.createElement("div");
-        theme.setAttribute("class","theme");
-        theme.innerText = document.getElementById("themes_input").value;
+    document.getElementById("themes_input").onkeydown =function(event) {
+        if (event.key === "Enter"){
+            var theme = document.createElement("div");
+            theme.setAttribute("class","theme");
+            theme.innerText = document.getElementById("themes_input").value;
+    
+            document.getElementById("recherche_form").appendChild(theme);
+            document.getElementById("themes_input").value = "";
+        }
+    }
 
-        document.getElementById("recherche_form").appendChild(theme);
-        document.getElementById("themes_input").value = "";
-    }
-}
+
+    document.getElementById("btn-connection").addEventListener("click", (event) => {
+        authenticate_user();
+    });
+    document.getElementById("btn-deconnection").addEventListener("click", (event) => {
+        unauthenticate_user();
+    });
+
+});
+

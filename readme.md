@@ -70,6 +70,10 @@ let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un 
 ; 
 ``
  
-
-
+### _partials/_head.php
+- définir la variable $titre_page avant de l'inclure
+- va s'occuper de generer tout ce qu'on met dans les tags <head> ainsi que d'importer un fichier css du même nom que la page depuis css/<page>.css (s'il existe)
+### _partials/_footer.php
+- tout ce qu'on veut faire en fin de chargement de page
+- va inclure un script depuis js/<page>.js (s'il existe).
 

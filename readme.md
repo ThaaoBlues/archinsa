@@ -59,7 +59,7 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 
 ## TOUDOU : 
-
+> Tester le code qui a été séparé en plusieurs fichiers différents (les pages pour utilisateurs)
 
 
 ### téléverser.php :

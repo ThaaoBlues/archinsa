@@ -16,7 +16,7 @@ $conn = new mysqli($servername, $username, $password,$dbname);
 
 
 // Function to fetch and display documents
-function displayDocuments() {
+function generer_chronologie() {
 
     global $conn;
 
@@ -73,8 +73,8 @@ function displayDocuments() {
 
 
     // complète le formulaire du dernier ensemble itéré
-    echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensemble</a></p>";
-    echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})'>Supprimer l'ensemble</a></p>";
+    echo "<p><a class='lien-valider-ens' id_ens='$ens_id' >Valider l'ensemble</a></p>";
+    echo "<p><a class='lien-supp-ens' id_ens='$ens_id'>Supprimer l'ensemble</a></p>";
 
     echo "</div>";
 
@@ -84,68 +84,21 @@ function displayDocuments() {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validation des documents</title>
-    <!-- Include your CSS styles here -->
-</head>
+<?php
+    $titre_page = "Validation des documents";
+    include "_partials/_head.php";
+?>
 <body>
 
 <h2>Validation des documents</h2>
 
-<!-- Display documents -->
-<?php displayDocuments(); ?>
-
-<script>
-
-    function valider_ensemble(ensembleId) {
-
-        const formData = new FormData();
-        formData.append("jeton-csrf","<?=$csrf->string($context="valider_ensemble")?>");
-        formData.append("ensemble_id",ensembleId);
-        fetch('api.php/valider_ensemble', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status == 1) {
-                alert(data.msg)
-            }else{
-                alert(data.msg)
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-
-    function supprimer_ensemble(ensembleId) {
-        const formData = new FormData();
-        formData.append("jeton-csrf","<?=$csrf->string($context="supprimer_ensemble")?>");
-        formData.append("ensemble_id",ensembleId);
-        
-        fetch('api.php/supprimer_ensemble', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status == 1) {
-                alert(data.msg)
-                document.location.reload();
-            }else{
-                alert(data.msg)
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-</script>
-
+<?php generer_chronologie(); ?>
 
 </body>
+<?php
+    echo $csrf->script($context='supprimer_ensemble', $name='jeton_supprimer_ensemble', $declaration='var', $time2Live=-1, $max_hashes=5);
+    echo $csrf->script($context='valider_ensemble', $name='jeton_valider_ensemble', $declaration='var', $time2Live=-1, $max_hashes=5);
+
+    include "_partials/_footer.php";
+?>
 </html>

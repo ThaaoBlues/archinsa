@@ -26,13 +26,13 @@ async function unauthenticate_user(){
 
 
 async function rechercher(){
-    var req = document.body.getElementById("recherche_input").value;
+    var req = document.getElementById("recherche_input").value;
     var themes = [];
-    Array.from(document.body.getElementsByClassName("theme")).forEach(function (el) {
+    Array.from(document.getElementsByClassName("theme")).forEach(function (el) {
         // on encode en  url pour pouvoir le passer dans la requete GET
         themes.push(encodeURIComponent(el.innerText));
     });
-    var duree =document.body.getElementById("duree_input").value
+    var duree =document.getElementById("duree_input").value
 
 
     var url = "api.php/rechercher?req="+req;
@@ -51,7 +51,7 @@ async function rechercher(){
     data = await resp.json();
 
     // vide d'abord les éléments présents dans la liste sur la page
-    document.body.getElementById("liste_resultats").innerHTML = "";
+    document.getElementById("liste_resultats").innerHTML = "";
     
     if(data.status == 1){
         data.resultats.forEach(doc => {

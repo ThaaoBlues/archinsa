@@ -122,9 +122,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
             fclose($f);
 
 
-            if (move_uploaded_file($file['tmp_name'], $filePath)) {
-                echo(json_encode(["status"=>"1","msg" =>"File '$uniqueFileName' has been saved successfully."]));
-            } else {
+            if (!move_uploaded_file($file['tmp_name'], $filePath)) {
                 echo(json_encode(["status"=>"0","msg"=>"Error saving file '$uniqueFileName'"]));
                 exit;
 
@@ -187,7 +185,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
                             $row = mysqli_fetch_assoc($result);
                             $id_theme = $row["id"];
                         }else{
-                            echo("creation d'un theme");
+                            //echo("creation d'un theme");
                             $sql = "INSERT INTO themes (name) VALUES(?)";
                             $conn->execute_query($sql,array($theme));
 
@@ -198,7 +196,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
                         // ensuite, on enregistre les qui lui sont associés
                         $sql= 'INSERT INTO exercices_themes (exercice_id,ensemble_id,theme_id) VALUES(?,?,?)';
                         $result = $conn->execute_query($sql,array($id_exo,$id_ensemble,$id_theme));
-                        echo("enregistrement d'un exercice");
+                        //echo("enregistrement d'un exercice");
                     }
                 }
 
@@ -211,6 +209,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
         }
 
 
+    echo(json_encode(["status"=>"1","msg" =>"Files has/have been saved successfully."]));
 
 
     } else {

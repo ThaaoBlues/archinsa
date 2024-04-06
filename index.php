@@ -47,7 +47,7 @@
 </pre></a>
 
 
-    <div id="liste_resultats">
+    <div id="liste_resultats" class="centre-txt">
     </div>
 
 </body>

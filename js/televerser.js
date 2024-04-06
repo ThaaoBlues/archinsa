@@ -1,8 +1,14 @@
+var camera_open = false;
+var video;
+
+
+
 function televerser_fichiers() {
     const fileInput = document.getElementById('fileInput');
     
     // Create FormData object to append files
     const formData = new FormData();
+
 
     formData.append("type",document.getElementById("select_type").value);
     formData.append("titre",document.getElementById("titre").value);
@@ -64,6 +70,7 @@ function televerser_fichiers() {
     })
     .then(response => response.json())
     .then(data => {
+        //console.log(data);
         if(data.status == 1){
             alert("le document a bien été envoyé ! Merci de votre participation :D")
         }else{
@@ -76,12 +83,34 @@ function televerser_fichiers() {
 }
 
 function ouvrir_camera() {
+    // test if camera is already open, in that case juste take a regular picture
+    if(camera_open){
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert the canvas content to a data URL
+        const imageDataUrl = canvas.toDataURL('image/jpeg');
+
+        // Display the captured image
+        const img = document.createElement('img');
+        img.src = imageDataUrl;
+        img.style.maxWidth = '100px';
+        document.getElementById('selectedImages').appendChild(img);
+        return;
+    }
+
+
     // Open the camera and take pictures
     // You can use the MediaDevices API to access the camera
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(mediaStream => {
-            const video = document.createElement('video');
+            video = document.createElement('video');
             document.body.appendChild(video);
+
+            camera_open = true;
 
             // Display the camera stream in a video element
             video.srcObject = mediaStream;
@@ -221,6 +250,8 @@ function init_date(){
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
+
+    
     init_date();
     document.getElementById("select_type").addEventListener("change", (event) => {
         changer_mode();

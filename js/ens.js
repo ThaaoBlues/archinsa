@@ -94,14 +94,23 @@ async function gen_contenu() {
               video.controls = true;
               previewCell.appendChild(video);
               break;
-            default: // link
+            case "html": 
+              previewCell = document.createElement('td');
+              const iframe = document.createElement('iframe');
+              iframe.href = doc.upload_path;
+              //iframe.textContent = doc.titre;
+              previewCell.appendChild(iframe);
+              break;
+
+            default :
               previewCell = document.createElement('td');
               const link = document.createElement('a');
               link.href = doc.upload_path;
-              link.textContent = doc.titre;
+              link.textContent = 'Type de fichier non supporté.';
               link.target = '_blank';
               previewCell.appendChild(link);
-              break;
+            break;
+
           }
   
           const commentaireCell = document.createElement('td');

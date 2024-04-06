@@ -31,8 +31,8 @@ $csrf = new CSRF();
     <label for="titre" class="champ" >N'hésitez pas à bien mettre 1A, 2A, ... et la matière concernée dans le titre.</label>
     <br>
     <select id="select_type" class="champ" >
-        <option value="1" >annale</option>
-        <option value="2" >fiche_revision</option>
+        <option value="1" >Annale</option>
+        <option value="2" >Fiche de révision</option>
         <option value="3" >HTML personnalisé</option>
     </select>
 

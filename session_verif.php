@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+/*
 // Load the CAS lib
 require_once("phpCAS-1.6.1/CAS.php");
 
@@ -30,11 +30,13 @@ phpCAS::forceAuthentication();
 // logout if desired
 if (isset($_REQUEST['logout'])) {
         phpCAS::logout();
-}
+}*/
 
 
 function verifier_session(){
-    return json_encode(["status"=>1,"msg"=>"Bonjour ".phpCAS::getUser()." !"]);
+    //return json_encode(["status"=>1,"msg"=>"Bonjour ".phpCAS::getUser()." !"]);
+    return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
+
 }
 
 

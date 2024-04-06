@@ -1,5 +1,5 @@
 <?php
-header("Content-Security-Policy: default-src 'self'; connect-src 'self'; script-src 'self'; img-src 'self'; font-src 'self'; media-src 'self'; frame-src 'self'; sandbox allow-forms; object-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; worker-src 'none'; manifest-src : 'none'; prefetch-src : 'none'; navigate-to 'self';")
+//header("Content-Security-Policy: default-src 'self'; connect-src 'self'; script-src 'self'; img-src 'self'; font-src 'self'; media-src 'self'; frame-src 'self'; sandbox allow-forms; object-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; worker-src 'none'; manifest-src : 'none'; prefetch-src : 'none'; navigate-to 'self';")
 ?>
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,6 @@ header("Content-Security-Policy: default-src 'self'; connect-src 'self'; script-
         $page = str_replace(".php","",basename($_SERVER['SCRIPT_FILENAME']));
     ?>
     <title><?=$titre_page?></title>
-    <link rel="stylesheet" src="css/<?=$page?>.css">
-    
+    <link rel="stylesheet" href="css/<?=$page?>.css">
+
 </head>

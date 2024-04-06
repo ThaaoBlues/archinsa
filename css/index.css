@@ -1,0 +1,120 @@
+@media (hover: none) {
+    /* For mobile phones: */
+    .floating-action-btn{
+        position: fixed;
+        bottom: 30vh;
+        margin-left:5%;
+        padding: 10px;
+        padding-top: 0px;
+        width: fit-content;
+        text-align: left;
+        border-radius: 5px;
+        border-width: 2px;
+        font-weight:bolder;
+        text-decoration: none;
+        color: black;
+        border-bottom: 3px solid rgba(224, 54, 54, 0.482);
+
+    }
+
+}
+@media only screen and (min-width: 1000px) {
+    /* For desktop: */
+    .floating-action-btn{
+        position: fixed;
+        bottom: 5%;
+        margin-left:1%;
+        padding: 10px;
+        padding-top: 0px;
+        width: fit-content;
+        text-align: left;
+        border-radius: 5px;
+        border-width: 2px;
+        font-weight:bolder;
+        text-decoration: none;
+        color: black;
+        border-bottom: 3px solid rgba(224, 54, 54, 0.482);
+
+    }
+}
+
+.gros-titre{
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.centre-vertical{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+.centre-horizontal{
+    margin: auto;
+    justify-content: center;
+}
+
+.centre-txt{
+    text-align: center;
+}
+
+.etaler{
+    width: 100%;
+}
+
+.bulle-rouge{
+    width: fit-content;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    background-color: rgba(255, 0, 0, 0.283);
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: rgba(255, 0, 0, 0.283);
+}
+
+.button{
+    margin-top: 10px;
+    width: fit-content;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 1%;
+    border-radius: 5px;
+    font-weight:bolder;
+    text-decoration: none;
+    color: black;
+    border-bottom: 3px solid rgba(224, 54, 54, 0.482);
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.color-red-tr{
+    background-color: rgba(224, 54, 54, 0.482);
+    border-color: rgba(224, 54, 54, 0.482);
+}
+
+.barre-recherche{
+    margin-top: 10px;
+    width: 80vw;
+    max-width: 800px;
+    border-radius: 15px;
+    border-width: 5px;
+    border-bottom: 3px solid rgba(224, 54, 54, 0.482);
+    background-color: rgba(224, 54, 54, 0.482);
+    padding: 20px;
+}
+
+.champ{
+    border-radius: 3px;
+    border: 0px;
+    background-color: transparent;
+    font-size: larger;
+    width: fit-content;
+}
+
+.champ:focus{
+    outline: none;
+}

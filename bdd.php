@@ -89,7 +89,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
         $i = 0;
-        var_dump($_FILES);
+        //var_dump($_FILES);
 
 
         foreach ($_FILES as $file) {
@@ -118,7 +118,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
             
             // Save the file
             $f = fopen($file['tmp_name'],"r");
-            echo fread($f,filesize($file['tmp_name']));
+            //echo fread($f,filesize($file['tmp_name']));
             fclose($f);
 
 

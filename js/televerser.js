@@ -43,6 +43,7 @@ function televerser_fichiers() {
 
     //csrf token
     formData.append("jeton-csrf",jeton_csrf);
+    //alert(jeton_csrf);
 
     // Append captured images as files to the FormData
     const capturedImages = document.querySelectorAll('#selectedImages img');
@@ -61,10 +62,13 @@ function televerser_fichiers() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-        console.log(data);
-        // Handle the response from the server
+        if(data.status == 1){
+            alert("le document a bien été envoyé ! Merci de votre participation :D")
+        }else{
+            alert("Une erreur s'est produite lors de l'envoi de votre fichier : "+data.msg);
+        }
     })
     .catch(error => {
         console.error('Error:', error);
@@ -214,6 +218,7 @@ function init_date(){
     console.log(today);
     document.getElementById("date_conception_input").setAttribute("value",today);
 }
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
     init_date();

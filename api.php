@@ -11,10 +11,11 @@
 
     */
 
-    //include("session_verif.php");
+    include("session_verif.php");
     include("bdd.php");
 
     include('php-csrf.php');
+
     $csrf = new CSRF();
 
 
@@ -186,7 +187,7 @@
 
 
                 if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
-                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant ou invalide. ( contenu du champ : ".$_POST["jeton-csrf"]." )"]) );
                     break;
                 }
 

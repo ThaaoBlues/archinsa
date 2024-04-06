@@ -36,8 +36,8 @@ function generer_chronologie() {
 
 
         if (($row["ensemble_id"] != $ens_id) && ($ens_id != -1) ) {
-            echo "<p><a href='#' onclick='valider_ensemble({$ens_id})'>Valider l'ensemble</a></p>";
-            echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})'>Supprimer l'ensemble</a></p>";
+            echo "<p><a href='#' onclick='valider_ensemble({$ens_id})' class='lien-valider-ens'>Valider l'ensemble</a></p>";
+            echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})' class='lien-supp-ens'>Supprimer l'ensemble</a></p>";
             echo "</div>";
             $ens_id = $row["ensemble_id"];
         }
@@ -73,8 +73,8 @@ function generer_chronologie() {
 
 
     // complète le formulaire du dernier ensemble itéré
-    echo "<p><a class='lien-valider-ens' id_ens='$ens_id' >Valider l'ensemble</a></p>";
-    echo "<p><a class='lien-supp-ens' id_ens='$ens_id'>Supprimer l'ensemble</a></p>";
+    echo "<p><a href='#' onclick='valider_ensemble({$ens_id})' class='lien-valider-ens' id_ens='$ens_id' >Valider l'ensemble</a></p>";
+    echo "<p><a href='#' onclick='supprimer_ensemble({$ens_id})' class='lien-supp-ens' id_ens='$ens_id'>Supprimer l'ensemble</a></p>";
 
     echo "</div>";
 

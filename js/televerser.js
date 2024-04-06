@@ -269,5 +269,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         ajouter_details_exo();
     });
 
+    document.getElementById("titre").addEventListener("click", (event) => {
+        window.location.pathname = "/archinsa";
+    });
+
 });
 

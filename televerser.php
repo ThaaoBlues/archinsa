@@ -12,7 +12,7 @@ include('php-csrf.php');
 $csrf = new CSRF();
 ?>
 
-<div class="centre-horizontal bulle-rouge">
+<div class="centre-horizontal bulle-rouge" id="titre">
     <pre class="centre-txt gros-titre">
    __    ____   ___  _   _ /'/ ____  _  _  ___    __   
   /__\  (  _ \ / __)( )_( )   (_  _)( \( )/ __)  /__\  

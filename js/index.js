@@ -178,5 +178,9 @@ document.addEventListener("DOMContentLoaded", (event)=>{
         unauthenticate_user();
     });
 
+    document.getElementById("titre").addEventListener("click", (event) => {
+        window.location.pathname = "/archinsa";
+    });
+
 });
 

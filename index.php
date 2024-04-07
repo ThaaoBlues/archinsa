@@ -22,6 +22,7 @@
 
 </div>
 
+    <h4>Comme vous pouvez le constater, on cherche quelqu'un pour le design (html + css) du site :D club.info@amicale-insat.fr</h4>
 
     <button class="button color-red-tr" id="btn-connection">connection</button>
     <button class="button color-red-tr" id="btn-deconnection">déconnection</button>

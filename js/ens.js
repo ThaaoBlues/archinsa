@@ -71,13 +71,33 @@ async function gen_contenu() {
           let previewCell;
           let ext = doc.upload_path.toString().split(".").pop();
   
+          let image_extensions = [
+            'jpg', 
+            'jpeg',
+            'png',
+            'gif',
+            'bmp',
+            'tiff', 
+            'tif',
+            'webp',
+            'svg',
+            'ico',
+            'raw'];
+
           switch (ext) {
-            case "jpg": // image
+            case image_extensions.includes(ext): // image
               previewCell = document.createElement('td');
               const img = document.createElement('img');
               img.src = doc.upload_path;
               img.alt = doc.titre;
               previewCell.appendChild(img);
+
+              let link = document.createElement('a');
+              link.href = doc.upload_path;
+              link.textContent = 'Voir image';
+              link.target = '_blank';
+              previewCell.appendChild(link);
+
               break;
             case "pdf": // pdf
               previewCell = document.createElement('td');
@@ -104,7 +124,7 @@ async function gen_contenu() {
 
             default :
               previewCell = document.createElement('td');
-              const link = document.createElement('a');
+              link = document.createElement('a');
               link.href = doc.upload_path;
               link.textContent = 'Type de fichier non supporté.';
               link.target = '_blank';

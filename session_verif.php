@@ -32,8 +32,10 @@ if (isset($_REQUEST['logout'])) {
         phpCAS::logout();
 }*/
 
+//$_SESSION["utilisateur_authentifie"] = true;
 
 function verifier_session(){
+
     //return json_encode(["status"=>1,"msg"=>"Bonjour ".phpCAS::getUser()." !"]);
     return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
 

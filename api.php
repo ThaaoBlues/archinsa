@@ -38,14 +38,16 @@
         
         switch($endpoint){
             case 'auth':
-                try{
+                /*try{
                     $_SESSION["utilisateur_authentifie"] = true;
                     session_regenerate_id(true);
                     $_SESSION["heure_debut"] = time();
                     echo(json_encode(["status"=>"1","msg"=>"Authentification réussie."]));
                 }catch(Exception $e){
                     echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
-                }
+                }*/
+                echo( json_encode(["status"=> "0","msg"=> "Authentification par api pas encore active."]));
+
                 break;
 
             case 'unauth':

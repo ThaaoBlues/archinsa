@@ -24,9 +24,10 @@
 
     <h4>Comme vous pouvez le constater, on cherche quelqu'un pour le design (html + css) du site :D club.info@amicale-insat.fr</h4>
 
-    <button class="button color-red-tr" id="btn-connection">connection</button>
-    <button class="button color-red-tr" id="btn-deconnection">déconnection</button>
-
+    <a href="session_verif.php" class="button color-red-tr" id="btn-connection">connection</a>
+    <a href="session_verif.php?logout=true" class="button color-red-tr" id="btn-deconnection">déconnection</a>
+    <br>
+    <br>
     <div id="user_status">
 
     </div>

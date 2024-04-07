@@ -83,7 +83,7 @@ async function gen_contenu() {
               previewCell = document.createElement('td');
               const pdfLink = document.createElement('a');
               pdfLink.href = doc.upload_path;
-              pdfLink.textContent = 'View PDF';
+              pdfLink.textContent = 'Voir PDF';
               pdfLink.target = '_blank';
               previewCell.appendChild(pdfLink);
               break;

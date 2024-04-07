@@ -171,7 +171,6 @@ async function gen_contenu() {
       }
     } catch (error) {
       console.error(error);
-      alert(error);
     }
 }
 

@@ -84,7 +84,7 @@ async function gen_contenu() {
             'ico',
             'raw'];
 
-          switch (ext) {
+          switch (true) {
             case image_extensions.includes(ext): // image
               previewCell = document.createElement('td');
               const img = document.createElement('img');
@@ -92,14 +92,14 @@ async function gen_contenu() {
               img.alt = doc.titre;
               previewCell.appendChild(img);
 
-              let link = document.createElement('a');
-              link.href = doc.upload_path;
-              link.textContent = 'Voir image';
-              link.target = '_blank';
-              previewCell.appendChild(link);
+              let lien_img = document.createElement('a');
+              lien_img.href = doc.upload_path;
+              lien_img.textContent = 'Voir image';
+              lien_img.target = '_blank';
+              previewCell.appendChild(lien_img);
 
               break;
-            case "pdf": // pdf
+            case ext=="pdf": // pdf
               previewCell = document.createElement('td');
               const pdfLink = document.createElement('a');
               pdfLink.href = doc.upload_path;
@@ -107,14 +107,14 @@ async function gen_contenu() {
               pdfLink.target = '_blank';
               previewCell.appendChild(pdfLink);
               break;
-            case "mp4": // video
+            case ext == "mp4": // video
               previewCell = document.createElement('td');
               const video = document.createElement('video');
               video.src = doc.upload_path;
               video.controls = true;
               previewCell.appendChild(video);
               break;
-            case "html": 
+            case ext == "html": 
               previewCell = document.createElement('td');
               const iframe = document.createElement('iframe');
               iframe.href = doc.upload_path;
@@ -124,11 +124,11 @@ async function gen_contenu() {
 
             default :
               previewCell = document.createElement('td');
-              link = document.createElement('a');
-              link.href = doc.upload_path;
-              link.textContent = 'Type de fichier non supporté.';
-              link.target = '_blank';
-              previewCell.appendChild(link);
+              let lien = document.createElement('a');
+              lien.href = doc.upload_path;
+              lien.textContent = 'Type de fichier non supporté.';
+              lien.target = '_blank';
+              previewCell.appendChild(lien);
             break;
 
           }

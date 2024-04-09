@@ -1,20 +1,22 @@
-@media (hover: none) {
+@media (hover: none){
     /* For mobile phones: */
     .floating-action-btn{
-        position: fixed;
-        bottom: 30vh;
-        margin-left:5%;
-        padding: 10px;
-        padding-top: 0px;
-        width: fit-content;
+        width: auto;
         text-align: left;
         border-radius: 5px;
         border-width: 2px;
         font-weight:bolder;
         text-decoration: none;
         color: black;
+        background-color: rgba(224, 54, 54, 0.482);
         border-bottom: 3px solid rgba(224, 54, 54, 0.482);
 
+        margin-top: 50vh;
+
+    }
+
+    .card{
+      width: 85vw;
     }
 
 }
@@ -36,6 +38,10 @@
         border-bottom: 3px solid rgba(224, 54, 54, 0.482);
 
     }
+
+    .card {
+      width: 70vw;
+    }
 }
 
 .gros-titre{
@@ -52,6 +58,7 @@
 .centre-horizontal{
     margin: auto;
     justify-content: center;
+    display: flex;
 }
 
 .centre-txt{
@@ -118,4 +125,70 @@
 
 .champ:focus{
     outline: none;
+}
+
+.card {
+    background-color: #f6f3f3;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+  
+.card img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 7px;
+}
+.card embed{
+  width: 100%;
+  height: 50vw;
+  margin-bottom: 10px;
+}
+
+.card iframe {
+  width: 100%;
+  height: 50vw; /* Ajuster la hauteur selon vos besoins */
+}
+
+.card video {
+  width: 100%;
+  height: auto;
+}
+
+.card div {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.card ul {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+
+
+
+/* Styles pour les liens */
+.lien {
+  color: #007bff;
+  text-decoration: none;
+  padding: 10px;
+  background-color: rgba(224, 54, 54, 0.482);
+  border-bottom: 2px solid rgba(224, 54, 54, 0.482);
+  border-radius: 5px;
+  margin-bottom: 30px;
+  margin-left: 2vw;
+  margin-top: 2vh;
+}
+
+.lien:hover {
+  text-decoration: underline;
+}
+
+/* Styles pour les informations secondaires */
+.secondary-text {
+  font-size: 14px;
+  color: #777;
 }

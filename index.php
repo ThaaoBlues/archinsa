@@ -35,22 +35,27 @@
     <div class="barre-recherche centre-horizontal">
         <form id="recherche_form">
             <input  class="champ" type="text" id="recherche_input" placeholder="Rechercher une fiche, annale ...">
+            <input hidden type="submit">
             <input hidden class="champ" type="text" id="themes_input" placeholder="themes (appuyez sur la touche entrée entre chaque thèmes)">
             <input  hidden class="champ" type="number" id="duree_input" placeholder="durée en minutes">
         </form>
     </div>
 
     <a href="televerser.php" class="color-red-tr floating-action-btn">
-        
-<pre>    _   
-  _| |_ 
- |_   _| Téléverser des documents
-   |_|   
+<pre>
+============================================
+|    _                                     |
+|  _| |_                                   |
+| |_   _| Téléverser des documents         |
+|   |_|                                    |
+============================================
 </pre></a>
 
 
-    <div id="liste_resultats" class="centre-txt">
-    </div>
+    <div class="centre-horizontal etaler">
+        <div id="liste_resultats" class="centre-txt">
+        </div>
+    <div>
 
 </body>
 <?php

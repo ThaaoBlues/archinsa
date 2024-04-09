@@ -56,30 +56,88 @@ async function rechercher(){
         data.resultats.forEach(doc => {
 
 
+            const card = document.createElement('div');
+            card.classList.add('card');                
 
             // on affiche le titre du résultat parce qu'on est pas des sauvages
             let titre_ensemble;
             titre_ensemble = document.createElement("h2");
             titre_ensemble.innerText = doc.titre;
             titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-
-            document.getElementById("liste_resultats").appendChild(titre_ensemble);
             
+            card.appendChild(titre_ensemble);
+            
+            // fichiers spéciaux ?
+            let ext = doc.upload_path.toString().split(".").pop();
+            const image_extensions = [
+                'jpg', 
+                'jpeg',
+                'png',
+                'gif',
+                'bmp',
+                'tiff', 
+                'tif',
+                'webp',
+                'svg',
+                'ico',
+                'raw'
+            ];
 
-            // images ou pdf ?
-            let ele;
-            if(doc.upload_path.toString().split(".").pop() == "pdf"){
-                ele = document.createElement("embed");
+            switch (true) {
+                case image_extensions.includes(ext): // image
+                    const img = document.createElement('img');
+                    img.src = doc.upload_path;
+                    img.alt = doc.titre;
+                    card.appendChild(img);
 
+                    const imageLink = document.createElement('a');
+                    imageLink.href = doc.upload_path;
+                    imageLink.classList.add('lien');
+                    imageLink.textContent = 'Voir image';
+                    imageLink.target = '_blank';
+                    card.appendChild(imageLink);
+                    break;
+                case ext == "pdf": // pdf
+                    const embed = document.createElement('embed');
+                    embed.src = doc.upload_path;
+                    card.appendChild(embed);
 
-            }else{
-                ele = document.createElement("img");
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = doc.upload_path;
+                    pdfLink.classList.add('lien');
+                    pdfLink.textContent = 'Voir PDF en grand';
+                    pdfLink.target = '_blank';
+                    card.appendChild(pdfLink);
+                    break;
+                case ext == "mp4": // video
+                    const video = document.createElement('video');
+                    video.src = doc.upload_path;
+                    video.controls = true;
+                    card.appendChild(video);
+                    break;
+                case ext == "html":
+                    const iframe = document.createElement('iframe');
+                    iframe.src = doc.upload_path;
+                    card.appendChild(iframe);
+                    break;
+                default:
+                    const unsupportedLink = document.createElement('a');
+                    unsupportedLink.href = doc.upload_path;
+                    unsupportedLink.classList.add('lien');
+                    unsupportedLink.textContent = 'Type de fichier non supporté.';
+                    unsupportedLink.target = '_blank';
+                    card.appendChild(unsupportedLink);
+                    break;
             }
 
-            ele.src = doc.upload_path;
-            ele.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-            document.getElementById("liste_resultats").appendChild(ele);
             
+            const ele = document.createElement("a");
+            ele.innerText = "Voir ce que c'est";
+            ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
+            ele.classList.add("lien")
+            card.appendChild(ele)
+
+            document.getElementById("liste_resultats").appendChild(card);
 
 
 
@@ -111,34 +169,89 @@ async function gen_chronologie(){
         data.resultats.forEach(ens => {
 
             ens.documents.forEach(doc=>{
+
+                const card = document.createElement('div');
+                card.classList.add('card');                
+
                 // on affiche le titre du résultat parce qu'on est pas des sauvages
                 let titre_ensemble;
                 titre_ensemble = document.createElement("h2");
                 titre_ensemble.innerText = doc.titre;
                 titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-                document.getElementById("liste_resultats").appendChild(titre_ensemble);
+                
+                card.appendChild(titre_ensemble);
                 
                 // fichiers spéciaux ?
-                let apercu;
                 let ext = doc.upload_path.toString().split(".").pop();
-                switch(ext){
-                    case "pdf":
-                        ele = document.createElement("embed");
+                const image_extensions = [
+                    'jpg', 
+                    'jpeg',
+                    'png',
+                    'gif',
+                    'bmp',
+                    'tiff', 
+                    'tif',
+                    'webp',
+                    'svg',
+                    'ico',
+                    'raw'
+                ];
+
+                switch (true) {
+                    case image_extensions.includes(ext): // image
+                        const img = document.createElement('img');
+                        img.src = doc.upload_path;
+                        img.alt = doc.titre;
+                        card.appendChild(img);
+  
+                        const imageLink = document.createElement('a');
+                        imageLink.href = doc.upload_path;
+                        imageLink.classList.add('lien');
+                        imageLink.textContent = 'Voir image';
+                        imageLink.target = '_blank';
+                        card.appendChild(imageLink);
                         break;
-                    case "html":
-                        ele = document.createElement("iframe");
-                        ele.setAttribute("sandbox","allow-forms allow-modals allow-scripts");
+                    case ext == "pdf": // pdf
+                        const embed = document.createElement('embed');
+                        embed.src = doc.upload_path;
+                        card.appendChild(embed);
+  
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = doc.upload_path;
+                        pdfLink.classList.add('lien');
+                        pdfLink.textContent = 'Voir PDF en grand';
+                        pdfLink.target = '_blank';
+                        card.appendChild(pdfLink);
+                        break;
+                    case ext == "mp4": // video
+                        const video = document.createElement('video');
+                        video.src = doc.upload_path;
+                        video.controls = true;
+                        card.appendChild(video);
+                        break;
+                    case ext == "html":
+                        const iframe = document.createElement('iframe');
+                        iframe.src = doc.upload_path;
+                        card.appendChild(iframe);
                         break;
                     default:
-                        ele = document.createElement("img");
+                        const unsupportedLink = document.createElement('a');
+                        unsupportedLink.href = doc.upload_path;
+                        unsupportedLink.classList.add('lien');
+                        unsupportedLink.textContent = 'Type de fichier non supporté.';
+                        unsupportedLink.target = '_blank';
+                        card.appendChild(unsupportedLink);
                         break;
-
-
                 }
 
-                ele.src = doc.upload_path;
-                ele.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-                document.getElementById("liste_resultats").appendChild(ele);
+                
+                const ele = document.createElement("a");
+                ele.innerText = "Voir ce que c'est";
+                ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
+                ele.classList.add("lien")
+                card.appendChild(ele)
+
+                document.getElementById("liste_resultats").appendChild(card);
 
             });
 
@@ -158,6 +271,14 @@ document.addEventListener("DOMContentLoaded", (event)=>{
             rechercher();
         }
     }
+
+    document.getElementById("recherche_form").onsubmit = function(event){
+        event.preventDefault();
+        // faire tomber le clavier sur mobile
+        document.activeElement.blur();
+        rechercher();
+    }
+
     document.getElementById("themes_input").onkeydown =function(event) {
         if (event.key === "Enter"){
             var theme = document.createElement("div");

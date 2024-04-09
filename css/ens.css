@@ -65,3 +65,92 @@ tr:hover {
     margin: auto;
     justify-content: center;
 }
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.card iframe {
+  width: 100%;
+  height: 50vw;
+  margin-bottom: 10px;
+
+}
+.card embed{
+  width: 100%;
+  height: 500px;
+  margin-bottom: 10px;
+}
+.card video {
+  width: 100%;
+  height: auto;
+}
+
+.card div {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.card ul {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+/* Responsive styles */
+@media only screen and (max-width: 600px) {
+  .card {
+      padding: 15px;
+  }
+
+  .card div {
+      font-size: 14px;
+  }
+}
+
+/* Styles pour les titres importants */
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Styles pour le texte principal */
+.main-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Styles pour les liens */
+.lien {
+  color: #007bff;
+  text-decoration: none;
+  padding: 10px;
+  background-color: rgba(224, 54, 54, 0.482);
+  border-bottom: 2px solid rgba(224, 54, 54, 0.482);
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.lien:hover {
+  text-decoration: underline;
+}
+
+/* Styles pour les informations secondaires */
+.secondary-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
+

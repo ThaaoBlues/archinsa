@@ -1,6 +1,6 @@
 <?php
 session_start();
-/*
+
 // Load the CAS lib
 require_once("phpCAS-1.6.1/CAS.php");
 
@@ -10,7 +10,7 @@ phpCAS::setLogger();
 phpCAS::setVerbose(true);
 
 // Initialize phpCAS
-phpCAS::client(CAS_VERSION_2_0, "cas.insa-toulouse.fr", 443, 'cas',"https://arch.etud.insa-toulouse.fr");
+phpCAS::client(CAS_VERSION_2_0, "cas.insa-toulouse.fr", 443, 'cas',"https://annales.insat.fr");
 
 // For production use set the CA certificate that is the issuer of the cert
 // on the CAS server and uncomment the line below
@@ -30,14 +30,15 @@ phpCAS::forceAuthentication();
 // logout if desired
 if (isset($_REQUEST['logout'])) {
         phpCAS::logout();
-}*/
+        $_SESSION["utilisateur_authentifie"] = false;
+}
 
-//$_SESSION["utilisateur_authentifie"] = true;
+$_SESSION["utilisateur_authentifie"] = true;
 
 function verifier_session(){
 
-    //return json_encode(["status"=>1,"msg"=>"Bonjour ".phpCAS::getUser()." !"]);
-    return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
+    return json_encode(["status"=>1,"msg"=>"Bonjour ".phpCAS::getUser()." !"]);
+    //return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
 
 }
 

@@ -34,6 +34,7 @@ if (isset($_REQUEST['logout'])) {
 }
 
 $_SESSION["utilisateur_authentifie"] = true;
+$_SESSION["username"] = phpCAS::getUser();
 
 function verifier_session(){
 
@@ -41,6 +42,9 @@ function verifier_session(){
     //return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
 
 }
+
+
+// fermez les yeux ici, j'ai pas la foi de faire un admin panel en entier
 $ADMINS = array("mougnibas","rebillar");
 
 function admin_seulement(){

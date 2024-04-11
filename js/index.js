@@ -6,11 +6,13 @@ async function test_auth(){
 
 // fonction de test, innutile en prod
 async function authenticate_user(){
-    resp = await fetch("api.php/auth");
+    /*resp = await fetch("api.php/auth");
     data = await resp.json();
     if(data.status == 1){
         document.getElementById("user_status").innerText = data["msg"];
-    }
+    }*/
+
+    document.location.href = "session_verif.php";
 }
 
 

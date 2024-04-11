@@ -59,7 +59,7 @@
 
             case 'test_auth':
                 if($_SESSION["utilisateur_authentifie"] == true){
-                    echo(json_encode(["status"=> "1","msg"=> "Utilisateur bien authentifié."]));
+                    echo(json_encode(["status"=> "1","msg"=> "Bonjour ".$_SESSION["unsername"]." !"]));
                 }else{
                     echo(json_encode(["status"=> "4","msg"=> "Utilisateur non authentifié."]));
                 }

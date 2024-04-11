@@ -14,6 +14,8 @@ include("test_creds.php");
 
 $conn = new mysqli($servername, $username, $password,$dbname);
 
+admin_seulement();
+
 
 // Function to fetch and display documents
 function generer_chronologie() {

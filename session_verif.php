@@ -41,6 +41,14 @@ function verifier_session(){
     //return json_encode(["status"=>1,"msg"=>"Bonjour !"]);
 
 }
+$ADMINS = array("mougnibas","rebillar");
+
+function admin_seulement(){
+    global $ADMINS;
+    if(!in_array(phpCAS::getUser(), $ADMINS)) {
+        header("Location: /index.php");
+    }
+}
 
 
 ?>

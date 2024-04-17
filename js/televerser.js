@@ -1,6 +1,39 @@
 var camera_open = false;
 var video;
 
+// on utilise cette fonction pour prendre les infos qu'on veut et faire un titre
+// bien propre pour la recherche dans le site
+function concatener_titre_inputs() {
+    
+    let inputs = document.querySelectorAll('.champ-titre');
+    let concatenatedString = '';
+    
+    inputs.forEach(input => {
+        if (input.value.toString() != ""){
+            switch(input.id){
+                case "nb-cc":
+                    concatenatedString += 'CC'+input.value +' ';
+    
+                    break;
+    
+                case "nb-annee":
+                    concatenatedString += input.value.toString()+'A' + ' ';
+                    break;
+    
+    
+                default:
+                    concatenatedString += input.value + ' ';
+                    break;
+            }
+        }
+
+    });
+    
+    // Remove trailing space
+    concatenatedString = concatenatedString.trim();
+    
+    return concatenatedString;
+}
 
 
 function televerser_fichiers() {
@@ -11,7 +44,7 @@ function televerser_fichiers() {
 
 
     formData.append("type",document.getElementById("select_type").value);
-    formData.append("titre",document.getElementById("titre").value);
+    formData.append("titre",concatenater_titre_inputs());
     formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
 
     formData.append("corrige_inclu",document.getElementById("corrige_checkbox").value);
@@ -201,15 +234,18 @@ function mode_html(){
 
     document.getElementById("exercices_details_wrapper").setAttribute("hidden",true);
     document.getElementById("corrige_checkbox_wrapper").setAttribute("hidden",true);
+    document.getElementById("nb-cc").setAttribute("hidden",true);
 
 }
 function mode_fiche(){
     document.getElementById("exercices_details_wrapper").setAttribute("hidden",true);
     document.getElementById("corrige_checkbox_wrapper").setAttribute("hidden",true);
-    
+    document.getElementById("nb-cc").setAttribute("hidden",true);
+
 }
 
 function mode_annale(){
+    document.getElementById("nb-cc").removeAttribute("hidden");
     document.getElementById("corrige_checkbox_wrapper").removeAttribute("hidden");
     document.getElementById("exercices_details_wrapper").removeAttribute("hidden");
 }
@@ -247,6 +283,7 @@ function init_date(){
     console.log(today);
     document.getElementById("date_conception_input").setAttribute("value",today);
 }
+
 
 
 document.addEventListener("DOMContentLoaded", (event) => {

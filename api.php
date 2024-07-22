@@ -223,8 +223,7 @@
                 $password = $_POST['password'];
 
                 $succes = connecter_utilisateur(htmlspecialchars($username),$password);
-                
-                if($succes == 1){
+                if($succes){
                     echo( json_encode(["status"=> "1","msg"=> "Utilisateur connecté !" ]) );
                 }else{
                     echo( json_encode(["status"=> "0","msg"=> "Utilisateur inconnu ou informations d'identification erronées." ]) );
@@ -254,9 +253,8 @@
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
                 $succes = inscription_utilisateur(htmlspecialchars($username),$password_hash);
-
-                if($succes == 1){
-                    echo( json_encode(["status"=> "1","msg"=> "Utilisateur inscrit !" ]) );
+                if($succes){
+                    echo( json_encode(["status"=> 1,"msg"=> "Utilisateur inscrit !" ]) );
                 }else{
                     echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre inscription :/" ]) );
                 }

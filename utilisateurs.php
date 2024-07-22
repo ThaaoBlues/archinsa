@@ -1,13 +1,14 @@
 <?php
 session_start();
+include("test_creds.php");
 
 // Check if user is logged in and is an admin
 if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authentifie"] !== true || !$_SESSION["admin"]) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 
-$conn = new mysqli('localhost', 'your_username', 'your_password', 'user_registration');
+$conn = new mysqli($servername, $username, $password,$dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -62,7 +63,7 @@ $result = $conn->query("SELECT id, username, admin FROM users");
     </style>
 </head>
 <body>
-    <h1>Admin Page</h1>
+    <h1>Liste des utilisateurs</h1>
     <table>
         <tr>
             <th>ID</th>
@@ -72,14 +73,14 @@ $result = $conn->query("SELECT id, username, admin FROM users");
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
-            <form method="post" action="admin.php">
+            <form method="post" action="utilisateurs.php">
                 <td><?php echo $row['id']; ?></td>
                 <td><input type="text" name="username" value="<?php echo $row['username']; ?>"></td>
                 <td><input type="checkbox" name="admin" <?php if ($row['admin']) echo "checked"; ?>></td>
                 <td>
                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                     <button type="submit" name="update">Update</button>
-                    <button type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                    <button type="submit" name="delete" onclick="return confirm('T\'es sur sur sur de le supprimer ? ');">Delete</button>
                 </td>
             </form>
         </tr>

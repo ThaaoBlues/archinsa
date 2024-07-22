@@ -11,7 +11,7 @@ function inscription(){
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
         if(data.status == 1){
             window.location.href = "index.php";

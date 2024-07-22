@@ -385,16 +385,17 @@ function inscription_utilisateur($username,$password_hash){
 
     $stmt = $conn->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
     $stmt->bind_param("ss", $username, $password_hash);
-
-
-    // met le statut de l'utilisateur à connecté pour lui eviter de se connecter just après l'inscription
-    $_SESSION["utilisateur_authentifie"] = true;
-    $_SESSION["username"] = $username;
-    $_SESSION["admin"] = 0;
-
     
     $ret = $stmt->execute();
+    
     $stmt->close();
+
+    if($ret){
+        // met le statut de l'utilisateur à connecté pour lui eviter de se connecter just après l'inscription
+        $_SESSION["utilisateur_authentifie"] = true;
+        $_SESSION["username"] = $username;
+        $_SESSION["admin"] = 0;
+    }
 
     return $ret;
 }

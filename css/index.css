@@ -114,6 +114,10 @@
     background-color: rgba(224, 54, 54, 0.482);
     padding: 20px;
 }
+#recherche_input{
+  width: 80vw;
+  max-width: 800px;
+}
 
 .champ{
     border-radius: 3px;

@@ -346,4 +346,57 @@ function generer_chronologie(){
     return $resultat_complet;
 }
 
+function connecter_utilisateur($username,$password){
+
+    global $conn;
+
+    $ret = 0;
+
+    $stmt = $conn->prepare("SELECT password_hash,admin FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+
+        $stmt->bind_result($password_hash,$admin);
+        $ret = $stmt->fetch();
+
+        if (password_verify($password, $password_hash)) {
+            $_SESSION["utilisateur_authentifie"] = true;
+            $_SESSION["username"] = $username;
+            $_SESSION["admin"] = $admin;
+            $ret = 1;
+        } else {
+            $ret = 0;
+        }
+    } else {
+        $ret = 0;
+    }
+
+    $stmt->close();
+    return $ret;
+}
+
+
+function inscription_utilisateur($username,$password_hash){
+
+    global $conn;
+
+    $stmt = $conn->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+    $stmt->bind_param("ss", $username, $password_hash);
+
+
+    // met le statut de l'utilisateur à connecté pour lui eviter de se connecter just après l'inscription
+    $_SESSION["utilisateur_authentifie"] = true;
+    $_SESSION["username"] = $username;
+    $_SESSION["admin"] = 0;
+
+    
+    $ret = $stmt->execute();
+    $stmt->close();
+
+    return $ret;
+}
+
 ?>

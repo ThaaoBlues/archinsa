@@ -1,31 +1,3 @@
-async function test_auth(){
-    resp = await fetch("api.php/test_auth");
-    data = await resp.json();
-    document.getElementById("user_status").innerText = data["msg"];
-}
-
-// fonction de test, innutile en prod
-async function authenticate_user(){
-    /*resp = await fetch("api.php/auth");
-    data = await resp.json();
-    if(data.status == 1){
-        document.getElementById("user_status").innerText = data["msg"];
-    }*/
-
-    document.location.href = "session_verif.php";
-}
-
-
-async function unauthenticate_user(){
-    resp = await fetch("api.php/unauth");
-    data = await resp.json();
-    if(data.status == 1){
-        document.getElementById("user_status").innerText = data["msg"];
-    }
-}
-
-
-
 async function rechercher(){
     var req = document.getElementById("recherche_input").value;
     var themes = [];

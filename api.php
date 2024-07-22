@@ -11,7 +11,6 @@
 
     */
 
-    include("session_verif.php");
     include("bdd.php");
 
     include('php-csrf.php');
@@ -37,33 +36,6 @@
         $endpoint = explode("?",array_pop($url_parts))[0];
         
         switch($endpoint){
-            case 'auth':
-                /*try{
-                    $_SESSION["utilisateur_authentifie"] = true;
-                    session_regenerate_id(true);
-                    $_SESSION["heure_debut"] = time();
-                    echo(json_encode(["status"=>"1","msg"=>"Authentification réussie."]));
-                }catch(Exception $e){
-                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
-                }*/
-                echo( json_encode(["status"=> "0","msg"=> "Authentification par api pas encore active."]));
-
-                break;
-
-            case 'unauth':
-                $_SESSION["utilisateur_authentifie"] = false;
-                echo json_encode(["status"=>"1","msg"=>"Déconnection réussie."]);
-                session_destroy();
-                session_abort();
-                break;
-
-            case 'test_auth':
-                if($_SESSION["utilisateur_authentifie"] == true){
-                    echo(json_encode(["status"=> "1","msg"=> "Bonjour ".$_SESSION["unsername"]." !"]));
-                }else{
-                    echo(json_encode(["status"=> "4","msg"=> "Utilisateur non authentifié."]));
-                }
-                break;
 
 
             case 'rechercher':
@@ -182,53 +154,115 @@
 
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        verifier_session();
-
+    
+        $user_auth = isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1);
+        $admin_auth = $user_auth && isset($_SESSION["admin"]) && ($_SESSION["admin"] == 1);
         switch(array_pop($url_parts)){
             case "aj_doc":
+                if($user_auth){
 
+                    if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
+                        echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant ou invalide. ( contenu du champ : ".$_POST["jeton-csrf"]." )"]) );
+                        break;
+                    }
 
-                if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
-                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant ou invalide. ( contenu du champ : ".$_POST["jeton-csrf"]." )"]) );
+                    try{
+                        ajouter_doc($_POST);
+
+                    }catch(Exception $e){
+                        echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                    }
+                    break;
+                }else{
                     break;
                 }
-
-                try{
-                    ajouter_doc($_POST);
-
-                }catch(Exception $e){
-                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
-                }
-                break;
 
             case "valider_ensemble":
 
-                if(!$csrf->validate($context='valider_ensemble',$_POST["jeton-csrf"])){
-                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
-                    break;
+                if($admin_auth){
+                    if(!$csrf->validate($context='valider_ensemble',$_POST["jeton-csrf"])){
+                        echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant.".$_POST["jeton-csrf"]]) );
+                        break;
+                    }
+                    try{
+                        valider_ensemble($_POST["ensemble_id"]);
+                        echo(json_encode(["status"=>"1","msg"=>"Ensemble validé."]));
+                    }catch(Exception $e){
+                        echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                    }
                 }
-                try{
-                    valider_ensemble($_POST["ensemble_id"]);
-                    echo(json_encode(["status"=>"1","msg"=>"Ensemble validé."]));
-                }catch(Exception $e){
-                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
-                }
+                
                 break;
 
             case "supprimer_ensemble":
 
-                if(!$csrf->validate($context='supprimer_ensemble',$_POST["jeton-csrf"])){
+                if($admin_auth){
+                    if(!$csrf->validate($context='supprimer_ensemble',$_POST["jeton-csrf"])){
+                        echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
+                        break;
+                    }
+    
+                    try{
+                        supprimer_ensemble($_POST["ensemble_id"]);
+                        echo(json_encode(["status"=>"1","msg"=>"Ensemble supprimé."]));
+                    }catch(Exception $e){
+                        echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                    }
+                }
+                
+                break;
+
+            case "connection":
+
+                if(!$csrf->validate($context='connection',$_POST["jeton-csrf"])){
                     echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
                     break;
                 }
 
-                try{
-                    supprimer_ensemble($_POST["ensemble_id"]);
-                    echo(json_encode(["status"=>"1","msg"=>"Ensemble supprimé."]));
-                }catch(Exception $e){
-                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+
+                $succes = connecter_utilisateur(htmlspecialchars($username),$password);
+                
+                if($succes == 1){
+                    echo( json_encode(["status"=> "1","msg"=> "Utilisateur connecté !" ]) );
+                }else{
+                    echo( json_encode(["status"=> "0","msg"=> "Utilisateur inconnu ou informations d'identification erronées." ]) );
                 }
                 break;
+
+
+            case "deconnection":
+                if(!$csrf->validate($context='deconnection',$_POST["jeton-csrf"])){
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
+                    break;
+                }
+                session_destroy();
+                echo( json_encode(["status"=> "1","msg"=> "Utilisateur déconnecté !" ]) );
+                break;
+
+            case "inscription":
+
+                if(!$csrf->validate($context='inscription',$_POST["jeton-csrf"])){
+                    echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
+                    break;
+                }
+
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                
+                $succes = inscription_utilisateur(htmlspecialchars($username),$password_hash);
+
+                if($succes == 1){
+                    echo( json_encode(["status"=> "1","msg"=> "Utilisateur inscrit !" ]) );
+                }else{
+                    echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre inscription :/" ]) );
+                }
+                
+                break;
+
             default:
                 echo(json_encode(["status"=> "2","msg"=> "Opération inconnue."]));
         }
@@ -236,4 +270,6 @@
         exit;
         
     }
+
+
 ?>

@@ -24,12 +24,19 @@
 
     <h4>Comme vous pouvez le constater, on cherche quelqu'un pour le design (html + css) du site :D club.info@amicale-insat.fr</h4>
 
-    <a href="session_verif.php" class="button color-red-tr" id="btn-connection">connection</a>
-    <a href="session_verif.php?logout=true" class="button color-red-tr" id="btn-deconnection">déconnection</a>
+    <a href="inscription.php" class="button color-red-tr" id="btn-connection">S'inscrire</a>
+    <a href="connection.php" class="button color-red-tr" id="btn-connection">Se connecter</a>
+    <a href="deconnection.php" class="button color-red-tr" id="btn-deconnection">Se déconnecter</a>
     <br>
     <br>
     <div id="user_status">
-
+        <?php
+            if(isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1)){
+                ?><h2>Salut <?= $_SESSION["username"] ?> !</h2><?php
+            }else{
+                ?><h2>Vous n'êtes pas connecté !</h2><?php
+            }
+        ?>
     </div>
 
     <div class="barre-recherche centre-horizontal">

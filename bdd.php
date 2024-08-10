@@ -218,68 +218,83 @@ function saveFilesFromPost($postData,$id_ensemble) {
     }
 }
 
-function RechercheExercices($query, $length, $tags,$tout_les_insa)
+function RechercheExercices($query, $length, $tags, $tout_les_insa)
 {
     global $conn;
 
-    // Build the SQL query based on the search parameters
+    // Start with the base SQL query
     $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id JOIN users as u ON u.id=e.id_auteur WHERE e.valide=TRUE";
 
-    if(!$tout_les_insa){
-        $sql = $sql." AND u.nom_insa='".$_SESSION["nom_insa"]."'";
+    // Array to hold the parameters
+    $params = [];
+    $types = "";  // Types for the bind_param function
+
+    // Handle the INSA restriction
+    if (!$tout_les_insa) {
+        $sql .= " AND u.nom_insa = ?";
+        $params[] = $_SESSION["nom_insa"];
+        $types .= "s";  // Assuming nom_insa is a string
     }
 
-    $conditions = [];
-
+    // Handle the search query
     if (!empty($query)) {
-
-        // va essayer de retrouver tout les mots de la requête dans le titre
-        $query = htmlspecialchars($query);
-        $query_words = preg_split("[ ]",$query);
-
+        $query_words = preg_split("/\s+/", htmlspecialchars($query));
         foreach ($query_words as $word) {
-            $conditions[] = "AND titre LIKE '%$word%'";
+            $sql .= " AND titre LIKE ?";
+            $params[] = "%$word%";
+            $types .= "s";
         }
     }
 
+    // Handle the length filter
     if (!empty($length)) {
-        $conditions[] = "duree = $length";
+        $sql .= " AND duree = ?";
+        $params[] = $length;
+        $types .= "i";  // Assuming duree is an integer
     }
 
+    // Handle the tags filter
     if (!empty($tags)) {
-        $tagConditions = array_map(function ($tag) {
+        foreach ($tags as $tag) {
             $tag = htmlspecialchars($tag);
-            return "EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = '$tag')";
-        }, $tags);
-
-        $conditions[] = implode(" AND ", $tagConditions);
+            $sql .= " AND EXISTS (SELECT * FROM exercices_themes AS et INNER JOIN themes AS t ON et.exercice_id = t.id WHERE et.theme_id = t.id AND t.name = ?)";
+            $params[] = $tag;
+            $types .= "s";
+        }
     }
 
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
 
+    if ($stmt === false) {
+        throw new Exception("Error preparing the query: " . $conn->error);
+    }
 
-    $sql .= implode(" AND ", $conditions);
-    //echo $sql;
+    // Bind the parameters dynamically
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
     // Execute the query
-    $result = $conn->query($sql);
-
-    if (!$result) {
-        throw new Exception("Error executing search query: " . $conn->error);
+    if (!$stmt->execute()) {
+        throw new Exception("Error executing the search query: " . $stmt->error);
     }
 
+    // Fetch the results
+    $result = $stmt->get_result();
     $exercises = [];
 
     while ($row = $result->fetch_assoc()) {
         $exercises[] = $row;
     }
 
+    // Clean up
+    $stmt->close();
     $conn->close();
 
     return $exercises;
-
-
-
-
 }
+
 
 
 
@@ -388,6 +403,11 @@ function connecter_utilisateur($username,$password){
 function inscription_utilisateur($username,$password_hash,$nom_insa){
 
     global $conn;
+
+    if(!in_array($nom_insa,["insa_toulouse","insa_lyon","insa_rennes","insa_cvl","insa_hdf","insa_rouen","insa_strasbourg","insa_hdf"])){
+        $ret = 0;
+        return $ret;
+    }
 
     $stmt = $conn->prepare("INSERT INTO users (username, password_hash,nom_insa) VALUES (?, ?,?)");
     $stmt->bind_param("sss", $username, $password_hash,$nom_insa);

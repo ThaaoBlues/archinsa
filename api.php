@@ -258,7 +258,7 @@
                 if($succes){
                     echo( json_encode(["status"=> 1,"msg"=> "Utilisateur inscrit !" ]) );
                 }else{
-                    echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre inscription :/" ]) );
+                    echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre inscription ou vous avez essayé de modifier le contenu de la requête :/" ]) );
                 }
                 
                 break;

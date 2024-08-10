@@ -1,7 +1,6 @@
 
 async function rechercher(){
 
-    console.log("recherche !!");
     var req = document.getElementById("recherche_input").value;
     var themes = [];
     Array.from(document.getElementsByClassName("theme")).forEach(function (el) {
@@ -35,6 +34,11 @@ async function rechercher(){
 
     // vide d'abord les éléments présents dans la liste sur la page
     document.getElementById("liste_resultats").innerHTML = "";
+
+    // ensuite on ajoute un petit titre à la chronologie
+    let titre = document.createElement("h1");
+    titre.innerText = "Voilà les "+data.resultats.length+" résultats de ta recherche :";
+    document.getElementById("liste_resultats").appendChild(titre);
     
     if(data.status == 1){
         data.resultats.forEach(doc => {

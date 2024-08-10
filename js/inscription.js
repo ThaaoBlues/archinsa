@@ -4,7 +4,8 @@ function inscription(){
 
     formData.append("username",document.getElementById("username-input").value);
     formData.append("password",document.getElementById("password-input").value);
-
+    console.log(document.getElementById("insa-input").value);
+    formData.append("nom_insa",document.getElementById("insa-input").value)
     formData.append("jeton-csrf",jeton_csrf);
 
     fetch('api.php/inscription', {

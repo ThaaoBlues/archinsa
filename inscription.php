@@ -25,6 +25,21 @@ session_start();
     <div class="formulaire">
         <input class="champ" id="username-input" type="text" name="username" placeholder="Nom d'utilisateur" required>
         <input class="champ" id="password-input" type="password" name="password" placeholder="Mot de passe" required>
+        
+        <h4 class=" centre-txt label-input" for="insa-input">Selectionne ton INSA</h4>
+        <select class="champ" id="insa-input" type="select" name="insa" required>
+
+            <option value="insa_toulouse">INSA Toulouse &lt;3</option>
+            <option value="insa_lyon">INSA Lyon</option>
+            <option value="insa_rennes">INSA Rennes</option>
+            <option value="insa_cvl">INSA CVL</option>
+            <option value="insa_hdf">INSA HDF</option>
+            <option value="insa_rouen">INSA Rouen</option>
+            <option value="insa_strasbourg">INSA Strasbourg</option>
+            <option value="insa_hdf">INSA HDF</option>
+
+        </select>
+        
         <button class="submit-button color-red-tr" onclick="inscription()">S'inscrire !</button>
     </div>
     <h2>Oui c'est vide oui ~\_(^-^)_/~</h2>

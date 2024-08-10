@@ -53,14 +53,14 @@ function ajouter_doc($request){
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu,date_conception) VALUES(?,?,?)";
+    $sql = "INSERT INTO ensembles (commentaire_auteur,corrige_inclu,date_conception,id_auteur) VALUES(?,?,?,?)";
 
     try{
         $stm = $conn->prepare($sql);
         $request['commentaire_auteur'] = htmlspecialchars($request["commentaire_auteur"]);
         $request["corrige_inclu"] = boolval($request["corrige_inclu"]);
         $request["date_conception"] = htmlspecialchars($request["date_conception"]);
-        $stm->bind_param("sis",$request['commentaire_auteur'],$request["corrige_inclu"],$request["date_conception"]);
+        $stm->bind_param("sisi",$request['commentaire_auteur'],$request["corrige_inclu"],$request["date_conception"],$_SESSION["user_id"]);
         $stm->execute();
         //$conn->execute_query($sql,array(htmlspecialchars($request['commentaire_auteur']),boolval($request["corrige_inclu"])));
         
@@ -218,12 +218,16 @@ function saveFilesFromPost($postData,$id_ensemble) {
     }
 }
 
-function RechercheExercices($query, $length, $tags)
+function RechercheExercices($query, $length, $tags,$tout_les_insa)
 {
     global $conn;
 
     // Build the SQL query based on the search parameters
-    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id WHERE e.valide=TRUE ";
+    $sql = "SELECT * FROM documents AS d INNER JOIN ensembles AS e ON d.ensemble_id = e.id JOIN users as u ON u.id=e.id_auteur WHERE e.valide=TRUE";
+
+    if(!$tout_les_insa){
+        $sql = $sql." AND u.nom_insa='".$_SESSION["nom_insa"]."'";
+    }
 
     $conditions = [];
 
@@ -352,20 +356,22 @@ function connecter_utilisateur($username,$password){
 
     $ret = 0;
 
-    $stmt = $conn->prepare("SELECT password_hash,admin FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id,password_hash,admin,nom_insa FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
 
-        $stmt->bind_result($password_hash,$admin);
+        $stmt->bind_result($id,$password_hash,$admin,$nom_insa);
         $ret = $stmt->fetch();
 
         if (password_verify($password, $password_hash)) {
             $_SESSION["utilisateur_authentifie"] = true;
             $_SESSION["username"] = $username;
             $_SESSION["admin"] = $admin;
+            $_SESSION["nom_insa"] = $nom_insa;
+            $_SESSION["user_id"] = $id;
             $ret = 1;
         } else {
             $ret = 0;
@@ -379,12 +385,12 @@ function connecter_utilisateur($username,$password){
 }
 
 
-function inscription_utilisateur($username,$password_hash){
+function inscription_utilisateur($username,$password_hash,$nom_insa){
 
     global $conn;
 
-    $stmt = $conn->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
-    $stmt->bind_param("ss", $username, $password_hash);
+    $stmt = $conn->prepare("INSERT INTO users (username, password_hash,nom_insa) VALUES (?, ?,?)");
+    $stmt->bind_param("sss", $username, $password_hash,$nom_insa);
     
     $ret = $stmt->execute();
     
@@ -395,6 +401,8 @@ function inscription_utilisateur($username,$password_hash){
         $_SESSION["utilisateur_authentifie"] = true;
         $_SESSION["username"] = $username;
         $_SESSION["admin"] = 0;
+        $_SESSION["nom_insa"] = $nom_insa;
+        $_SESSION["user_id"] = $conn->insert_id;
     }
 
     return $ret;

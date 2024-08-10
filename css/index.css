@@ -196,3 +196,13 @@
   font-size: 14px;
   color: #777;
 }
+
+#recherche_input{
+  height: 4vw;
+}
+
+
+.checkbox{
+  height: 20px;
+  width: 20px;
+}

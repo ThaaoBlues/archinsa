@@ -59,7 +59,9 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 
 ## TOUDOU : 
-> Tester le code qui a été séparé en plusieurs fichiers différents (les pages pour utilisateurs)
+> choisir un insa à l'inscription
+> rajouter automatiquement l'insa de celui qui dépose un truc dans la table des ensembles
+> mettre un switch pour activer une recherche sur tout les insa
 
 
 ### téléverser.php :
@@ -70,10 +72,4 @@ let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un 
 ; 
 ``
  
-### _partials/_head.php
-- définir la variable $titre_page avant de l'inclure
-- va s'occuper de generer tout ce qu'on met dans les tags <head> ainsi que d'importer un fichier css du même nom que la page depuis css/<page>.css (s'il existe)
-### _partials/_footer.php
-- tout ce qu'on veut faire en fin de chargement de page
-- va inclure un script depuis js/<page>.js (s'il existe).
 

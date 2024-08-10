@@ -1,4 +1,7 @@
+
 async function rechercher(){
+
+    console.log("recherche !!");
     var req = document.getElementById("recherche_input").value;
     var themes = [];
     Array.from(document.getElementsByClassName("theme")).forEach(function (el) {
@@ -7,21 +10,28 @@ async function rechercher(){
     });
     var duree =document.getElementById("duree_input").value
 
-
     var url = "api.php/rechercher?req="+req;
     if(themes.toString() != ""){
         url = url +"&themes="+themes.toString();
     } 
 
     if(duree != ""){
-        url = url +"duree="+duree;
+        url = url +"&duree="+duree;
 
     }
     console.log(url);
 
+
+    var tout_les_insa_switch = document.getElementById("tout_les_insa_switch").checked;
+    if(tout_les_insa_switch){
+        url = url+"&tout_les_insa=1"
+    }
+
     resp = await fetch(url);
     
     data = await resp.json();
+
+    console.log(data);
 
     // vide d'abord les éléments présents dans la liste sur la page
     document.getElementById("liste_resultats").innerHTML = "";
@@ -129,7 +139,6 @@ async function gen_chronologie(){
     resp = await fetch(url);
 
     data = await resp.json();
-    console.log(data);
     // vide d'abord les éléments présents dans la liste sur la page
     document.getElementById("liste_resultats").innerHTML = "";
 
@@ -240,17 +249,21 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     gen_chronologie();
 
     test_auth();
-    document.getElementById("recherche_input").onkeydown =function(event) {
+    document.getElementById("recherche_input").addEventListener("keypress", (event)=>{
+        console.log("???");
         if (event.key === "Enter"){
+            event.preventDefault();
             rechercher();
         }
-    }
+    });
 
     document.getElementById("recherche_form").onsubmit = function(event){
         event.preventDefault();
         // faire tomber le clavier sur mobile
         document.activeElement.blur();
         rechercher();
+
+
     }
 
     document.getElementById("themes_input").onkeydown =function(event) {
@@ -275,6 +288,7 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     document.getElementById("titre").addEventListener("click", (event) => {
         window.location.pathname = "/archinsa";
     });
+
 
 });
 

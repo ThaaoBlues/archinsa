@@ -12,6 +12,15 @@ if ($conn->connect_error) {
 
 // Create tables
 $sql = "
+
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        nom_insa VARCHAR(25) NOT NULL,
+        admin BOOLEAN DEFAULT 0
+    );
+
     CREATE TABLE IF NOT EXISTS themes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL
@@ -23,7 +32,9 @@ $sql = "
         valide BOOLEAN NOT NULL DEFAULT FALSE,
         corrige_inclu BOOLEAN NOT NULL DEFAULT FALSE,
         date_televersement DATETIME DEFAULT CURRENT_TIMESTAMP,
-        date_conception VARCHAR(9)
+        date_conception VARCHAR(10),
+        id_auteur INT,
+        FOREIGN KEY (id_auteur) REFERENCES users(id)
     );
 
     CREATE TABLE IF NOT EXISTS documents (
@@ -58,13 +69,6 @@ $sql = "
         FOREIGN KEY (exercice_id) REFERENCES exercices(id),
         FOREIGN KEY (ensemble_id) REFERENCES ensembles(id),
         FOREIGN KEY (theme_id) REFERENCES themes(id)
-    );
-
-    CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(50) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        admin BOOLEAN DEFAULT 0
     );
 
 ";

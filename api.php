@@ -45,9 +45,10 @@
                 $query = isset($_GET["req"]) ? $_GET["req"] : "";
                 $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
                 $themes = isset($_GET["themes"]) ? explode(",", $_GET["themes"]) : [];
+                $tout_les_insa = isset($_GET["tout_les_insa"]) ? true : false;
                 //print_r($_GET);
                 try {
-                    $results = RechercheExercices($query, $length, $themes);
+                    $results = RechercheExercices($query, $length, $themes,$tout_les_insa);
                     echo json_encode(["status" => "1", "resultats" => $results]);
                 } catch (Exception $e) {
                     echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
@@ -161,10 +162,10 @@
             case "aj_doc":
                 if($user_auth){
 
-                    if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
+                    /*if(!$csrf->validate($context='televersement',$_POST["jeton-csrf"])){
                         echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant ou invalide. ( contenu du champ : ".$_POST["jeton-csrf"]." )"]) );
                         break;
-                    }
+                    }*/
 
                     try{
                         ajouter_doc($_POST);
@@ -249,10 +250,11 @@
 
                 $username = $_POST['username'];
                 $password = $_POST['password'];
+                $nom_insa = $_POST['nom_insa'];
                 
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
-                $succes = inscription_utilisateur(htmlspecialchars($username),$password_hash);
+                $succes = inscription_utilisateur(htmlspecialchars($username),$password_hash,$nom_insa);
                 if($succes){
                     echo( json_encode(["status"=> 1,"msg"=> "Utilisateur inscrit !" ]) );
                 }else{

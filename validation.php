@@ -6,15 +6,14 @@ session_start();
 
 $csrf = new CSRF();
 
-
-include("session_verif.php");
-
-
+// Check if user is logged in and is an admin
+if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authentifie"] !== true || !$_SESSION["admin"]) {
+    header("Location: index.php");
+    exit;
+}
 include("test_creds.php");
 
 $conn = new mysqli($servername, $username, $password,$dbname);
-
-admin_seulement();
 
 
 // Function to fetch and display documents

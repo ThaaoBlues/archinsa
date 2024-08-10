@@ -24,9 +24,18 @@
 
     <h4>Comme vous pouvez le constater, on cherche quelqu'un pour le design (html + css) du site :D club.info@amicale-insat.fr</h4>
 
-    <a href="inscription.php" class="button color-red-tr" id="btn-connection">S'inscrire</a>
-    <a href="connection.php" class="button color-red-tr" id="btn-connection">Se connecter</a>
-    <a href="deconnection.php" class="button color-red-tr" id="btn-deconnection">Se déconnecter</a>
+    <?php    
+    if(isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1)){
+        ?>
+            <a href="deconnection.php" class="button color-red-tr" id="btn-deconnection">Se déconnecter</a>
+        <?php
+    }else{
+        ?>
+            <a href="inscription.php" class="button color-red-tr" id="btn-connection">S'inscrire</a>
+            <a href="connection.php" class="button color-red-tr" id="btn-connection">Se connecter</a>
+        <?php
+    }
+    ?>
     <br>
     <br>
     <div id="user_status">
@@ -42,7 +51,9 @@
     <div class="barre-recherche centre-horizontal">
         <form id="recherche_form">
             <input  class="champ" type="text" id="recherche_input" placeholder="Rechercher une fiche, annale ...">
-            <input hidden type="submit">
+            <label class="champ" for="tout-les-insa-switch">Activer la recherche sur tout les INSA</label>
+            <input class="champ checkbox" type="checkbox" id="tout_les_insa_switch">
+            <!--<input hidden type="submit">-->
             <input hidden class="champ" type="text" id="themes_input" placeholder="themes (appuyez sur la touche entrée entre chaque thèmes)">
             <input  hidden class="champ" type="number" id="duree_input" placeholder="durée en minutes">
         </form>

@@ -44,7 +44,7 @@ function televerser_fichiers() {
 
 
     formData.append("type",document.getElementById("select_type").value);
-    formData.append("titre",concatenater_titre_inputs());
+    formData.append("titre",concatener_titre_inputs());
     formData.append("commentaire_auteur",document.getElementById("commentaire_auteur").value);
 
     formData.append("corrige_inclu",document.getElementById("corrige_checkbox").value);

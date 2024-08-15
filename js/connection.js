@@ -14,10 +14,14 @@ function connection(){
     .then(response => response.json())
     .then(data => {
         //console.log(data);
-        if(data.status == 1){
-            window.location.href = "index.php";
-        }else{
-            alert("Une erreur s'est produite lors de votre connection : "+data.msg);
+        switch(data.status){
+
+            case 1:
+                window.location.href = "index.php";
+                break;
+            default:
+                alert("Une erreur s'est produite lors de votre connection : "+data.msg);
+                break;
         }
     })
     .catch(error => {

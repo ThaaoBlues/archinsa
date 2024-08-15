@@ -14,11 +14,7 @@ function inscription(){
     })
     .then(response => response.json())
     .then(data => {
-        if(data.status == 1){
-            window.location.href = "index.php";
-        }else{
-            alert("Une erreur s'est produite lors de votre inscription. Ce nom d'utilisateur doit être déjà pris ! ");
-        }
+        alert(data.msg);
     })
     .catch(error => {
         console.error('Error:', error);

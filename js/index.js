@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     gen_chronologie();
 
     test_auth();
-    document.getElementById("recherche_input").addEventListener("keypress", (event)=>{
+    document.getElementById("recherche_input").addEventListener("keydown", (event)=>{
         console.log("???");
         if (event.key === "Enter"){
             event.preventDefault();

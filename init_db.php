@@ -3,7 +3,7 @@
 include("test_creds.php");
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -12,13 +12,20 @@ if ($conn->connect_error) {
 
 // Create tables
 $sql = "
+    CREATE TABLE IF NOT EXISTS token(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        id_user INTEGER,
+        TOKEN VARCHAR(255),
+        create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
 
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(50) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
         nom_insa VARCHAR(25) NOT NULL,
-        admin BOOLEAN DEFAULT 0
+        admin BOOLEAN DEFAULT 0,
+        verifie BOOLEAN DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS themes (

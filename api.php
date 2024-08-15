@@ -14,6 +14,9 @@
     include("bdd.php");
 
     include('php-csrf.php');
+    include_once("utils/sendmail.php");
+    include_once("utils/token.php");
+    include_once("utils/inputs.php");
 
     $csrf = new CSRF();
 
@@ -140,6 +143,28 @@
                
                 break;
 
+
+            
+            case "verification_inscription":
+
+                $succes = isset($_GET["token"]);
+
+                if(!$succes){
+                    return $succes;
+                }
+
+
+                $token = htmlspecialchars($_GET["token"]);
+
+                $succes = verifier_utilisateur($token);
+                if($succes){
+                    header("Location: utilisateur_valide.php");
+                    //echo( json_encode(["status"=> 1,"msg"=> "Utilisateur verifié !" ]) );
+                }else{
+                    echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre vérification ou vous avez essayé de modifier le contenu de la requête :/" ]) );
+                }
+                break;
+
             default:
                 echo(json_encode(['status'=> '2','msg'=> "Ce point d'arrivée n'existe pas dans l'api."]));
                 break;
@@ -224,10 +249,12 @@
                 $password = $_POST['password'];
 
                 $succes = connecter_utilisateur(htmlspecialchars($username),$password);
+                
+                
                 if($succes){
                     echo( json_encode(["status"=> "1","msg"=> "Utilisateur connecté !" ]) );
                 }else{
-                    echo( json_encode(["status"=> "0","msg"=> "Utilisateur inconnu ou informations d'identification erronées." ]) );
+                    echo( json_encode(["status"=> "0","msg"=> "Utilisateur inconnu, non vérifié par mel ou informations d'identification erronées." ]) );
                 }
                 break;
 
@@ -243,6 +270,9 @@
 
             case "inscription":
 
+
+                
+
                 if(!$csrf->validate($context='inscription',$_POST["jeton-csrf"])){
                     echo( json_encode(["status"=> "2","msg"=>"jeton csrf manquant." ]) );
                     break;
@@ -252,13 +282,35 @@
                 $password = $_POST['password'];
                 $nom_insa = $_POST['nom_insa'];
                 
+                $username = assainir_et_valider_mel($username);
+
+                if($username == "[ERREUR_MEL_MALSAINT]"){
+                    echo(json_encode(["status"=> "2","msg"=> "Votre adresse mel n'a pas passé les filtres de sécurité :/ ( MOUAHAHAHAHA )" ]));
+                    break;
+                }
+
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
-                $succes = inscription_utilisateur(htmlspecialchars($username),$password_hash,$nom_insa);
+                $token = inscription_utilisateur(htmlspecialchars($username),$password_hash,$nom_insa);
+                $succes = $token != "[ERREUR]";
                 if($succes){
-                    echo( json_encode(["status"=> 1,"msg"=> "Utilisateur inscrit !" ]) );
+                    $mailtest = new Mail();
+                    $mailtest->setContent(
+                        "Inscription sur Arch'INSA",
+                        "https://127.0.0.1/archinsa/api.php/verification_inscription?token=".$token,
+                        "Salut Salut !!",
+                        "La validation du compte permettra de vous connecter et de publier du contenu sur Arch'INSA :D",
+                    );
+                    if(!$mailtest->send("mougnibas@insa-toulouse.fr", "Eh toi là !")) {
+                        echo $mailtest->getError(); //si le mail n'a pas été envoyé
+                        $succes = false;
+                    }
+                    
+                }
+                if($succes){
+                    echo( json_encode(["status"=> 1,"msg"=> "Pour finaliser l'inscription et pouvoir vous connecter, veuillez valider votre compte via le mel que nous vous avons envoyé :)" ]) );
                 }else{
-                    echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre inscription ou vous avez essayé de modifier le contenu de la requête :/" ]) );
+                    echo( json_encode(["status"=> 0,"msg"=> "Une erreur est survenue lors de votre inscription ou vous avez essayé de modifier le contenu de la requête :/" ]) );
                 }
                 
                 break;
@@ -271,5 +323,3 @@
         
     }
 
-
-?>

@@ -35,7 +35,19 @@
             <a href="connection.php" class="button color-red-tr" id="btn-connection">Se connecter</a>
         <?php
     }
-    ?>
+
+
+    if(isset($_SESSION["admin"]) && ($_SESSION["admin"] == 1)){
+        ?>
+
+        <a href="validation.php" class="button color-red-tr" id="btn-validation">Validation des ensembles</a>
+        <a href="utilisateurs.php" class="button color-red-tr" id="btn-validation">Gestion des utilisateurs</a>
+        <?php
+
+    }?>
+
+
+
     <br>
     <br>
     <div id="user_status">

@@ -2,8 +2,9 @@
 
 
 include("test_creds.php");
+include_once("utils/token.php");
 
-$conn = new mysqli($servername, $username, $password,$dbname);
+$conn = new mysqli($servername, $db_username, $db_password,$dbname);
 
 
 $uploadDir = 'archives/';
@@ -396,6 +397,10 @@ function connecter_utilisateur($username,$password){
     }
 
     $stmt->close();
+
+    if($ret){
+        $ret=verifier_utilisateur($id);
+    }
     return $ret;
 }
 
@@ -416,6 +421,12 @@ function inscription_utilisateur($username,$password_hash,$nom_insa){
     
     $stmt->close();
 
+
+    $tok = new Token();
+    $user_id = mysqli_insert_id($conn);
+    $tok->Add($user_id);
+
+    /*
     if($ret){
         // met le statut de l'utilisateur à connecté pour lui eviter de se connecter just après l'inscription
         $_SESSION["utilisateur_authentifie"] = true;
@@ -423,9 +434,56 @@ function inscription_utilisateur($username,$password_hash,$nom_insa){
         $_SESSION["admin"] = 0;
         $_SESSION["nom_insa"] = $nom_insa;
         $_SESSION["user_id"] = $conn->insert_id;
+    }*/
+
+    if($ret){
+        return $tok->getToken($user_id);
+    }else{
+        return "[ERREUR]";
+
     }
 
+}
+
+
+function verifier_utilisateur($token){
+    global $conn;
+
+    $ret = 0;
+
+    $t_instance = new Token();
+	
+    $user_id = $t_instance->getUserID($token);
+
+    if($t_instance->isValid($user_id, $token) && $user_id != -1) {
+		$t_instance->delete($user_id, $token);
+        $stmt = $conn->prepare("UPDATE users SET verifie=? WHERE id = ?");
+        $val=1;
+        $stmt->bind_param("ss",$val,$id_user);
+        $ret = $stmt->execute();
+        $stmt->close();    
+	}
+
     return $ret;
+}
+
+function utilisateur_est_verifie($user_id){
+    global $conn;
+    $stmt = $conn->prepare("SELECT verifie FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+
+    $stmt->store_result();
+
+    $ret = $stmt->num_rows > 0;
+    $verif = 0;
+    if($ret){
+        $stmt->bind_result($verif);
+        $ret = $stmt->fetch();
+        $stmt->close();
+    }
+
+    return $ret && ($verif == 1);
 }
 
 ?>

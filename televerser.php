@@ -6,8 +6,13 @@
 ?>
 <body>
 <?php
-include("session_verif.php");
 include('php-csrf.php');
+
+session_start();
+if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authentifie"] !== true) {
+    header("Location: index.php");
+    exit;
+}
 
 $csrf = new CSRF();
 ?>

@@ -459,7 +459,7 @@ function verifier_utilisateur($token){
 		$t_instance->delete($user_id, $token);
         $stmt = $conn->prepare("UPDATE users SET verifie=? WHERE id = ?");
         $val=1;
-        $stmt->bind_param("ss",$val,$id_user);
+        $stmt->bind_param("ss",$val,$user_id);
         $ret = $stmt->execute();
         $stmt->close();    
 	}

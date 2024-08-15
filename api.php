@@ -158,7 +158,7 @@
 
                 $succes = verifier_utilisateur($token);
                 if($succes){
-                    header("Location: utilisateur_valide.php");
+                    header("Location: /utilisateur_valide.php");
                     //echo( json_encode(["status"=> 1,"msg"=> "Utilisateur verifié !" ]) );
                 }else{
                     echo( json_encode(["status"=> "0","msg"=> "Une erreur est survenue lors de votre vérification ou vous avez essayé de modifier le contenu de la requête :/" ]) );

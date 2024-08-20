@@ -65,21 +65,21 @@
             <input  class="champ" type="text" id="recherche_input" placeholder="Rechercher une fiche, annale ...">
             <label class="champ" for="tout-les-insa-switch">Activer la recherche sur tout les INSA</label>
             <input class="champ checkbox" type="checkbox" id="tout_les_insa_switch">
-            <!--<input hidden type="submit">-->
+            <input hidden type="submit">
             <input hidden class="champ" type="text" id="themes_input" placeholder="themes (appuyez sur la touche entrée entre chaque thèmes)">
             <input  hidden class="champ" type="number" id="duree_input" placeholder="durée en minutes">
         </form>
     </div>
 
     <a href="televerser.php" class="color-red-tr floating-action-btn">
-<pre>
+<div class="ascii-art">
 ============================================
 |    _                                     |
 |  _| |_                                   |
 | |_   _| Téléverser des documents         |
 |   |_|                                    |
 ============================================
-</pre></a>
+</div></a>
 
 
     <div class="centre-horizontal etaler">

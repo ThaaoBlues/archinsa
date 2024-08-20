@@ -252,9 +252,7 @@ async function gen_chronologie(){
 document.addEventListener("DOMContentLoaded", (event)=>{
     gen_chronologie();
 
-    test_auth();
     document.getElementById("recherche_input").addEventListener("keydown", (event)=>{
-        console.log("???");
         if (event.key === "Enter"){
             event.preventDefault();
             rechercher();
@@ -280,14 +278,6 @@ document.addEventListener("DOMContentLoaded", (event)=>{
             document.getElementById("themes_input").value = "";
         }
     }
-
-
-    document.getElementById("btn-connection").addEventListener("click", (event) => {
-        authenticate_user();
-    });
-    document.getElementById("btn-deconnection").addEventListener("click", (event) => {
-        unauthenticate_user();
-    });
 
     document.getElementById("titre").addEventListener("click", (event) => {
         window.location.pathname = "/archinsa";

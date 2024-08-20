@@ -206,3 +206,8 @@
   height: 20px;
   width: 20px;
 }
+
+.ascii-art {
+  font-family: monospace;
+  white-space: pre;
+}

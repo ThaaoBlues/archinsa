@@ -16,7 +16,7 @@ function connection(){
         //console.log(data);
         switch(data.status){
 
-            case 1:
+            case "1":
                 window.location.href = "index.php";
                 break;
             default:

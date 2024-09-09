@@ -211,3 +211,8 @@
   font-family: monospace;
   white-space: pre;
 }
+
+textarea{
+  width: 40vw;
+  height: 40vh;
+}

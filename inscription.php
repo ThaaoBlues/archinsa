@@ -26,8 +26,9 @@ session_start();
         <input class="champ" id="username-input" type="text" name="username" placeholder="Ton adresse INSA" required>
         <input class="champ" id="password-input" type="password" name="password" placeholder="Mot de passe" required>
         
-        <h4 class=" centre-txt label-input" for="insa-input">Selectionne ton INSA</h4>
         <div hidden>
+        <h4 class=" centre-txt label-input" for="insa-input">Selectionne ton INSA</h4>
+
         <select class="champ" id="insa-input" type="select" name="insa" required>
 
             <option value="insa_toulouse">INSA Toulouse &lt;3</option>

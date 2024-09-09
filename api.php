@@ -43,21 +43,27 @@
 
             case 'rechercher':
 
-                // Exemple URL: /api.php/chercher?req=math&duree=30&themes=algebre,geometrie
+
+                if(isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1)){
+
+                    // Exemple URL: /api.php/chercher?req=math&duree=30&themes=algebre,geometrie
+                    
+                    $query = isset($_GET["req"]) ? $_GET["req"] : "";
+                    $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
+                    $themes = isset($_GET["themes"]) ? explode(",", $_GET["themes"]) : [];
+                    $tout_les_insa = isset($_GET["tout_les_insa"]) ? true : false;
+                    //print_r($_GET);
+                    try {
+                        $results = RechercheExercices($query, $length, $themes,$tout_les_insa);
+                        echo json_encode(["status" => "1", "resultats" => $results]);
+                    } catch (Exception $e) {
+                        echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
+                    }
                 
-                $query = isset($_GET["req"]) ? $_GET["req"] : "";
-                $length = isset($_GET["duree"]) ? $_GET["duree"] : "";
-                $themes = isset($_GET["themes"]) ? explode(",", $_GET["themes"]) : [];
-                $tout_les_insa = isset($_GET["tout_les_insa"]) ? true : false;
-                //print_r($_GET);
-                try {
-                    $results = RechercheExercices($query, $length, $themes,$tout_les_insa);
-                    echo json_encode(["status" => "1", "resultats" => $results]);
-                } catch (Exception $e) {
-                    echo json_encode(["status" => "0", "msg" => $e->getMessage()]);
+                }else{
+                    echo json_encode(["status" => "1", "resultats" => []]);
+
                 }
-                
-        
                 break;
 
             case 'decomposer_ensemble':

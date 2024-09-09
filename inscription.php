@@ -27,16 +27,16 @@ session_start();
         <input class="champ" id="password-input" type="password" name="password" placeholder="Mot de passe" required>
         
         <h4 class=" centre-txt label-input" for="insa-input">Selectionne ton INSA</h4>
-        <select class="champ" id="insa-input" type="select" name="insa" required>
+        <select class="champ" id="insa-input" type="select" name="insa" required hidden>
 
             <option value="insa_toulouse">INSA Toulouse &lt;3</option>
-            <option value="insa_lyon">INSA Lyon</option>
+            <!--<option value="insa_lyon">INSA Lyon</option>
             <option value="insa_rennes">INSA Rennes</option>
             <option value="insa_cvl">INSA CVL</option>
             <option value="insa_hdf">INSA HDF</option>
             <option value="insa_rouen">INSA Rouen</option>
             <option value="insa_strasbourg">INSA Strasbourg</option>
-            <option value="insa_hdf">INSA HDF</option>
+            <option value="insa_hdf">INSA HDF</option>-->
 
         </select>
         

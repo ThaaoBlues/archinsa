@@ -8,7 +8,7 @@ if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authe
     exit;
 }
 
-$conn = new mysqli($servername, $username, $password,$dbname);
+$conn = new mysqli($servername, $db_username, $db_password,$dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

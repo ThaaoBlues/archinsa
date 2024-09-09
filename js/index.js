@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     }
 
     document.getElementById("titre").addEventListener("click", (event) => {
-        window.location.pathname = "/archinsa";
+        window.location.pathname = "";
     });
 
 

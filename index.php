@@ -81,12 +81,10 @@
 ============================================
 </div></a>
 
-
     <div class="centre-horizontal etaler">
         <div id="liste_resultats" class="centre-txt">
         </div>
     <div>
-
 </body>
 <?php
     include "_partials/_footer.php";

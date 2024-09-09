@@ -192,9 +192,9 @@ async function gen_contenu() {
               card.classList.add('card');
 
               // Construction du contenu de la carte
-              const idDiv = document.createElement('div');
+              /*const idDiv = document.createElement('div');
               idDiv.textContent = `ID: ${doc.id}`;
-              card.appendChild(idDiv);
+              card.appendChild(idDiv);*/
 
               const titreDiv = document.createElement('div');
               titreDiv.classList.add('title');
@@ -205,9 +205,9 @@ async function gen_contenu() {
               typeDiv.textContent = `Type: ${doc.type}`;
               card.appendChild(typeDiv);
 
-              const uploadPathDiv = document.createElement('div');
+              /*const uploadPathDiv = document.createElement('div');
               uploadPathDiv.textContent = `Upload Path: ${doc.upload_path}`;
-              card.appendChild(uploadPathDiv);
+              card.appendChild(uploadPathDiv);*/
 
               // Ajout du contenu spécifique selon le type de fichier
               let ext = doc.upload_path.toString().split(".").pop();

@@ -66,6 +66,11 @@ D'autres fonctionnalités seront ajoutées petit à petit. (si vous avez des sug
 
 ### téléverser.php :
 
+
+- changer toutes les variables db avec $db_ devant
+- rajouter des extensions en whitelist
+- regex insa touloouse email inscription
+
 - tout pack dans un json à l'envoi : 
 ``    
 let ex = [{duree:"10",themes:["algèbre","analyse"],commentaire_exo:"cci est un commenataire"},{duree:"15",themes:["elec analogique"],commentaire_exo:""}]; 

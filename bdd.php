@@ -33,14 +33,15 @@ $pdf_extensions = ['pdf'];
 $presentation_extensions = ['ppt', 'pptx','odp','pptm','ppsx'];
 
 // pour les fonctions speciales comme les quiz html...
-$ext_speciales = ["html"];
+$ext_speciales = ["html","sh","txt"];
 
 // Fusionner les listes en une seule liste
 $ext_autorisees = array_merge($image_extensions, $pdf_extensions, $presentation_extensions,$ext_speciales);
 
 function check_ext($filename) {
+    global $ext_autorisees;
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
-    return in_array(strtolower($extension), $GLOBALS["ext_autorisees"]);
+    return in_array(strtolower($extension), $ext_autorisees);
 }
 
 
@@ -58,9 +59,9 @@ function ajouter_doc($request){
 
     try{
         $stm = $conn->prepare($sql);
-        $request['commentaire_auteur'] = htmlspecialchars($request["commentaire_auteur"]);
+        $request['commentaire_auteur'] = htmlentities($request["commentaire_auteur"]);
         $request["corrige_inclu"] = boolval($request["corrige_inclu"]);
-        $request["date_conception"] = htmlspecialchars($request["date_conception"]);
+        $request["date_conception"] = htmlentities($request["date_conception"]);
         $stm->bind_param("sisi",$request['commentaire_auteur'],$request["corrige_inclu"],$request["date_conception"],$_SESSION["user_id"]);
         $stm->execute();
         //$conn->execute_query($sql,array(htmlspecialchars($request['commentaire_auteur']),boolval($request["corrige_inclu"])));
@@ -94,11 +95,15 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
         foreach ($_FILES as $file) {
+
+            // Create a unique filename to avoid overwriting existing files
+            $uniqueFileName = uniqid() . '_' . $fileName;
+
             // Extract file information
             if (isset($file['name'])){
                 $fileName = htmlspecialchars($file['name']);
                 if(!check_ext($fileName)){
-                    echo(json_encode(["status"=>"0","msg"=>"Error saving file '$uniqueFileName'"]));
+                    echo(json_encode(["status"=>"0","msg"=>"le fichier '$fileName' n'a pas passé les filtres d'extensions."]));
                     exit;
                 }
 
@@ -107,8 +112,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
                 print_r($file);
             }
 
-            // Create a unique filename to avoid overwriting existing files
-            $uniqueFileName = uniqid() . '_' . $fileName;
+
 
             // Define the path to save the file
             $filePath = $GLOBALS['uploadDir'] . $uniqueFileName;

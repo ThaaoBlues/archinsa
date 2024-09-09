@@ -13,7 +13,7 @@ if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authe
 }
 include("test_creds.php");
 
-$conn = new mysqli($servername, $username, $password,$dbname);
+$conn = new mysqli($servername, $db_username, $db_password,$dbname);
 
 
 // Function to fetch and display documents

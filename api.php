@@ -131,16 +131,22 @@
 
             case "generer_chronologie":
 
-                try{
 
-                    $res = generer_chronologie();
-    
-                    echo(json_encode(["status"=>"1","resultats"=>$res]));
+                if(isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1)){
                     
-                }catch(Exception $e){
-                    echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                    try{
+
+                        $res = generer_chronologie();
+        
+                        echo(json_encode(["status"=>"1","resultats"=>$res]));
+                        
+                    }catch(Exception $e){
+                        echo( json_encode(["status"=> "0","msg"=> $e->getMessage() ]) );
+                    }
+                }else{
+                    echo(json_encode(["status"=>"1","resultats"=>[]]));
+
                 }
-               
                 break;
 
 
@@ -297,11 +303,11 @@
                     $mailtest = new Mail();
                     $mailtest->setContent(
                         "Inscription sur Arch'INSA",
-                        "https://127.0.0.1/archinsa/api.php/verification_inscription?token=".$token,
+                        "https://annales.insat.fr/api.php/verification_inscription?token=".$token,
                         "Salut Salut !!",
                         "La validation du compte permettra de vous connecter et de publier du contenu sur Arch'INSA :D",
                     );
-                    if(!$mailtest->send("mougnibas@insa-toulouse.fr", "Eh toi là !")) {
+                    if(!$mailtest->send($username, "Eh toi là !")) {
                         echo $mailtest->getError(); //si le mail n'a pas été envoyé
                         $succes = false;
                     }

@@ -374,7 +374,7 @@ function connecter_utilisateur($username,$password){
 
     global $conn;
 
-    $ret = 0;
+    $ret = false;
 
     $stmt = $conn->prepare("SELECT id,password_hash,admin,nom_insa FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
@@ -392,18 +392,14 @@ function connecter_utilisateur($username,$password){
             $_SESSION["admin"] = $admin;
             $_SESSION["nom_insa"] = $nom_insa;
             $_SESSION["user_id"] = $id;
-            $ret = 1;
-        } else {
-            $ret = 0;
+            $ret = true;
         }
-    } else {
-        $ret = 0;
     }
 
     $stmt->close();
 
     if($ret){
-        $ret=verifier_utilisateur($id);
+        $ret=utilisateur_est_verifie($id);
     }
     return $ret;
 }
@@ -455,7 +451,7 @@ function inscription_utilisateur($username,$password_hash,$nom_insa){
 function verifier_utilisateur($token){
     global $conn;
 
-    $ret = 0;
+    $ret = false;
 
     $t_instance = new Token();
 	

@@ -169,19 +169,6 @@ async function gen_contenu() {
       const data = await response.json();
       console.log(data);
 
-      const image_extensions = [
-          'jpg', 
-          'jpeg',
-          'png',
-          'gif',
-          'bmp',
-          'tiff', 
-          'tif',
-          'webp',
-          'svg',
-          'ico',
-          'raw'
-      ];
 
       const dataContainer = document.getElementById('data-container');
 
@@ -209,53 +196,61 @@ async function gen_contenu() {
               uploadPathDiv.textContent = `Upload Path: ${doc.upload_path}`;
               card.appendChild(uploadPathDiv);*/
 
-              // Ajout du contenu spécifique selon le type de fichier
-              let ext = doc.upload_path.toString().split(".").pop();
-              switch (true) {
-                  case image_extensions.includes(ext): // image
-                      const img = document.createElement('img');
-                      img.src = doc.upload_path;
-                      img.alt = doc.titre;
-                      card.appendChild(img);
+              switch (doc.type) {
+                case 2: // image
+                    const img = document.createElement('img');
+                    img.src = doc.upload_path;
+                    img.alt = doc.titre;
+                    card.appendChild(img);
 
-                      const imageLink = document.createElement('a');
-                      imageLink.href = doc.upload_path;
-                      imageLink.classList.add('lien');
-                      imageLink.textContent = 'Voir image';
-                      imageLink.target = '_blank';
-                      card.appendChild(imageLink);
-                      break;
-                  case ext == "pdf": // pdf
-                      const embed = document.createElement('embed');
-                      embed.src = doc.upload_path;
-                      card.appendChild(embed);
+                    const imageLink = document.createElement('a');
+                    imageLink.href = doc.upload_path;
+                    imageLink.classList.add('lien');
+                    imageLink.textContent = 'Voir image';
+                    imageLink.target = '_blank';
+                    card.appendChild(imageLink);
+                    break;
+                case 3: // pdf
+                    const embed = document.createElement('embed');
+                    embed.src = doc.upload_path;
+                    card.appendChild(embed);
 
-                      const pdfLink = document.createElement('a');
-                      pdfLink.href = doc.upload_path;
-                      pdfLink.classList.add('lien');
-                      pdfLink.textContent = 'Voir PDF en grand';
-                      pdfLink.target = '_blank';
-                      card.appendChild(pdfLink);
-                      break;
-                  case ext == "mp4": // video
-                      const video = document.createElement('video');
-                      video.src = doc.upload_path;
-                      video.controls = true;
-                      card.appendChild(video);
-                      break;
-                  case ext == "html":
-                      const iframe = document.createElement('iframe');
-                      iframe.src = doc.upload_path;
-                      card.appendChild(iframe);
-                      break;
-                  default:
-                      const unsupportedLink = document.createElement('a');
-                      unsupportedLink.href = doc.upload_path;
-                      unsupportedLink.classList.add('lien');
-                      unsupportedLink.textContent = 'Type de fichier non supporté.';
-                      unsupportedLink.target = '_blank';
-                      card.appendChild(unsupportedLink);
-                      break;
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = doc.upload_path;
+                    pdfLink.classList.add('lien');
+                    pdfLink.textContent = 'Voir PDF en grand';
+                    pdfLink.target = '_blank';
+                    card.appendChild(pdfLink);
+                    break;
+                case 4: // video
+                    const video = document.createElement('video');
+                    video.src = doc.upload_path;
+                    video.controls = true;
+                    card.appendChild(video);
+                    break;
+                case 5:
+                    const iframe = document.createElement('iframe');
+                    iframe.src = doc.upload_path;
+                    card.appendChild(iframe);
+                    break;
+
+                case 1:
+                    const textarea = document.createElement('textarea');
+                    var xmlhttp, text;
+                    xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('GET', doc.upload_path, false);
+                    xmlhttp.send();
+                    text = xmlhttp.responseText;
+                    textarea.value = text;
+                    card.appendChild(textarea)
+                default:
+                    const unsupportedLink = document.createElement('a');
+                    unsupportedLink.href = doc.upload_path;
+                    unsupportedLink.classList.add('lien');
+                    unsupportedLink.textContent = 'Type de fichier non supporté.';
+                    unsupportedLink.target = '_blank';
+                    card.appendChild(unsupportedLink);
+                    break;
               }
 
               // Ajout du contenu restant de la carte

@@ -11,6 +11,13 @@ $uploadDir = 'archives/';
 
 // le type de document est classifié entre 0 et n dans l'ensemble des entiers naturels
 $max_val_type = 3;
+/*
+1 : texte
+2 : image
+3 : pdf
+0 : non supporté
+-1 : erreur
+*/
 
 // Liste des extensions autorisées pour les images
 $image_extensions = [
@@ -87,7 +94,6 @@ function saveFilesFromPost($postData,$id_ensemble) {
         
         // Iterate through each file in the $_FILES array
 
-        $safe_type = intval($postData['type']);
 
 
         $i = 0;
@@ -95,6 +101,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
         foreach ($_FILES as $file) {
+            $safe_type = checkFileTypeSecure($file['tmp_name']);
 
             // Create a unique filename to avoid overwriting existing files
             $uniqueFileName = uniqid() . '_' . $fileName;
@@ -102,8 +109,8 @@ function saveFilesFromPost($postData,$id_ensemble) {
             // Extract file information
             if (isset($file['name'])){
                 $fileName = htmlspecialchars($file['name']);
-                if(!check_ext($fileName)){
-                    echo(json_encode(["status"=>"0","msg"=>"le fichier '$fileName' n'a pas passé les filtres d'extensions."]));
+                if(!check_ext($fileName) || $safe_type == 0){
+                    echo(json_encode(["status"=>"0","msg"=>"le fichier '$fileName' n'a pas passé les filtres de contenu. ( dommaaaaggee :c )"]));
                     exit;
                 }
 
@@ -355,7 +362,7 @@ function generer_chronologie(){
     // on rajoute le chemin vers chaque document présent dans l'ensemble
     $resultat_complet = array();
     foreach($ensembles as $ens){
-        $sql = "SELECT titre,upload_path,ensemble_id FROM documents WHERE ensemble_id=?";
+        $sql = "SELECT titre,upload_path,ensemble_id,type FROM documents WHERE ensemble_id=?";
         $res = $conn->execute_query($sql,array($ens["id"]));
         $ens["documents"] = array();
         while($doc = $res->fetch_assoc()){

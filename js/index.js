@@ -56,23 +56,9 @@ async function rechercher(){
             card.appendChild(titre_ensemble);
             
             // fichiers spéciaux ?
-            let ext = doc.upload_path.toString().split(".").pop();
-            const image_extensions = [
-                'jpg', 
-                'jpeg',
-                'png',
-                'gif',
-                'bmp',
-                'tiff', 
-                'tif',
-                'webp',
-                'svg',
-                'ico',
-                'raw'
-            ];
 
-            switch (true) {
-                case image_extensions.includes(ext): // image
+            switch (doc.type) {
+                case 2: // image
                     const img = document.createElement('img');
                     img.src = doc.upload_path;
                     img.alt = doc.titre;
@@ -85,7 +71,7 @@ async function rechercher(){
                     imageLink.target = '_blank';
                     card.appendChild(imageLink);
                     break;
-                case ext == "pdf": // pdf
+                case 3: // pdf
                     const embed = document.createElement('embed');
                     embed.src = doc.upload_path;
                     card.appendChild(embed);
@@ -97,17 +83,27 @@ async function rechercher(){
                     pdfLink.target = '_blank';
                     card.appendChild(pdfLink);
                     break;
-                case ext == "mp4": // video
+                case 4: // video
                     const video = document.createElement('video');
                     video.src = doc.upload_path;
                     video.controls = true;
                     card.appendChild(video);
                     break;
-                case ext == "html":
+                case 5:
                     const iframe = document.createElement('iframe');
                     iframe.src = doc.upload_path;
                     card.appendChild(iframe);
                     break;
+
+                case 1:
+                    const textarea = document.createElement('textarea');
+                    var xmlhttp, text;
+                    xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('GET', doc.upload_path, false);
+                    xmlhttp.send();
+                    text = xmlhttp.responseText;
+                    textarea.value = text;
+                    card.appendChild(textarea)
                 default:
                     const unsupportedLink = document.createElement('a');
                     unsupportedLink.href = doc.upload_path;
@@ -168,29 +164,16 @@ async function gen_chronologie(){
                 
                 card.appendChild(titre_ensemble);
                 
-                // fichiers spéciaux ?
-                let ext = doc.upload_path.toString().split(".").pop();
-                const image_extensions = [
-                    'jpg', 
-                    'jpeg',
-                    'png',
-                    'gif',
-                    'bmp',
-                    'tiff', 
-                    'tif',
-                    'webp',
-                    'svg',
-                    'ico',
-                    'raw'
-                ];
-
-                switch (true) {
-                    case image_extensions.includes(ext): // image
+                // fichiers spéciaux ?     
+                
+        
+                switch (doc.type) {
+                    case 2: // image
                         const img = document.createElement('img');
                         img.src = doc.upload_path;
                         img.alt = doc.titre;
                         card.appendChild(img);
-  
+    
                         const imageLink = document.createElement('a');
                         imageLink.href = doc.upload_path;
                         imageLink.classList.add('lien');
@@ -198,11 +181,11 @@ async function gen_chronologie(){
                         imageLink.target = '_blank';
                         card.appendChild(imageLink);
                         break;
-                    case ext == "pdf": // pdf
+                    case 3: // pdf
                         const embed = document.createElement('embed');
                         embed.src = doc.upload_path;
                         card.appendChild(embed);
-  
+    
                         const pdfLink = document.createElement('a');
                         pdfLink.href = doc.upload_path;
                         pdfLink.classList.add('lien');
@@ -210,17 +193,27 @@ async function gen_chronologie(){
                         pdfLink.target = '_blank';
                         card.appendChild(pdfLink);
                         break;
-                    case ext == "mp4": // video
+                    case 4: // video
                         const video = document.createElement('video');
                         video.src = doc.upload_path;
                         video.controls = true;
                         card.appendChild(video);
                         break;
-                    case ext == "html":
+                    case 5:
                         const iframe = document.createElement('iframe');
                         iframe.src = doc.upload_path;
                         card.appendChild(iframe);
                         break;
+    
+                    case 1:
+                        const textarea = document.createElement('textarea');
+                        var xmlhttp, text;
+                        xmlhttp = new XMLHttpRequest();
+                        xmlhttp.open('GET', doc.upload_path, false);
+                        xmlhttp.send();
+                        text = xmlhttp.responseText;
+                        textarea.value = text;
+                        card.appendChild(textarea)
                     default:
                         const unsupportedLink = document.createElement('a');
                         unsupportedLink.href = doc.upload_path;

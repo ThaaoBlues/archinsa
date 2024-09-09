@@ -54,21 +54,7 @@ function generer_chronologie() {
         echo "<p>Upload Path: {$row['upload_path']}</p>";
         echo "<p>Ensemble ID: {$row['ensemble_id']}</p>";
 
-        $extension = pathinfo($row['upload_path'], PATHINFO_EXTENSION);
-
-        if (strtolower($extension) === 'pdf'):
-            echo "<embed src=\"{$row['upload_path']}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
-        elseif (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif'])):
-            echo "<img src=\"{$row['upload_path']}\">";
-
-        elseif (strtolower($extension) == "html"):
-            echo("<iframe src=\"{$row['upload_path']}\"></iframe>");
-
-        else:
-            echo "<p>Unsupported file type</p>".$row['upload_path'];
-        endif;
-
-        echo "<p>Theme ID: {$row['theme_id']}</p>";
+        generateFileHTML($row);
 
     }
 
@@ -79,6 +65,52 @@ function generer_chronologie() {
 
     echo "</div>";
 
+}
+
+
+// Function to handle different file types and generate HTML dynamically
+function generateFileHTML($row) {
+    // Simulating the switch-case equivalent in PHP using a switch on doc.type
+    $doc_type = $row['type']; // Assuming 'type' is the same as doc.type in JS
+
+    switch ($doc_type) {
+        case 2: // Image
+            // Create image element
+            echo "<img src=\"{$row['upload_path']}\" alt=\"{$row['titre']}\" />";
+            
+            // Create link to view image
+            echo "<a href=\"{$row['upload_path']}\" class=\"lien\" target=\"_blank\">Voir image</a>";
+            break;
+
+        case 3: // PDF
+            // Create embed for PDF
+            echo "<embed src=\"{$row['upload_path']}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
+            
+            // Create link to view PDF
+            echo "<a href=\"{$row['upload_path']}\" class=\"lien\" target=\"_blank\">Voir PDF en grand</a>";
+            break;
+
+        case 4: // Video
+            // Create video element with controls
+            echo "<video src=\"{$row['upload_path']}\" controls></video>";
+            break;
+
+        case 5: // HTML
+            // Create iframe for HTML document
+            echo "<iframe src=\"{$row['upload_path']}\" width=\"100%\" height=\"600px\"></iframe>";
+            break;
+
+        case 1: // Plain Text
+            // Fetch content via PHP file_get_contents
+            $text = file_get_contents($row['upload_path']);
+            echo "<textarea readonly style=\"width: 100%; height: 200px;\">$text</textarea>";
+            break;
+
+        default:
+            // Unsupported file type, create link
+            echo "<a href=\"{$row['upload_path']}\" class=\"lien\" target=\"_blank\">Type de fichier non supporté.</a>";
+            break;
+    }
 }
 
 

@@ -418,6 +418,8 @@ function inscription_utilisateur($username,$password_hash,$nom_insa){
         return $ret;
     }
 
+
+
     $stmt = $conn->prepare("INSERT INTO users (username, password_hash,nom_insa) VALUES (?, ?,?)");
     $stmt->bind_param("sss", $username, $password_hash,$nom_insa);
     

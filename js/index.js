@@ -207,6 +207,8 @@ async function gen_chronologie(){
     
                     case 1:
                         const textarea = document.createElement('textarea');
+                        textarea.setAttribute("height","40vh");
+                        textarea.setAttribute("width","65vw")
                         var xmlhttp, text;
                         xmlhttp = new XMLHttpRequest();
                         xmlhttp.open('GET', doc.upload_path, false);

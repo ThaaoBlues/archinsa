@@ -110,7 +110,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
             if (isset($file['name'])){
                 $fileName = htmlspecialchars($file['name']);
                 // le dernier check est pour autoriser l'upload de fichiers html aux admins
-                if(!check_ext($fileName) || $safe_type == 0 || ($safe_type == 4 && !$_SESSION["admin"])){
+                if(!check_ext($fileName) || $safe_type == 0 || ($safe_type == 5 && !$_SESSION["admin"])){
                     echo(json_encode(["status"=>"0","msg"=>"le fichier '$fileName' n'a pas passé les filtres de contenu. ( dommaaaaggee :c )"]));
                     exit;
                 }

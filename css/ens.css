@@ -1,12 +1,20 @@
 @media only screen and (orientation: portrait){
 
-.gros-titre{
-  width: 90vw;
-  overflow-x: hidden;
-  font-weight: bolder;
-  font-size: small;
+  .gros-titre{
+    width: 90vw;
+    overflow-x: hidden;
+    font-weight: bolder;
+    font-size: small;
+  }
+
 }
 
+
+@media only screen and (min-width: 1000px){
+  .gros-titre {
+    font-size: larger;
+    font-weight: bolder;
+  }
 }
 body {
   font-family: Arial, sans-serif;
@@ -47,10 +55,7 @@ tr:hover {
   padding: 20px;
 }
 
-.gros-titre {
-  font-size: larger;
-  font-weight: bolder;
-}
+
 
 .bulle-rouge{
     width: fit-content;

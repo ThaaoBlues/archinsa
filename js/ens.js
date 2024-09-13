@@ -173,6 +173,14 @@ async function gen_contenu() {
       const dataContainer = document.getElementById('data-container');
 
       if (data.status === "1" && data.msg.documents.length > 0) {
+
+            // Ajout du contenu restant de la carte
+            const commentaireDiv = document.createElement('div');
+            commentaireDiv.classList.add('title');
+            commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
+            document.appendChild(commentaireDiv);
+
+            
           data.msg.documents.forEach(doc => {
               // Création d'une carte (card)
               const card = document.createElement('div');
@@ -278,12 +286,6 @@ async function gen_contenu() {
           });
 
 
-
-          // Ajout du contenu restant de la carte
-          const commentaireDiv = document.createElement('div');
-          commentaireDiv.classList.add('title');
-          commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
-          document.appendChild(commentaireDiv);
       } else {
           dataContainer.textContent = data.msg;
       }

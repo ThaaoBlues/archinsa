@@ -1,4 +1,11 @@
 <?php
+
+// Check if user is logged in and is an admin
+if (!isset($_SESSION["utilisateur_authentifie"]) || $_SESSION["utilisateur_authentifie"] !== true || !$_SESSION["admin"]) {
+    header("Location: index.php");
+    exit;
+}
+
 // Database Connection
 include("test_creds.php");
 
@@ -30,11 +37,11 @@ if (isset($_POST['update_document'])) {
     $titre = $_POST['titre'];
     $type = $_POST['type'];
     $commentaire_auteur = $_POST['commentaire_auteur'];
-    $ensemble_id = $_POST['ensemble_id'];
-    $theme_id = $_POST['theme_id'];
 
-    $stmt = $mysqli->prepare("UPDATE documents SET titre = ?, type = ?, commentaire_auteur = ?, ensemble_id = ?, theme_id = ? WHERE id = ?");
-    $stmt->bind_param('sisiii', $titre, $type, $commentaire_auteur, $ensemble_id, $theme_id, $id);
+    echo var_dump($_POST);
+
+    $stmt = $mysqli->prepare("UPDATE documents SET titre = ?, type = ?, commentaire_auteur = ? WHERE id = ?");
+    $stmt->bind_param('sisi', $titre, $type, $commentaire_auteur, $id);
     $stmt->execute();
     $stmt->close();
 }
@@ -71,19 +78,19 @@ $documents = $mysqli->query("SELECT * FROM documents")->fetch_all(MYSQLI_ASSOC);
 <body>
 
 <h2>Manage Ensembles</h2>
-<form method="post">
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Commentaire Auteur</th>
-            <th>Valide</th>
-            <th>Corrige Inclu</th>
-            <th>Date Conception</th>
-            <th>Auteur ID</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach ($ensembles as $ensemble): ?>
-        <tr>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Commentaire Auteur</th>
+        <th>Valide</th>
+        <th>Corrige Inclu</th>
+        <th>Date Conception</th>
+        <th>Auteur ID</th>
+        <th>Action</th>
+    </tr>
+    <?php foreach ($ensembles as $ensemble): ?>
+    <tr>
+        <form method="POST">
             <td><?php echo $ensemble['id']; ?></td>
             <td><input type="text" name="commentaire_auteur" value="<?php echo $ensemble['commentaire_auteur']; ?>"></td>
             <td><input type="checkbox" name="valide" <?php echo $ensemble['valide'] ? 'checked' : ''; ?>></td>
@@ -94,42 +101,44 @@ $documents = $mysqli->query("SELECT * FROM documents")->fetch_all(MYSQLI_ASSOC);
                 <input type="hidden" name="ensemble_id" value="<?php echo $ensemble['id']; ?>">
                 <input type="submit" name="update_ensemble" value="Update">
             </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-</form>
+        </form>
+        
+    </tr>
+    <?php endforeach; ?>
+</table>
 
 <h2>Manage Documents</h2>
-<form method="post">
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Titre</th>
-            <th>Type</th>
-            <th>Upload Path</th>
-            <th>Commentaire Auteur</th>
-            <th>Ensemble ID</th>
-            <th>Theme ID</th>
-            <th>Actions</th>
-        </tr>
-        <?php foreach ($documents as $document): ?>
-        <tr>
-            <td><?php echo $document['id']; ?></td>
-            <td><input type="text" name="titre" value="<?php echo $document['titre']; ?>"></td>
-            <td><input type="number" name="type" value="<?php echo $document['type']; ?>"></td>
-            <td><?php echo $document['upload_path']; ?></td>
-            <td><input type="text" name="commentaire_auteur" value="<?php echo $document['commentaire_auteur']; ?>"></td>
-            <td><input type="number" name="ensemble_id" value="<?php echo $document['ensemble_id']; ?>"></td>
-            <td><input type="number" name="theme_id" value="<?php echo $document['theme_id']; ?>"></td>
-            <td>
-                <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
-                <input type="submit" name="update_document" value="Update">
-                <a href="?delete_document=1&id=<?php echo $document['id']; ?>&path=<?php echo $document['upload_path']; ?>" onclick="return confirm('Are you sure you want to delete this document?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-</form>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Type</th>
+        <th>Upload Path</th>
+        <th>Commentaire Auteur</th>
+        <th>Ensemble ID</th>
+        <th>Theme ID</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($documents as $document): ?>
+    <tr>
+        <form method="POST">
+        <td><?php echo $document['id']; ?></td>
+        <td><input type="text" name="titre" value="<?php echo $document['titre']; ?>"></td>
+        <td><input type="number" name="type" value="<?php echo $document['type']; ?>"></td>
+        <td><?php echo $document['upload_path']; ?></td>
+        <td><input type="text" name="commentaire_auteur" value="<?php echo $document['commentaire_auteur']; ?>"></td>
+        <td><input type="number" name="ensemble_id" value="<?php echo $document['ensemble_id']; ?>"></td>
+        <td><input type="number" name="theme_id" value="<?php echo $document['theme_id']; ?>"></td>
+        <td>
+            <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
+            <input type="submit" name="update_document" value="Update">
+            <a href="?delete_document=1&id=<?php echo $document['id']; ?>&path=<?php echo $document['upload_path']; ?>" onclick="return confirm('Are you sure you want to delete this document?')">Delete</a>
+        </td>
+        </form>
+
+    </tr>
+    <?php endforeach; ?>
+</table>
 
 </body>
 </html>

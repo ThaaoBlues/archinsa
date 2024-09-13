@@ -73,8 +73,8 @@
         </form>
     </div>
 
-    <a href="televerser.php" class="color-red-tr floating-action-btn">
-<div class="ascii-art">
+    <a href="televerser.php">
+<div class="ascii-art color-red-tr floating-action-btn">
 ============================================
 |    _                                     |
 |  _| |_                                   |

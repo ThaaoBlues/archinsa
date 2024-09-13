@@ -1,4 +1,4 @@
-@media (max-width: 1000px){
+@media only screen and (orientation: portrait){
     /* For mobile phones: */
     .floating-action-btn{
         width: auto;

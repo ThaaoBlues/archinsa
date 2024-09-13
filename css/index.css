@@ -13,7 +13,7 @@
         position: fixed;
         bottom: 2vh;
         margin-top: 50vh;
-        right: 20vw;
+        right: 10vw;
         padding-left: 10px;
         padding-right: 10px;
         padding-bottom: 9px;
@@ -23,6 +23,8 @@
     .gros-titre{
       width: 100vw;
       overflow-x: hidden;
+      font-weight: bolder;
+      font-size: small;
     }
 
     .ligne-boutons{

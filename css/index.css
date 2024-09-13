@@ -144,7 +144,16 @@
   height: auto;
   margin-bottom: 10px;
   border-radius: 7px;
+
 }
+
+.card textarea{
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 7px;
+}
+
 .card embed{
   width: 100%;
   height: 50vw;
@@ -153,12 +162,14 @@
 
 .card iframe {
   width: 100%;
-  height: 50vw; /* Ajuster la hauteur selon vos besoins */
+  height: 50vw; 
+
 }
 
 .card video {
   width: 100%;
   height: auto;
+
 }
 
 .card div {
@@ -171,7 +182,17 @@
   margin-bottom: 10px;
 }
 
+.card a{
+  width: fit-content;
+  grid-column: auto;
+}
 
+.ligne-boutons{
+}
+
+.ligne-boutons #lien{
+
+}
 
 
 /* Styles pour les liens */

@@ -348,12 +348,11 @@ function generer_chronologie(){
     global $conn;
 
     // on va choper les 10 derniers trucs televerses par les gens
-    $sql = "SELECT * FROM ensembles WHERE valide=1 ORDER BY date_televersement DESC ";
+    $sql = "SELECT * FROM ensembles WHERE valide=1 ORDER BY date_televersement DESC LIMIT 10";
 
     $res = $conn->execute_query($sql);
-    $i = 0;
     $ensembles = array();
-    while (($ens = $res->fetch_assoc()) && $i < 10){
+    while (($ens = $res->fetch_assoc())){
 
         array_push($ensembles,$ens);
 

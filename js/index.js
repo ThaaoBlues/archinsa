@@ -54,6 +54,9 @@ async function rechercher(){
             titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
             
             card.appendChild(titre_ensemble);
+
+            const buttonsDiv = document.createElement("div");
+            buttonsDiv.classList.add("ligne-boutons");
             
             // fichiers spéciaux ?
 
@@ -104,22 +107,27 @@ async function rechercher(){
                     text = xmlhttp.responseText;
                     textarea.value = text;
                     card.appendChild(textarea)
+                    break;
                 default:
                     const unsupportedLink = document.createElement('a');
                     unsupportedLink.href = doc.upload_path;
                     unsupportedLink.classList.add('lien');
                     unsupportedLink.textContent = 'Type de fichier non supporté.';
                     unsupportedLink.target = '_blank';
-                    card.appendChild(unsupportedLink);
+                    buttonsDiv.appendChild(unsupportedLink);
                     break;
             }
 
             
             const ele = document.createElement("a");
-            ele.innerText = "Voir ce que c'est";
+            ele.innerText = "Voir tous les pdf de cet ensemble";
             ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
-            ele.classList.add("lien")
-            card.appendChild(ele)
+            ele.classList.add("lien");
+
+            buttonsDiv.appendChild(ele);
+
+            card.appendChild(buttonsDiv);
+
 
             document.getElementById("liste_resultats").appendChild(card);
 
@@ -142,10 +150,15 @@ async function gen_chronologie(){
     // vide d'abord les éléments présents dans la liste sur la page
     document.getElementById("liste_resultats").innerHTML = "";
 
-    // ensuite on ajoute un petit titre à la chronologie
-    let titre = document.createElement("h1");
-    titre.innerText = "Documents récemment publiés";
-    document.getElementById("liste_resultats").appendChild(titre);
+    if(data.resultats.length > 0){
+        // ensuite on ajoute un petit titre à la chronologie
+        let titre = document.createElement("h1");
+        titre.innerText = "Documents récemment publiés";
+        document.getElementById("liste_resultats").appendChild(titre);
+    }else{
+        
+    }
+
     
     // et on remplis avec ce que l'api a généré
     if(data.status == 1){
@@ -163,6 +176,9 @@ async function gen_chronologie(){
                 titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
                 
                 card.appendChild(titre_ensemble);
+
+                const buttonsDiv = document.createElement("div");
+                buttonsDiv.classList.add("ligne-boutons");
                 
                 // fichiers spéciaux ?     
                 
@@ -179,7 +195,7 @@ async function gen_chronologie(){
                         imageLink.classList.add('lien');
                         imageLink.textContent = 'Voir image';
                         imageLink.target = '_blank';
-                        card.appendChild(imageLink);
+                        buttonsDiv.appendChild(imageLink);
                         break;
                     case 3: // pdf
                         const embed = document.createElement('embed');
@@ -191,7 +207,7 @@ async function gen_chronologie(){
                         pdfLink.classList.add('lien');
                         pdfLink.textContent = 'Voir PDF en grand';
                         pdfLink.target = '_blank';
-                        card.appendChild(pdfLink);
+                        buttonsDiv.appendChild(pdfLink);
                         break;
                     case 4: // video
                         const video = document.createElement('video');
@@ -214,22 +230,26 @@ async function gen_chronologie(){
                         text = xmlhttp.responseText;
                         textarea.value = text;
                         card.appendChild(textarea)
+                        break;
                     default:
                         const unsupportedLink = document.createElement('a');
                         unsupportedLink.href = doc.upload_path;
                         unsupportedLink.classList.add('lien');
                         unsupportedLink.textContent = 'Type de fichier non supporté.';
                         unsupportedLink.target = '_blank';
-                        card.appendChild(unsupportedLink);
+                        buttonsDiv.appendChild(unsupportedLink);
                         break;
                 }
 
                 
                 const ele = document.createElement("a");
-                ele.innerText = "Voir ce que c'est";
+                ele.innerText = "Voir tous les pdf de cet ensemble";
                 ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
-                ele.classList.add("lien")
-                card.appendChild(ele)
+                ele.classList.add("lien");
+    
+                buttonsDiv.appendChild(ele);
+    
+                card.appendChild(buttonsDiv);
 
                 document.getElementById("liste_resultats").appendChild(card);
 

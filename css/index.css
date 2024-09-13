@@ -13,10 +13,20 @@
         position: fixed;
         bottom: 2vh;
         margin-top: 50vh;
-        right: 1vw;
+        right: 5vw;
         padding-left: 10px;
         padding-right: 10px;
         padding-bottom: 9px;
+        
+    }
+
+    .ligne-boutons{
+      display: grid;
+    }
+    
+    .ligne-boutons #lien{
+      grid-row: auto;
+    
     }
 
     .card{
@@ -194,12 +204,7 @@
   grid-column: auto;
 }
 
-.ligne-boutons{
-}
 
-.ligne-boutons #lien{
-
-}
 
 
 /* Styles pour les liens */

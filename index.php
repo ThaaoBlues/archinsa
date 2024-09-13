@@ -42,6 +42,8 @@
 
         <a href="validation.php" class="button color-red-tr" id="btn-validation">Validation des ensembles</a>
         <a href="utilisateurs.php" class="button color-red-tr" id="btn-validation">Gestion des utilisateurs</a>
+        <a href="gestion_contenu.php" class="button color-red-tr" id="btn-validation">Gestion du contenu</a>
+        
         <?php
 
     }?>

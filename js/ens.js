@@ -9,159 +9,6 @@ function querystring(key) {
 }
 
 
-/*async function gen_contenu() {
-    try {
-      const response = await fetch('api.php/decomposer_ensemble?ensemble_id='+querystring("ensemble_id"));
-      const data = await response.json();
-      console.log(data);
-  
-      if (data.status === "1" && data.msg.documents.length > 0) {
-        const table = document.createElement('table');
-        const thead = document.createElement('thead');
-        const tbody = document.createElement('tbody');
-  
-        const headerRow = document.createElement('tr');
-        const idHeader = document.createElement('th');
-        idHeader.textContent = 'ID';
-        const titreHeader = document.createElement('th');
-        titreHeader.textContent = 'Titre';
-        const typeHeader = document.createElement('th');
-        typeHeader.textContent = 'Type';
-        const uploadPathHeader = document.createElement('th');
-        uploadPathHeader.textContent = 'Upload Path';
-        const previewHeader = document.createElement('th');
-        previewHeader.textContent = 'Preview';
-        const commentaireHeader = document.createElement('th');
-        commentaireHeader.textContent = 'Commentaire Auteur';
-        const exerciceHeader = document.createElement('th');
-        exerciceHeader.textContent = 'Exercices';
-  
-        headerRow.appendChild(idHeader);
-        headerRow.appendChild(titreHeader);
-        headerRow.appendChild(typeHeader);
-        headerRow.appendChild(uploadPathHeader);
-        headerRow.appendChild(previewHeader);
-        headerRow.appendChild(commentaireHeader);
-        headerRow.appendChild(exerciceHeader);
-  
-        thead.appendChild(headerRow);
-  
-        data.msg.documents.forEach(doc => {
-          const row = document.createElement('tr');
-          const idCell = document.createElement('td');
-          idCell.textContent = doc.id;
-          const titreCell = document.createElement('td');
-          titreCell.textContent = doc.titre;
-          const typeCell = document.createElement('td');
-          typeCell.textContent = doc.type;
-          const uploadPathCell = document.createElement('td');
-          uploadPathCell.textContent = doc.upload_path;
-  
-          let previewCell;
-          let ext = doc.upload_path.toString().split(".").pop();
-  
-          let image_extensions = [
-            'jpg', 
-            'jpeg',
-            'png',
-            'gif',
-            'bmp',
-            'tiff', 
-            'tif',
-            'webp',
-            'svg',
-            'ico',
-            'raw'];
-
-          switch (true) {
-            case image_extensions.includes(ext): // image
-              previewCell = document.createElement('td');
-              const img = document.createElement('img');
-              img.src = doc.upload_path;
-              img.alt = doc.titre;
-              previewCell.appendChild(img);
-
-              let lien_img = document.createElement('a');
-              lien_img.href = doc.upload_path;
-              lien_img.textContent = 'Voir image';
-              lien_img.target = '_blank';
-              previewCell.appendChild(lien_img);
-
-              break;
-            case ext=="pdf": // pdf
-              previewCell = document.createElement('td');
-              const pdfLink = document.createElement('a');
-              pdfLink.href = doc.upload_path;
-              pdfLink.textContent = 'Voir PDF';
-              pdfLink.target = '_blank';
-              previewCell.appendChild(pdfLink);
-              break;
-            case ext == "mp4": // video
-              previewCell = document.createElement('td');
-              const video = document.createElement('video');
-              video.src = doc.upload_path;
-              video.controls = true;
-              previewCell.appendChild(video);
-              break;
-            case ext == "html": 
-              previewCell = document.createElement('td');
-              const iframe = document.createElement('iframe');
-              iframe.href = doc.upload_path;
-              //iframe.textContent = doc.titre;
-              previewCell.appendChild(iframe);
-              break;
-
-            default :
-              previewCell = document.createElement('td');
-              let lien = document.createElement('a');
-              lien.href = doc.upload_path;
-              lien.textContent = 'Type de fichier non supporté.';
-              lien.target = '_blank';
-              previewCell.appendChild(lien);
-            break;
-
-          }
-  
-          const commentaireCell = document.createElement('td');
-          commentaireCell.textContent = data.msg.commentaire_auteur || '';
-  
-          const exerciceCell = document.createElement('td');
-          if (doc.exercices && doc.exercices.length > 0) {
-            const exerciceList = document.createElement('ul');
-            doc.exercices.forEach(exercice => {
-              const exerciceItem = document.createElement('li');
-              exerciceItem.textContent = `Exo n°${exercice.id} ${exercice.commentaire_auteur}, Duree: ${exercice.duree}`;
-              exerciceList.appendChild(exerciceItem);
-            });
-            exerciceCell.appendChild(exerciceList);
-          } else {
-            exerciceCell.textContent = 'Pas de détails sur les exercices';
-          }
-  
-          row.appendChild(idCell);
-          row.appendChild(titreCell);
-          row.appendChild(typeCell);
-          row.appendChild(uploadPathCell);
-          row.appendChild(previewCell);
-          row.appendChild(commentaireCell);
-          row.appendChild(exerciceCell);
-  
-          tbody.appendChild(row);
-        });
-  
-        table.appendChild(thead);
-        table.appendChild(tbody);
-  
-        const dataContainer = document.getElementById('data-container');
-        dataContainer.appendChild(table);
-      } else {
-        const dataContainer = document.getElementById('data-container');
-        dataContainer.textContent = data.msg;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-}*/
 
 async function gen_contenu() {
   try {
@@ -174,11 +21,11 @@ async function gen_contenu() {
 
       if (data.status === "1" && data.msg.documents.length > 0) {
 
-            // Ajout du contenu restant de la carte
-            const commentaireDiv = document.createElement('div');
-            commentaireDiv.classList.add('title');
-            commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
-            document.body.appendChild(commentaireDiv);
+          // Ajout du contenu restant de la carte
+          const commentaireDiv = document.createElement('div');
+          commentaireDiv.classList.add('title');
+          commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
+          document.body.appendChild(commentaireDiv);
 
 
           data.msg.documents.forEach(doc => {
@@ -306,7 +153,7 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     gen_contenu();
 
   document.getElementById("titre").addEventListener("click", (event) => {
-    window.location.pathname = "/archinsa";
+    window.location.pathname = "/";
   });
 
 });

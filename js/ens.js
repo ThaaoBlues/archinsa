@@ -188,10 +188,6 @@ async function gen_contenu() {
               titreDiv.textContent = `Titre: ${doc.titre}`;
               card.appendChild(titreDiv);
 
-              const typeDiv = document.createElement('div');
-              typeDiv.textContent = `Type: ${doc.type}`;
-              card.appendChild(typeDiv);
-
               /*const uploadPathDiv = document.createElement('div');
               uploadPathDiv.textContent = `Upload Path: ${doc.upload_path}`;
               card.appendChild(uploadPathDiv);*/
@@ -242,7 +238,8 @@ async function gen_contenu() {
                     xmlhttp.send();
                     text = xmlhttp.responseText;
                     textarea.value = text;
-                    card.appendChild(textarea)
+                    card.appendChild(textarea);
+                    break;
                 default:
                     const unsupportedLink = document.createElement('a');
                     unsupportedLink.href = doc.upload_path;
@@ -253,11 +250,6 @@ async function gen_contenu() {
                     break;
               }
 
-              // Ajout du contenu restant de la carte
-              const commentaireDiv = document.createElement('div');
-              commentaireDiv.classList.add('title');
-              commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
-              card.appendChild(commentaireDiv);
 
               // Exercices
               if (doc.exercices && doc.exercices.length > 0) {
@@ -280,12 +272,24 @@ async function gen_contenu() {
                   card.appendChild(noExercicesDiv);
               }
 
+              
               // Ajout de la carte au conteneur principal
               dataContainer.appendChild(card);
           });
+
+
+
+          // Ajout du contenu restant de la carte
+          const commentaireDiv = document.createElement('div');
+          commentaireDiv.classList.add('title');
+          commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
+          document.appendChild(commentaireDiv);
       } else {
           dataContainer.textContent = data.msg;
       }
+
+
+
   } catch (error) {
       console.error(error);
   }

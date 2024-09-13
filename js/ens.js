@@ -178,9 +178,9 @@ async function gen_contenu() {
             const commentaireDiv = document.createElement('div');
             commentaireDiv.classList.add('title');
             commentaireDiv.textContent = `Commentaire Auteur: ${data.msg.commentaire_auteur || ''}`;
-            document.appendChild(commentaireDiv);
+            document.body.appendChild(commentaireDiv);
 
-            
+
           data.msg.documents.forEach(doc => {
               // Création d'une carte (card)
               const card = document.createElement('div');

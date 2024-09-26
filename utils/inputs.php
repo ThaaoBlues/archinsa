@@ -43,13 +43,15 @@ function checkFileTypeSecure($filePath) {
             'pdf' => '25504446', // PDF files always start with "%PDF" in hex
         ],
         'image' => [
-            'jpeg' => 'ffd8ffe0', // JPEG
+            'jpeg0' => 'ffd8ffe0', // JPEG
+            'jpeg1' => 'ffd8ffe1', // JPEG but different you know they like to stand out (exif)
+            'jpeg2' => 'ffd8ffe2', // NO SHIT ??? (jfif or spiff)
             'png'  => '89504e47', // PNG
             'gif'  => '47494638', // GIF
             'bmp'  => '424d',     // BMP
             'webp' => '52494646', // WebP starts with "RIFF"
             'tiff' => '49492a00'  // TIFF
-        ],
+         ],
         'video' => [
             'mp4'  => '00000018', // MP4
             //'avi'  => '52494646', // AVI starts with "RIFF" bah relou du coup c'est pareil que webp

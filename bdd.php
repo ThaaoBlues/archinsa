@@ -40,7 +40,7 @@ $pdf_extensions = ['pdf'];
 $presentation_extensions = ['ppt', 'pptx','odp','pptm','ppsx'];
 
 // pour les fonctions speciales comme les quiz html...
-$ext_speciales = ["html","sh","txt"];
+$ext_speciales = ["html","sh","txt","adb","ads","py","ipynb","c","cpp","rs","go","asm","js","java","md"];
 
 // Fusionner les listes en une seule liste
 $ext_autorisees = array_merge($image_extensions, $pdf_extensions, $presentation_extensions,$ext_speciales);

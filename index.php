@@ -34,6 +34,8 @@
             <a href="inscription.php" class="button color-red-tr" id="btn-connection">S'inscrire</a>
             <a href="connection.php" class="button color-red-tr" id="btn-connection">Se connecter</a>
         <?php
+
+
     }
 
 
@@ -47,7 +49,6 @@
         <?php
 
     }?>
-
 
 
     <br>

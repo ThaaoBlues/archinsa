@@ -136,7 +136,7 @@ function saveFilesFromPost($postData,$id_ensemble) {
 
 
             if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-                echo(json_encode(["status"=>"0","msg"=>"Error saving file '$uniqueFileName'"]));
+                echo(json_encode(["status"=>"0","msg"=>"Error saving file to '$filePath'"]));
                 exit;
 
             }

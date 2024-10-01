@@ -40,6 +40,7 @@ $pdf_extensions = ['pdf'];
 $presentation_extensions = ['ppt', 'pptx','odp','pptm','ppsx'];
 
 // pour les fonctions speciales comme les quiz html...
+// ATTENTION ! NE PAS INCLURE PHP GRAND FOU QUE VOUS ETES
 $ext_speciales = ["html","sh","txt","adb","ads","py","ipynb","c","cpp","rs","go","asm","js","java","md"];
 
 // Fusionner les listes en une seule liste

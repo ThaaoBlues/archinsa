@@ -100,7 +100,35 @@ function checkFileTypeSecure($filePath) {
         }
     }
 
+
+    // brut text file that don't have BOM (magic byte)
+    if(is_utf8($filePath)){
+        return 1;
+    }
+
     return 0; // Unknown or unsupported file type
+}
+
+
+function is_utf8_file($filePath) {
+    // Check if the file exists
+    if (!file_exists($filePath)) {
+        return false;
+    }
+    
+    // Open the file for reading
+    $fileContents = file_get_contents($filePath);
+    if ($fileContents === false) {
+        return false; // Unable to read the file
+    }
+
+    // Check if the file content is valid UTF-8
+    return is_utf8($fileContents);
+}
+
+// Helper function to check if a string is valid UTF-8
+function is_utf8($string) {
+    return mb_check_encoding($string, 'UTF-8');
 }
 
 

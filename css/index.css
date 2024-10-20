@@ -163,7 +163,19 @@
     padding: 20px;
 }
   
-.card img {
+
+
+
+.card-doc {
+  margin-top: 5vh;
+  background-color: #dfdaba;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.card-doc img {
   width: 100%;
   height: auto;
   margin-bottom: 10px;
@@ -171,42 +183,42 @@
 
 }
 
-.card textarea{
+.card-doc textarea{
   width: 100%;
   height: 100vh;
   margin-bottom: 10px;
   border-radius: 7px;
 }
 
-.card embed{
+.card-doc embed{
   width: 100%;
   height: 50vh;
   margin-bottom: 10px;
 }
 
-.card iframe {
+.card-doc iframe {
   width: 100%;
   height: 50vh; 
 
 }
 
-.card video {
+.card-doc video {
   width: 100%;
   height: auto;
 
 }
 
-.card div {
+.card-doc div {
   margin-bottom: 10px;
   line-height: 1.5;
 }
 
-.card ul {
+.card-doc ul {
   padding-left: 20px;
   margin-bottom: 10px;
 }
 
-.card a{
+.card-doc a{
   width: fit-content;
   grid-column: auto;
 }

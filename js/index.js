@@ -1,4 +1,89 @@
+function createDocumentCard(doc){
+    const card = document.createElement('div');
+    card.classList.add('card-doc');                
 
+    // on affiche le titre du résultat parce qu'on est pas des sauvages
+    let titre_ensemble;
+    titre_ensemble = document.createElement("h2");
+    titre_ensemble.innerText = "Document de l'archive";
+    titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
+    card.appendChild(titre_ensemble);
+
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("ligne-boutons");
+    
+    // fichiers spéciaux ?
+
+    switch (doc.type) {
+        case 2: // image
+            const img = document.createElement('img');
+            img.src = doc.upload_path;
+            img.alt = doc.titre;
+            card.appendChild(img);
+
+            const imageLink = document.createElement('a');
+            imageLink.href = doc.upload_path;
+            imageLink.classList.add('lien');
+            imageLink.textContent = 'Voir image';
+            imageLink.target = '_blank';
+            buttonsDiv.appendChild(imageLink);
+            break;
+        case 3: // pdf
+            const embed = document.createElement('embed');
+            embed.src = doc.upload_path;
+            card.appendChild(embed);
+
+            const pdfLink = document.createElement('a');
+            pdfLink.href = doc.upload_path;
+            pdfLink.classList.add('lien');
+            pdfLink.textContent = 'Voir PDF en grand';
+            pdfLink.target = '_blank';
+            buttonsDiv.appendChild(pdfLink);
+            break;
+        case 4: // video
+            const video = document.createElement('video');
+            video.src = doc.upload_path;
+            video.controls = true;
+            card.appendChild(video);
+            break;
+        case 5:
+            const iframe = document.createElement('iframe');
+            iframe.src = doc.upload_path;
+            card.appendChild(iframe);
+            break;
+
+        case 1:
+            const textarea = document.createElement('textarea');
+            var xmlhttp, text;
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', doc.upload_path, false);
+            xmlhttp.send();
+            text = xmlhttp.responseText;
+            textarea.value = text;
+            card.appendChild(textarea)
+            break;
+        default:
+            const unsupportedLink = document.createElement('a');
+            unsupportedLink.href = doc.upload_path;
+            unsupportedLink.classList.add('lien');
+            unsupportedLink.textContent = 'Type de fichier non supporté.';
+            unsupportedLink.target = '_blank';
+            buttonsDiv.appendChild(unsupportedLink);
+            break;
+    }
+
+    
+    const ele = document.createElement("a");
+    ele.innerText = "Voir tous les pdf de cet ensemble";
+    ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
+    ele.classList.add("lien");
+
+    buttonsDiv.appendChild(ele);
+
+    card.appendChild(buttonsDiv);
+
+    return card;
+}
 async function rechercher(){
 
     var req = document.getElementById("recherche_input").value;
@@ -41,98 +126,37 @@ async function rechercher(){
     document.getElementById("liste_resultats").appendChild(titre);
     
     if(data.status == 1){
+        let ensemblesMap = new Map();
+
         data.resultats.forEach(doc => {
+            if (!ensemblesMap.has(doc.ensemble_id)) {
+                let ensembleDiv = document.createElement("div");
+                ensembleDiv.classList.add("ensemble");
+                ensembleDiv.classList.add("card");
 
+                let ensembleTitle = document.createElement("h2");
+                ensembleTitle.innerText = doc.ensemble_titre;
+                ensembleDiv.appendChild(ensembleTitle);
 
-            const card = document.createElement('div');
-            card.classList.add('card');                
+                let toggleButton = document.createElement("button");
+                toggleButton.innerText = "Entrevoir/Masquer les documents de cet ensemble";
+                toggleButton.setAttribute("data-ensemble-id", doc.ensemble_id);
+                toggleButton.classList.add("button");
+                toggleButton.classList.add("color-red-tr");
+                toggleButton.onclick = () => toggleVisibility(doc.ensemble_id);
+                ensembleDiv.appendChild(toggleButton);
 
-            // on affiche le titre du résultat parce qu'on est pas des sauvages
-            let titre_ensemble;
-            titre_ensemble = document.createElement("h2");
-            titre_ensemble.innerText = doc.titre;
-            titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-            
-            card.appendChild(titre_ensemble);
+                let documentsDiv = document.createElement("div");
+                documentsDiv.classList.add("documents");
+                documentsDiv.id = "documents-" + doc.ensemble_id;
+                ensembleDiv.appendChild(documentsDiv);
 
-            const buttonsDiv = document.createElement("div");
-            buttonsDiv.classList.add("ligne-boutons");
-            
-            // fichiers spéciaux ?
-
-            switch (doc.type) {
-                case 2: // image
-                    const img = document.createElement('img');
-                    img.src = doc.upload_path;
-                    img.alt = doc.titre;
-                    card.appendChild(img);
-
-                    const imageLink = document.createElement('a');
-                    imageLink.href = doc.upload_path;
-                    imageLink.classList.add('lien');
-                    imageLink.textContent = 'Voir image';
-                    imageLink.target = '_blank';
-                    card.appendChild(imageLink);
-                    break;
-                case 3: // pdf
-                    const embed = document.createElement('embed');
-                    embed.src = doc.upload_path;
-                    card.appendChild(embed);
-
-                    const pdfLink = document.createElement('a');
-                    pdfLink.href = doc.upload_path;
-                    pdfLink.classList.add('lien');
-                    pdfLink.textContent = 'Voir PDF en grand';
-                    pdfLink.target = '_blank';
-                    card.appendChild(pdfLink);
-                    break;
-                case 4: // video
-                    const video = document.createElement('video');
-                    video.src = doc.upload_path;
-                    video.controls = true;
-                    card.appendChild(video);
-                    break;
-                case 5:
-                    const iframe = document.createElement('iframe');
-                    iframe.src = doc.upload_path;
-                    card.appendChild(iframe);
-                    break;
-
-                case 1:
-                    const textarea = document.createElement('textarea');
-                    var xmlhttp, text;
-                    xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open('GET', doc.upload_path, false);
-                    xmlhttp.send();
-                    text = xmlhttp.responseText;
-                    textarea.value = text;
-                    card.appendChild(textarea)
-                    break;
-                default:
-                    const unsupportedLink = document.createElement('a');
-                    unsupportedLink.href = doc.upload_path;
-                    unsupportedLink.classList.add('lien');
-                    unsupportedLink.textContent = 'Type de fichier non supporté.';
-                    unsupportedLink.target = '_blank';
-                    buttonsDiv.appendChild(unsupportedLink);
-                    break;
+                document.getElementById("liste_resultats").appendChild(ensembleDiv);
+                ensemblesMap.set(doc.ensemble_id, documentsDiv);
             }
 
-            
-            const ele = document.createElement("a");
-            ele.innerText = "Voir tous les pdf de cet ensemble";
-            ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
-            ele.classList.add("lien");
-
-            buttonsDiv.appendChild(ele);
-
-            card.appendChild(buttonsDiv);
-
-
-            document.getElementById("liste_resultats").appendChild(card);
-
-
-
+            let card = createDocumentCard(doc);
+            ensemblesMap.get(doc.ensemble_id).appendChild(card);
         });
     }
 }
@@ -153,7 +177,7 @@ async function gen_chronologie(){
     if(data.resultats.length > 0){
         // ensuite on ajoute un petit titre à la chronologie
         let titre = document.createElement("h1");
-        titre.innerText = "Documents récemment publiés";
+        titre.innerText = "Archives récemment publiées";
         document.getElementById("liste_resultats").appendChild(titre);
     }else{
         
@@ -162,101 +186,41 @@ async function gen_chronologie(){
     
     // et on remplis avec ce que l'api a généré
     if(data.status == 1){
+        let ensemblesMap = new Map();
+
         data.resultats.forEach(ens => {
+            ens.documents.forEach(doc => {
+                if (!ensemblesMap.has(doc.ensemble_id)) {
+                    let ensembleDiv = document.createElement("div");
+                    ensembleDiv.classList.add("ensemble");
+                    ensembleDiv.classList.add("card");
 
-            ens.documents.forEach(doc=>{
 
-                const card = document.createElement('div');
-                card.classList.add('card');                
+                    let ensembleTitle = document.createElement("h2");
+                    ensembleTitle.innerText = doc.titre;
+                    ensembleDiv.appendChild(ensembleTitle);
 
-                // on affiche le titre du résultat parce qu'on est pas des sauvages
-                let titre_ensemble;
-                titre_ensemble = document.createElement("h2");
-                titre_ensemble.innerText = doc.titre;
-                titre_ensemble.setAttribute("onclick","document.location.href='ens.php?ensemble_id="+doc.ensemble_id.toString()+"'");
-                
-                card.appendChild(titre_ensemble);
+                    let toggleButton = document.createElement("button");
+                    toggleButton.innerText = "Entrevoir/Masquer les documents de cet ensemble";
+                    toggleButton.setAttribute("data-ensemble-id", doc.ensemble_id);
+                    toggleButton.classList.add("button");
+                    toggleButton.classList.add("color-red-tr");
+                    toggleButton.onclick = () => toggleVisibility(doc.ensemble_id);
+                    ensembleDiv.appendChild(toggleButton);
 
-                const buttonsDiv = document.createElement("div");
-                buttonsDiv.classList.add("ligne-boutons");
-                
-                // fichiers spéciaux ?     
-                
-        
-                switch (doc.type) {
-                    case 2: // image
-                        const img = document.createElement('img');
-                        img.src = doc.upload_path;
-                        img.alt = doc.titre;
-                        card.appendChild(img);
-    
-                        const imageLink = document.createElement('a');
-                        imageLink.href = doc.upload_path;
-                        imageLink.classList.add('lien');
-                        imageLink.textContent = 'Voir image';
-                        imageLink.target = '_blank';
-                        buttonsDiv.appendChild(imageLink);
-                        break;
-                    case 3: // pdf
-                        const embed = document.createElement('embed');
-                        embed.src = doc.upload_path;
-                        card.appendChild(embed);
-    
-                        const pdfLink = document.createElement('a');
-                        pdfLink.href = doc.upload_path;
-                        pdfLink.classList.add('lien');
-                        pdfLink.textContent = 'Voir PDF en grand';
-                        pdfLink.target = '_blank';
-                        buttonsDiv.appendChild(pdfLink);
-                        break;
-                    case 4: // video
-                        const video = document.createElement('video');
-                        video.src = doc.upload_path;
-                        video.controls = true;
-                        card.appendChild(video);
-                        break;
-                    case 5:
-                        const iframe = document.createElement('iframe');
-                        iframe.src = doc.upload_path;
-                        card.appendChild(iframe);
-                        break;
-    
-                    case 1:
-                        const textarea = document.createElement('textarea');
-                        var xmlhttp, text;
-                        xmlhttp = new XMLHttpRequest();
-                        xmlhttp.open('GET', doc.upload_path, false);
-                        xmlhttp.send();
-                        text = xmlhttp.responseText;
-                        textarea.value = text;
-                        card.appendChild(textarea)
-                        break;
-                    default:
-                        const unsupportedLink = document.createElement('a');
-                        unsupportedLink.href = doc.upload_path;
-                        unsupportedLink.classList.add('lien');
-                        unsupportedLink.textContent = 'Type de fichier non supporté.';
-                        unsupportedLink.target = '_blank';
-                        buttonsDiv.appendChild(unsupportedLink);
-                        break;
+                    let documentsDiv = document.createElement("div");
+                    documentsDiv.classList.add("documents");
+                    documentsDiv.id = "documents-" + doc.ensemble_id;
+                    ensembleDiv.appendChild(documentsDiv);
+
+                    document.getElementById("liste_resultats").appendChild(ensembleDiv);
+                    ensemblesMap.set(doc.ensemble_id, documentsDiv);
                 }
 
-                
-                const ele = document.createElement("a");
-                ele.innerText = "Voir tous les pdf de cet ensemble";
-                ele.href = `ens.php?ensemble_id=${doc.ensemble_id}`;
-                ele.classList.add("lien");
-    
-                buttonsDiv.appendChild(ele);
-    
-                card.appendChild(buttonsDiv);
-
-                document.getElementById("liste_resultats").appendChild(card);
-
+                let card = createDocumentCard(doc);
+                card.style.display = "none";
+                ensemblesMap.get(doc.ensemble_id).appendChild(card);
             });
-
-            
-
         });
     }
 }
@@ -299,3 +263,12 @@ document.addEventListener("DOMContentLoaded", (event)=>{
 
 });
 
+function toggleVisibility(ensembleId) {
+    let documentsDiv = document.getElementById("documents-" + ensembleId);
+    
+    let cards = documentsDiv.getElementsByClassName("card-doc");
+
+    for(i = 0;i<cards.length;i++){
+        cards[i].style.display = cards[i].style.display === "none" ? "block" : "none";
+    }
+}

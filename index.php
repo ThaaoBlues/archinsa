@@ -19,7 +19,6 @@
  /(__)\  )   /( (__  ) _ (     _)(_  )  ( \__ \ /(__)\ 
 (__)(__)(_)\_) \___)(_) (_)   (____)(_)\_)(___/(__)(__)
     </pre>
-
 </div>
 
     <h4>Comme vous pouvez le constater, on cherche quelqu'un pour le design (html + css) du site :D club.info@amicale-insat.fr</h4>
@@ -67,6 +66,7 @@
     <?php
         if(isset($_SESSION["utilisateur_authentifie"]) && ($_SESSION["utilisateur_authentifie"] == 1)){
             ?>
+    <img src="img/fox-reverse.gif">
 
 <div class="barre-recherche centre-horizontal">
         <form id="recherche_form">

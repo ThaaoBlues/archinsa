@@ -95,7 +95,7 @@
                         while ($doc = $resultDocu->fetch_assoc()) {
 
                             switch ($doc['type']) {
-                                case 1:
+                                default:
 
                                     // on va maintenant prendre chaque exercice un par un
                                     // et afficher les bonnes infos :

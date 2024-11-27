@@ -46,13 +46,14 @@ async function gen_contenu() {
               /*const uploadPathDiv = document.createElement('div');
               uploadPathDiv.textContent = `Upload Path: ${doc.upload_path}`;
               card.appendChild(uploadPathDiv);*/
-
-              switch (doc.type) {
+            console.log(doc.type)
+              switch (doc.type) {   
                 case 2: // image
                     const img = document.createElement('img');
                     img.src = doc.upload_path;
                     img.alt = doc.titre;
                     card.appendChild(img);
+
 
                     const imageLink = document.createElement('a');
                     imageLink.href = doc.upload_path;
@@ -64,6 +65,7 @@ async function gen_contenu() {
                 case 3: // pdf
                     const embed = document.createElement('embed');
                     embed.src = doc.upload_path;
+                    
                     card.appendChild(embed);
 
                     const pdfLink = document.createElement('a');

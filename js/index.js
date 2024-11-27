@@ -135,7 +135,7 @@ async function rechercher(){
                 ensembleDiv.classList.add("card");
 
                 let ensembleTitle = document.createElement("h2");
-                ensembleTitle.innerText = doc.ensemble_titre;
+                ensembleTitle.textContent = decodeHtmlEntities(doc.ensemble_titre);
                 ensembleDiv.appendChild(ensembleTitle);
 
                 let toggleButton = document.createElement("button");
@@ -197,7 +197,10 @@ async function gen_chronologie(){
 
 
                     let ensembleTitle = document.createElement("h2");
-                    ensembleTitle.innerText = doc.titre;
+
+                    // for some reasons single quotes shows up as html entities 
+                    // after the json has been parsed
+                    ensembleTitle.textContent = decodeHtmlEntities(doc.titre);
                     ensembleDiv.appendChild(ensembleTitle);
 
                     let toggleButton = document.createElement("button");
@@ -271,4 +274,11 @@ function toggleVisibility(ensembleId) {
     for(i = 0;i<cards.length;i++){
         cards[i].style.display = cards[i].style.display === "none" ? "block" : "none";
     }
+}
+
+function decodeHtmlEntities(str) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = str;
+    return textarea.value;
+    
 }

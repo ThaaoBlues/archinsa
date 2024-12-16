@@ -30,8 +30,8 @@ class Mail
             $this::$mail->isSMTP();
             $this::$mail->Host = "192.168.200.9";
             $this::$mail->SMTPAuth = true;
-            $this::$mail->Username = $mel_id;
-            $this::$mail->Password = $mel_mdp;
+            //$this::$mail->Username = $mel_id;
+            //$this::$mail->Password = $mel_mdp;
             $this::$mail->setFrom($mel_adr, name: 'Club Info INSA Toulouse');
             $this::$mail->isHTML(true);
             $this::$mail->Subject = 'Inscription sur Arch\'INSA';

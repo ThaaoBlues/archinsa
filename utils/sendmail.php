@@ -28,11 +28,11 @@ class Mail
         try {
             $this::$mail = new PHPMailer(true);
             $this::$mail->isSMTP();
-            $this::$mail->Host = "smtp.insa-toulouse.fr";
+            $this::$mail->Host = "192.168.200.9";
             $this::$mail->SMTPAuth = true;
             $this::$mail->Username = $mel_id;
             $this::$mail->Password = $mel_mdp;
-            $this::$mail->setFrom($mel_adr, 'Club Info INSA Toulouse');
+            $this::$mail->setFrom($mel_adr, name: 'Club Info INSA Toulouse');
             $this::$mail->isHTML(true);
             $this::$mail->Subject = 'Inscription sur Arch\'INSA';
             $this::$mail->Body = 'Message vide.';
@@ -67,8 +67,8 @@ class Mail
             $mail_dest=htmlspecialchars($mail_dest);
             $name_dest=htmlspecialchars($name_dest);
             $this::$mail->addAddress($mail_dest, $name_dest);
-            $this::$mail->Port = 465;
-            $this::$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $this::$mail->Port = 25;
+            //$this::$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $this::$mail->send();
         } catch (Exception $e) {
             $this::$error=$this::$mail->ErrorInfo;
